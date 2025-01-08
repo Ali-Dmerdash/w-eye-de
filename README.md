@@ -9,6 +9,7 @@ Technologies used :
         3- Chadcn-ui
         4- Postman
         5- TurboPack
+        6- ReCharts
         
     Back-end
         1- TypeScript (ExpressJS)
@@ -17,3 +18,4 @@ Technologies used :
         4- Clerk-auth
         5- Redux Toolkit Query
         6- SurrealDB
+        7- Sanic
