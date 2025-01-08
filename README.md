@@ -2,6 +2,7 @@
 Graduation Project
 
 Technologies used :
+
     Front-end 
         1- NextJS (React TypeScript)
         2- TailwindCSS
