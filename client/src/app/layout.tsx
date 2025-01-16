@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import Page from "@/app/sign-in/[...sign-in]/page";
+import { ClerkProvider, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,14 +32,13 @@ export default function RootLayout({
         >
           <header>
             <SignedOut>
-              <SignInButton />
-              {/* https://saved-sunfish-27.accounts.dev/sign-in?redirect_url=http%3A%2F%2Flocalhost%3A3000%2F */}
+              <Page />
             </SignedOut>
             <SignedIn>
               <UserButton />
+              <main>{children}</main>
             </SignedIn>
           </header>
-          <main>{children}</main>
         </body>
       </html>
     </ClerkProvider>
