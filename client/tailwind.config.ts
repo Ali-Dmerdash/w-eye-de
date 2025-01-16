@@ -32,13 +32,22 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+        },
+        warning_green: {
+          DEFAULT: "hsl(var(--warning-green))",
+        },
+        warning_orange: {
+          DEFAULT: "hsl(var(--warning-orange))",
+        },
+        warning_red: {
+          DEFAULT: "hsl(var(--warning-red))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
