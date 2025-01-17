@@ -82,6 +82,7 @@ export type FraudRateGraphData = {
   fraudRate: number;
 };
 
+// name, amount , curruncy, flag, date, description, category, type, fraudrate
 export type TransactionData = {
   id: number;
   name: string;
