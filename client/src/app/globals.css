@@ -121,7 +121,7 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-warning_red text-foreground;
     @apply font-roboto_slab;
   }
 }
