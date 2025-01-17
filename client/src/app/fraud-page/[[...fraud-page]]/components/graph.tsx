@@ -1,13 +1,12 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { clientData, FraudRateGraphData } from "@/data/data"; // Adjust path as needed
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,79 +14,108 @@ import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
 
+// Define the chart configuration
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+  fraudRate: {
+    label: "Fraud Rate",
+    color: "hsl(var(--accent))", // Base color for fraud rate
   },
 } satisfies ChartConfig;
 
-const graph = () => {
+const Graph: React.FC = () => {
+  // Use fraudRateGraphData from the first client
+  const fraudRateGraphData: FraudRateGraphData[] =
+    clientData[0]?.fraudRateGraphData || [];
+
   return (
-    <Card>
+    <Card className="bg-primary">
       <CardHeader>
-        <CardTitle>Area Chart</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
+        <CardTitle className="text-white">Fraud Rate</CardTitle>
+        <CardDescription className="text-gray-300">
+          trends over the past transactions
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={fraudRateGraphData}
             margin={{
               left: 12,
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} />
+            {/* Updated CartesianGrid stroke to a lighter gray */}
+            <CartesianGrid
+              vertical={false}
+              stroke="rgba(200, 200, 200, 0.5)" // Gray color for dashed lines
+              strokeDasharray="3 3"
+            />
             <XAxis
-              dataKey="month"
+              dataKey="date"
               tickLine={false}
-              axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tick={{
+                fontSize: 12,
+                fontWeight: 500,
+              }}
+              tickFormatter={(value) => value.slice(5)}
+            />
+            <YAxis
+              tickLine={false}
+              tickMargin={8}
+              domain={[0, 0.25]}
+              tick={{
+                fill: "hsl(var(--accent))",
+                fontSize: 12,
+                fontWeight: 500,
+              }}
+              tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  const fraudRate = payload[0].value;
+                  return (
+                    <div
+                      className="bg-primary p-2 rounded"
+                      style={{
+                        border: `1px solid ${chartConfig.fraudRate.color}`,
+                      }}
+                    >
+                      <p className="text-gray-300">{label}</p>
+                      <p className="text-white font-bold">
+                        Fraud Rate:{" "}
+                        <span
+                          style={{ color: "rgba(0, 123, 255, 1)" }}
+                          className="font-semibold"
+                        >
+                          {typeof fraudRate === "number"
+                            ? (fraudRate * 100).toFixed(2)
+                            : "N/A"}
+                          %
+                        </span>
+                      </p>
+                    </div>
+                  );
+                }
+                return null;
+              }}
             />
             <Area
-              dataKey="desktop"
+              dataKey="fraudRate"
               type="natural"
-              fill="var(--color-desktop)"
-              fillOpacity={0.4}
-              stroke="var(--color-desktop)"
+              fill="hsl(var(--accent))"
+              stroke="rgba(119, 112, 250, 0.87)"
             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 font-medium leading-none">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   );
 };
 
-export default graph;
+export default Graph;
