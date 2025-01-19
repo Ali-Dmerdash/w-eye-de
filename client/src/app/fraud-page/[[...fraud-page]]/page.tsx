@@ -1,5 +1,14 @@
+"use client";
 import React from "react";
-import TableTransaction from "@/app/fraud-page/[[...fraud-page]]/components/tableTransaction";
+import Graph from "./components/graph";
+import dynamic from "next/dynamic";
+
+const TableTransaction = dynamic(
+  () => import("./components/tableTransaction"),
+  {
+    ssr: false,
+  }
+);
 
 export default function page() {
   return (

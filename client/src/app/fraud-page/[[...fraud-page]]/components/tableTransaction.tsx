@@ -1,6 +1,5 @@
 "use client";
-
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -30,6 +29,7 @@ import {
 } from "@/components/ui/table";
 
 import { TransactionData } from "@/data/data";
+import { json } from "stream/consumers";
 
 // Sample Data (Replace this with actual API data)
 const data: TransactionData[] = [
@@ -82,14 +82,6 @@ const DraggableColumnHeader = ({ header }: { header: any }) => {
 };
 
 export default function TableTransaction() {
-  // Load saved column order from localStorage
-  const savedColumnOrder = JSON.parse(
-    localStorage.getItem(COLUMN_ORDER_KEY) || "null"
-  );
-  const savedColumnVisibility = JSON.parse(
-    localStorage.getItem(COLUMN_VISIBILITY_KEY) || "{}"
-  );
-
   // Default column order
   const defaultColumns: ColumnDef<TransactionData>[] = [
     {
@@ -152,28 +144,54 @@ export default function TableTransaction() {
     },
   ];
 
-  // Apply saved column order
-  const orderedColumns = savedColumnOrder
-    ? savedColumnOrder
-        .map((colId: string) => defaultColumns.find((col) => col.id === colId))
-        .filter(Boolean)
-    : defaultColumns;
+  const defaultColumnVisibility: VisibilityState = {
+    name: true,
+    amount: true,
+    currency: true,
+    flag: true,
+    date: true,
+    description: true,
+    category: true,
+    type: true,
+    fraudRate: true,
+  };
 
-  const [columns, setColumns] =
-    React.useState<ColumnDef<TransactionData>[]>(orderedColumns);
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(savedColumnVisibility);
+  const [columnsOrder, setColumnsOrder] =
+    useState<ColumnDef<TransactionData>[]>(defaultColumns);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+    defaultColumnVisibility
+  );
+
+  // Load saved column order from localStorage
+  useEffect(() => {
+    const savedColumnOrder = localStorage.getItem(COLUMN_ORDER_KEY);
+    const orderedColumns = savedColumnOrder
+      ? JSON.parse(savedColumnOrder)
+          .map((colId: string) =>
+            defaultColumns.find((col) => col.id === colId)
+          )
+          .filter(Boolean)
+      : defaultColumns;
+    setColumnsOrder(orderedColumns);
+
+    const savedColumnVisibility = localStorage.getItem(COLUMN_VISIBILITY_KEY);
+    setColumnVisibility(
+      savedColumnVisibility
+        ? JSON.parse(savedColumnVisibility)
+        : defaultColumnVisibility
+    );
+  }, []);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columnsOrder,
     getCoreRowModel: getCoreRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     state: { columnVisibility },
   });
 
   // Save column visibility to localStorage when changed
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem(
       COLUMN_VISIBILITY_KEY,
       JSON.stringify(columnVisibility)
@@ -185,7 +203,7 @@ export default function TableTransaction() {
     const { active, over } = event;
     if (!active || !over || active.id === over.id) return;
 
-    setColumns((prev) => {
+    setColumnsOrder((prev) => {
       const oldIndex = prev.findIndex((col) => col.id === active.id);
       const newIndex = prev.findIndex((col) => col.id === over.id);
 
@@ -204,7 +222,7 @@ export default function TableTransaction() {
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <div className="w-full">
+      <div className="w-full bg-primary">
         {/* Column Visibility Toggle Button */}
         <div className="flex items-center py-4">
           <DropdownMenu>
@@ -233,7 +251,9 @@ export default function TableTransaction() {
         <div className="rounded-md border">
           <Table>
             <TableHeader>
-              <SortableContext items={columns.map((col) => col.id as string)}>
+              <SortableContext
+                items={columnsOrder.map((col) => col.id as string)}
+              >
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
@@ -245,7 +265,7 @@ export default function TableTransaction() {
                 ))}
               </SortableContext>
             </TableHeader>
-            <TableBody>
+            <TableBody className="text-white">
               {table.getRowModel().rows.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id}>
@@ -262,7 +282,7 @@ export default function TableTransaction() {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columns.length}
+                    colSpan={columnsOrder.length}
                     className="h-24 text-center"
                   >
                     No results.
