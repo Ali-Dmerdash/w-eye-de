@@ -1,7 +1,14 @@
 "use client";
 import React from "react";
-import Graph from "./components/graph";
 import dynamic from "next/dynamic";
+
+const Graph = dynamic(() => import("./components/graph"), {
+  ssr: false,
+});
+
+const FraudInc = dynamic(() => import("./components/FraudInc"), {
+  ssr: false,
+});
 
 const TableTransaction = dynamic(
   () => import("./components/tableTransaction"),
