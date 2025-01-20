@@ -41,45 +41,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           {(isGlobalLoading) => (
             <>
               <SignIn.Step name="start">
-                <Card className="w-full sm:w-96">
-                  <CardHeader>
-                    <CardTitle>Sign in to Acme Co</CardTitle>
-                    <CardDescription>
-                      Welcome back! Please sign in to continue
-                    </CardDescription>
-                  </CardHeader>
+                <Card className=" sm:w-96 bg-transparent border-none">
                   <CardContent className="grid gap-y-4">
                     <Clerk.Field name="identifier" className="space-y-2">
                       <Clerk.Label asChild>
                         <Label>Email address</Label>
                       </Clerk.Label>
                       <Clerk.Input type="email" required asChild>
-                        <Input />
+                        <Input className="border-none bottom-0" />
                       </Clerk.Input>
+
                       <Clerk.FieldError className="block text-sm text-destructive" />
                     </Clerk.Field>
                   </CardContent>
-                  <CardFooter>
-                    <div className="grid w-full gap-y-4">
-                      <SignIn.Action submit asChild>
-                        <Button disabled={isGlobalLoading}>
-                          <Clerk.Loading>
-                            {(isLoading) => {
-                              return isLoading ? (
-                                <Icon
-                                  icon="svg-spinners:90-ring"
-                                  width="24"
-                                  height="24"
-                                />
-                              ) : (
-                                "Continue"
-                              );
-                            }}
-                          </Clerk.Loading>
-                        </Button>
-                      </SignIn.Action>
-                    </div>
-                  </CardFooter>
                 </Card>
               </SignIn.Step>
 
@@ -145,7 +119,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                           <Label>Password</Label>
                         </Clerk.Label>
                         <Clerk.Input type="password" asChild>
-                          <Input />
+                          <Input className="border-b-2 border-green-500 bg-transparent focus:border-green-700 focus:ring-0" />
                         </Clerk.Input>
                         <Clerk.FieldError className="block text-sm text-destructive" />
                       </Clerk.Field>

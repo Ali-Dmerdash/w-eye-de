@@ -117,11 +117,9 @@ body {
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+ 
   body {
-    @apply bg-warning_red text-foreground;
+    /* @apply bg-warning_red text-foreground; */
     @apply font-roboto_slab;
   }
 }
