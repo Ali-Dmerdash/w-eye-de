@@ -1,12 +1,8 @@
 "use client";
-
-import * as React from "react";
-
-import { cn } from "@/lib/utils";
-import { Icon } from "@iconify/react";
+import * as Clerk from "@clerk/elements/common";
+import * as SignIn from "@clerk/elements/sign-in";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -15,25 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Icon } from "@iconify/react";
 
-import * as Clerk from "@clerk/elements/common";
-import * as SignIn from "@clerk/elements/sign-in";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
-
+export default function UserAuthForm() {
   return (
     <div className="grid w-full grow items-center px-4 sm:justify-center">
       <SignIn.Root>
@@ -41,19 +25,45 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           {(isGlobalLoading) => (
             <>
               <SignIn.Step name="start">
-                <Card className=" sm:w-96 bg-transparent border-none">
+                <Card className="w-full sm:w-96">
+                  <CardHeader>
+                    <CardTitle>Sign in to Acme Co</CardTitle>
+                    <CardDescription className="text-secondary">
+                      Welcome back! Please sign in to continue
+                    </CardDescription>
+                  </CardHeader>
                   <CardContent className="grid gap-y-4">
                     <Clerk.Field name="identifier" className="space-y-2">
                       <Clerk.Label asChild>
                         <Label>Email address</Label>
                       </Clerk.Label>
                       <Clerk.Input type="email" required asChild>
-                        <Input className="border-none bottom-0" />
+                        <Input />
                       </Clerk.Input>
-
                       <Clerk.FieldError className="block text-sm text-destructive" />
                     </Clerk.Field>
                   </CardContent>
+                  <CardFooter>
+                    <div className="grid w-full gap-y-4">
+                      <SignIn.Action submit asChild>
+                        <Button disabled={isGlobalLoading}>
+                          <Clerk.Loading>
+                            {(isLoading) => {
+                              return isLoading ? (
+                                <Icon
+                                  icon="svg-spinners:90-ring"
+                                  width="24"
+                                  height="24"
+                                />
+                              ) : (
+                                "Continue"
+                              );
+                            }}
+                          </Clerk.Loading>
+                        </Button>
+                      </SignIn.Action>
+                    </div>
+                  </CardFooter>
                 </Card>
               </SignIn.Step>
 
@@ -113,13 +123,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <SignIn.Step name="verifications">
                 <SignIn.Strategy name="password">
                   <Card className="w-full sm:w-96">
+                    <CardHeader>
+                      <CardTitle>Check your email</CardTitle>
+                      <CardDescription className="text-secondary">
+                        Enter the verification code sent to your email
+                      </CardDescription>
+                      <p className="text-sm text-secondary">
+                        Welcome back <SignIn.SafeIdentifier />
+                      </p>
+                    </CardHeader>
                     <CardContent className="grid gap-y-4">
                       <Clerk.Field name="password" className="space-y-2">
                         <Clerk.Label asChild>
                           <Label>Password</Label>
                         </Clerk.Label>
                         <Clerk.Input type="password" asChild>
-                          <Input className="border-b-2 border-green-500 bg-transparent focus:border-green-700 focus:ring-0" />
+                          <Input />
                         </Clerk.Input>
                         <Clerk.FieldError className="block text-sm text-destructive" />
                       </Clerk.Field>
