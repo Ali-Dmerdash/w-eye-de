@@ -28,16 +28,14 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`bg-black`}
         >
-          <header>
             <SignedOut>
               <Page />
             </SignedOut>
             <SignedIn>
               <main>{children}</main>
             </SignedIn>
-          </header>
         </body>
       </html>
     </ClerkProvider>
