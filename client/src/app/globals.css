@@ -117,9 +117,8 @@ body {
 }
 
 @layer base {
- 
   body {
-    /* @apply bg-warning_red text-foreground; */
+    @apply bg-background text-foreground;
     @apply font-roboto_slab;
   }
 }
