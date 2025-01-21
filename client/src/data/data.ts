@@ -140,7 +140,7 @@ export const clientData: ClientData[] = [
       },
       {
         id: 2,
-        name: "John Doe",
+        name: "Abdo Magdi",
         date: "2025-01-13",
         description: "Travel Expense",
         amount: 320.75,

@@ -2,16 +2,30 @@
 import React from "react";
 import dynamic from "next/dynamic";
 
-const Graph = dynamic(() => import("./components/graph"), {
-  ssr: false,
-});
+const Graph = dynamic(
+  () => import("@/app/fraud-page/[[...fraud-page]]/components/graph"),
+  {
+    ssr: false,
+  }
+);
 
-const FraudInc = dynamic(() => import("./components/FraudInc"), {
-  ssr: false,
-});
+const FraudInc = dynamic(
+  () => import("@/app/fraud-page/[[...fraud-page]]/components/FraudInc"),
+  {
+    ssr: false,
+  }
+);
 
 const TableTransaction = dynamic(
-  () => import("./components/tableTransaction"),
+  () =>
+    import("@/app/fraud-page/[[...fraud-page]]/components/tableTransaction"),
+  {
+    ssr: false,
+  }
+);
+
+const ReportAmeen = dynamic(
+  () => import("@/app/fraud-page/[[...fraud-page]]/components/reportAmeen"),
   {
     ssr: false,
   }
@@ -24,12 +38,15 @@ export default function Page() {
         <Graph />
       </div>
 
-      <div className="col-span-1 row-span-2">
+      <div className="col-span-1 row-span-1">
         <FraudInc />
       </div>
 
       <div className="col-span-2 row-span-1">
         <TableTransaction />
+      </div>
+      <div className="col-span-1 row-span-1">
+        <ReportAmeen />
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import BiChart from "@/app/fraud-page/[[...fraud-page]]/components/biChart";
 
 const FraudInc = () => {
   return (
-    <div className="flex items-start justify-center w-full h-full flex-wrap">
+    <div className="flex items-start justify-center flex-wrap">
       <Tabs
         defaultValue="account"
         className="w-[400px] rounded-lg bg-primary shadow p-6"

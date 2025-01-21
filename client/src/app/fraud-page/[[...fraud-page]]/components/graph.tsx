@@ -24,7 +24,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const Graph: React.FC = () => {
+const Graph = () => {
   // Use fraudRateGraphData from the first client
   const fraudRateGraphData: FraudRateGraphData[] =
     clientData[0]?.fraudRateGraphData || [];

@@ -27,37 +27,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import { TransactionData } from "@/data/data";
-import { json } from "stream/consumers";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { clientData, TransactionData } from "@/data/data";
 
 // Sample Data (Replace this with actual API data)
-const data: TransactionData[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    amount: 1200,
-    currency: "USD",
-    flag: "🇺🇸",
-    date: "2024-01-12",
-    description: "Online Purchase",
-    category: "Shopping",
-    type: "Debit",
-    fraudRate: 2.5,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    amount: 500,
-    currency: "EUR",
-    flag: "🇪🇺",
-    date: "2024-02-15",
-    description: "Travel Expense",
-    category: "Travel",
-    type: "Credit",
-    fraudRate: 1.2,
-  },
-];
+const data: TransactionData[] = clientData[0]?.transactionData || [];
 
 // Local Storage Keys
 const COLUMN_ORDER_KEY = "tableColumnOrder";
@@ -81,7 +55,7 @@ const DraggableColumnHeader = ({ header }: { header: any }) => {
   );
 };
 
-export default function TableTransaction() {
+const TableTransaction = () => {
   // Default column order
   const defaultColumns: ColumnDef<TransactionData>[] = [
     {
@@ -156,31 +130,15 @@ export default function TableTransaction() {
     fraudRate: true,
   };
 
-  const [columnsOrder, setColumnsOrder] =
-    useState<ColumnDef<TransactionData>[]>(defaultColumns);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    defaultColumnVisibility
+  const [columnsOrder, setColumnsOrder] = useLocalStorage(
+    COLUMN_ORDER_KEY,
+    defaultColumns
   );
 
-  // Load saved column order from localStorage
-  useEffect(() => {
-    const savedColumnOrder = localStorage.getItem(COLUMN_ORDER_KEY);
-    const orderedColumns = savedColumnOrder
-      ? JSON.parse(savedColumnOrder)
-          .map((colId: string) =>
-            defaultColumns.find((col) => col.id === colId)
-          )
-          .filter(Boolean)
-      : defaultColumns;
-    setColumnsOrder(orderedColumns);
-
-    const savedColumnVisibility = localStorage.getItem(COLUMN_VISIBILITY_KEY);
-    setColumnVisibility(
-      savedColumnVisibility
-        ? JSON.parse(savedColumnVisibility)
-        : defaultColumnVisibility
-    );
-  }, []);
+  const [columnVisibility, setColumnVisibility] = useLocalStorage(
+    COLUMN_VISIBILITY_KEY,
+    defaultColumnVisibility
+  );
 
   const table = useReactTable({
     data,
@@ -189,14 +147,6 @@ export default function TableTransaction() {
     onColumnVisibilityChange: setColumnVisibility,
     state: { columnVisibility },
   });
-
-  // Save column visibility to localStorage when changed
-  useEffect(() => {
-    localStorage.setItem(
-      COLUMN_VISIBILITY_KEY,
-      JSON.stringify(columnVisibility)
-    );
-  }, [columnVisibility]);
 
   // Handle Drag End for Column Reordering
   const handleDragEnd = (event: any) => {
@@ -211,10 +161,7 @@ export default function TableTransaction() {
       const newOrder = arrayMove(prev, oldIndex, newIndex);
 
       // Save new order in localStorage
-      localStorage.setItem(
-        COLUMN_ORDER_KEY,
-        JSON.stringify(newOrder.map((col) => col.id))
-      );
+      setColumnsOrder(newOrder);
 
       return newOrder;
     });
@@ -295,4 +242,6 @@ export default function TableTransaction() {
       </div>
     </DndContext>
   );
-}
+};
+
+export default TableTransaction;
