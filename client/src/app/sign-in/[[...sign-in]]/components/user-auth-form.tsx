@@ -25,28 +25,42 @@ export default function UserAuthForm() {
           {(isGlobalLoading) => (
             <>
               <SignIn.Step name="start">
-                <Card className="w-full sm:w-96">
-                  <CardHeader>
-                    <CardTitle>Sign in to Acme Co</CardTitle>
-                    <CardDescription className="text-secondary">
-                      Welcome back! Please sign in to continue
-                    </CardDescription>
-                  </CardHeader>
+                <Card className="w-full sm:w-96 bg-transparent text-white border-none">
                   <CardContent className="grid gap-y-4">
                     <Clerk.Field name="identifier" className="space-y-2">
-                      <Clerk.Label asChild>
-                        <Label>Email address</Label>
+                      {/* <Clerk.Label asChild>
                       </Clerk.Label>
                       <Clerk.Input type="email" required asChild>
                         <Input />
-                      </Clerk.Input>
+                      </Clerk.Input> */}
+                      <div className="relative z-0">
+                        <Clerk.Input
+                          type="email"
+                          required
+                          asChild
+                          id="floating_standard"
+                          class="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                          placeholder=" "
+                        >
+                          <Input />
+                        </Clerk.Input>
+                        <Clerk.Label
+                          asChild
+                          htmlFor="floating_standard"
+                          className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                        >
+                          <Label>Email your email</Label>
+                        </Clerk.Label>
+                      </div>
+
                       <Clerk.FieldError className="block text-sm text-destructive" />
                     </Clerk.Field>
                   </CardContent>
+
                   <CardFooter>
                     <div className="grid w-full gap-y-4">
                       <SignIn.Action submit asChild>
-                        <Button disabled={isGlobalLoading}>
+                        <Button disabled={isGlobalLoading} className="border-2 border-gray-600 bg-transparent text-white">
                           <Clerk.Loading>
                             {(isLoading) => {
                               return isLoading ? (

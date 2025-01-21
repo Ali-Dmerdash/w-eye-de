@@ -1,0 +1,19 @@
+.BGL {
+  background: linear-gradient(
+    18deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 29%,
+    rgba(186, 186, 186, 1) 100%
+  );
+}
+.BGT {
+  background: linear-gradient(
+    87deg,
+    rgba(255, 255, 255, 1) 18%,
+    rgba(42, 38, 38, 1) 88%
+  );
+  background-clip: text;
+  color: transparent;
+  font-size: 20px;
+
+}
