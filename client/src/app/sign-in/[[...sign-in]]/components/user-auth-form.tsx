@@ -60,7 +60,10 @@ export default function UserAuthForm() {
                   <CardFooter>
                     <div className="grid w-full gap-y-4">
                       <SignIn.Action submit asChild>
-                        <Button disabled={isGlobalLoading} className="border-2 border-gray-600 bg-transparent text-white">
+                        <Button
+                          disabled={isGlobalLoading}
+                          className="border-2 border-gray-600 bg-transparent text-white"
+                        >
                           <Clerk.Loading>
                             {(isLoading) => {
                               return isLoading ? (
@@ -136,24 +139,39 @@ export default function UserAuthForm() {
 
               <SignIn.Step name="verifications">
                 <SignIn.Strategy name="password">
-                  <Card className="w-full sm:w-96">
+                  <Card className="w-full sm:w-96 bg-transparent border-0 ">
                     <CardHeader>
-                      <CardTitle>Check your email</CardTitle>
-                      <CardDescription className="text-secondary">
+                      <CardTitle className="text-white flex justify-center">
+                        Check your email
+                      </CardTitle>
+                      <CardDescription className="text-white flex justify-center">
                         Enter the verification code sent to your email
                       </CardDescription>
-                      <p className="text-sm text-secondary">
+                      <p className="text-sm text-white font-bold flex justify-center">
                         Welcome back <SignIn.SafeIdentifier />
                       </p>
                     </CardHeader>
                     <CardContent className="grid gap-y-4">
                       <Clerk.Field name="password" className="space-y-2">
-                        <Clerk.Label asChild>
-                          <Label>Password</Label>
-                        </Clerk.Label>
-                        <Clerk.Input type="password" asChild>
-                          <Input />
-                        </Clerk.Input>
+                        <div className="relative z-0">
+                          <Clerk.Input
+                            type="password"
+                            required
+                            asChild
+                            id="floating_standard"
+                            class="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder=" "
+                          >
+                            <Input />
+                          </Clerk.Input>
+                          <Clerk.Label
+                            asChild
+                            htmlFor="floating_standard"
+                            className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                          >
+                            <Label>enter your password</Label>
+                          </Clerk.Label>
+                        </div>
                         <Clerk.FieldError className="block text-sm text-destructive" />
                       </Clerk.Field>
                     </CardContent>
@@ -177,7 +195,12 @@ export default function UserAuthForm() {
                           </Button>
                         </SignIn.Action>
                         <SignIn.Action navigate="choose-strategy" asChild>
-                          <Button type="button" size="sm" variant="link">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="link"
+                            className="text-white"
+                          >
                             Use another method
                           </Button>
                         </SignIn.Action>
@@ -275,6 +298,6 @@ export default function UserAuthForm() {
           )}
         </Clerk.Loading>
       </SignIn.Root>
-    </div>
-  );
+  </div>
+ );
 }
