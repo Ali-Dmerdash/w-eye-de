@@ -22,7 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/fraud", fraudRoutes);
 app.use("/api/revenue", revenueRoutes);
 app.use("/api/market", marketRoutes);
-// app.use("/api/stats", statsRoutes);
+app.use("/api/stats", statsRoutes);
 
 // Default route
 app.get("/", (req, res) => {
