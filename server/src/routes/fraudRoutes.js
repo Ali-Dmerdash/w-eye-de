@@ -1,3 +1,5 @@
+const express = require("express");
+
 const fraudRouter = express.Router();
 const fraudController = require("../controllers/fraudController");
 
