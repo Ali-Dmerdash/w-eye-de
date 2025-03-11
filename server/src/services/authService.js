@@ -27,6 +27,13 @@ exports.login = async ({ username, password }) => {
     return token;
 };
 
+exports.getProfile = async (userId) => {
+    return await User.findById(userId).select("-password");
+};
+exports.getAllProfiles = async () => {
+    return await User.find();
+};
+
 exports.updateProfile = async (userId, updates) => {
     return await User.findByIdAndUpdate(userId, updates, { new: true }).select(
         "-password",

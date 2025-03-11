@@ -22,12 +22,21 @@ exports.logout = async (req, res) => {
     res.status(200).json({ success: true, message: "Logged out successfully" });
 };
 
-exports.getProfile = async (req, res) => {
+exports.getSingleProfile = async (req, res) => {
     try {
         const user = await authService.getProfile(req.user.id);
         res.status(200).json({ success: true, user });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
+    }
+};
+
+exports.getAllProfiles = async (req, res) => {
+    try {
+        const users = await authService.getAllProfiles(); // Call the service to get all profiles
+        res.status(200).json({ success: true, users }); // Return all users in the response
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message }); // Handle errors
     }
 };
 
