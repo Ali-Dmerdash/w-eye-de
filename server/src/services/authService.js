@@ -33,6 +33,15 @@ exports.getProfile = async (userId) => {
 exports.getAllProfiles = async () => {
     return await User.find();
 };
+exports.deleteSingleProfile = async (userId) => {
+    const result = await User.deleteOne({ _id: userId }); // Find the user by ID and delete it
+    return result;
+};
+
+exports.deleteAllProfiles = async () => {
+    const result = await User.deleteMany({}); // This deletes all users
+    return result;
+};
 
 exports.updateProfile = async (userId, updates) => {
     return await User.findByIdAndUpdate(userId, updates, { new: true }).select(

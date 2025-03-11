@@ -39,6 +39,35 @@ exports.getAllProfiles = async (req, res) => {
         res.status(400).json({ success: false, message: err.message }); // Handle errors
     }
 };
+exports.deleteSingleProfile = async (req, res) => {
+    try {
+        const userId = req.params.userId; // Get userId from request params
+        const result = await authService.deleteSingleProfile(userId); // Call the service to delete the user
+        if (result.deletedCount === 0) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully",
+        });
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
+    }
+};
+
+exports.deleteAllProfiles = async (req, res) => {
+    try {
+        const result = await authService.deleteAllProfiles(); // Call the service to delete all users
+        res.status(200).json({
+            success: true,
+            message: "All profiles deleted successfully",
+        });
+    } catch (err) {
+        res.status(400).json({ success: false, message: err.message });
+    }
+};
 
 exports.updateProfile = async (req, res) => {
     try {
