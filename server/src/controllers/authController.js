@@ -2,8 +2,8 @@ const authService = require("../services/authService");
 
 exports.register = async (req, res) => {
     try {
-        const user = await authService.register(req.body);
-        res.status(201).json({ success: true, user });
+        const { user, token } = await authService.register(req.body);
+        res.status(201).json({ success: true, user, token }); // Send both user and token in response
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
     }
