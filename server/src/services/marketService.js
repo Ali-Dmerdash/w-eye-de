@@ -13,12 +13,12 @@ exports.compareMarket = async (marketData) => {
     }
 };
 
-exports.getMarketBenchmark = async () => {
+exports.getMarketResults = async () => {
     try {
-        const marketBenchmark = await MarketSchema.find().sort({
+        const marketResults = await MarketSchema.find().sort({
             date: -1,
         });
-        return marketBenchmark;
+        return marketResults;
     } catch (err) {
         throw new Error("Error retrieving Market Comparison: " + err.message);
     }

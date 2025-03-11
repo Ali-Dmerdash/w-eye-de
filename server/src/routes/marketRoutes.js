@@ -4,10 +4,6 @@ const { authenticate } = require("../middleware/auth");
 const marketController = require("../controllers/marketController");
 
 marketRouter.post("/compare", authenticate, marketController.compareMarket);
-marketRouter.get(
-    "/benchmark",
-    authenticate,
-    marketController.getMarketBenchmark,
-);
+marketRouter.get("/results", authenticate, marketController.getMarketResults);
 
 module.exports = marketRouter;

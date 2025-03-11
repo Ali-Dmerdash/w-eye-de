@@ -9,10 +9,10 @@ exports.compareMarket = async (req, res) => {
     }
 };
 
-exports.getMarketBenchmark = async (req, res) => {
+exports.getMarketResults = async (req, res) => {
     try {
-        const benchmark = await marketService.getMarketBenchmark();
-        res.status(200).json({ success: true, benchmark });
+        const results = await marketService.getMarketResults();
+        res.status(200).json({ success: true, results });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
     }
