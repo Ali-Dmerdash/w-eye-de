@@ -1,10 +1,9 @@
 const FraudDetection = require("../models/FraudDetection");
 
-exports.detectFraud = async (fraudData, userId) => {
+exports.detectFraud = async (fraudData) => {
     try {
         const fraud = new FraudDetection({
             ...fraudData,
-            userId, // Associate fraud detection with the authenticated user
         });
 
         const savedFraud = await fraud.save();
@@ -14,7 +13,7 @@ exports.detectFraud = async (fraudData, userId) => {
     }
 };
 
-exports.getFraudHistory = async (userId) => {
+exports.getFraudHistory = async () => {
     try {
         const fraudHistory = await FraudDetection.find().sort({
             detectedAt: -1,
