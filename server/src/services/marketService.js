@@ -1,10 +1,25 @@
-exports.compareMarket = async (data) => {
-    return {
-        competitors: ["Company A", "Company B"],
-        comparison: "Market comparison generated.",
-    };
+const MarketSchema = require("../models/Market");
+
+exports.compareMarket = async (marketData) => {
+    try {
+        const market = new MarketSchema({
+            ...marketData,
+        });
+
+        const savedMarket = await market.save();
+        return savedMarket;
+    } catch (err) {
+        throw new Error("Error saving Market Comparison data: " + err.message);
+    }
 };
 
 exports.getMarketBenchmark = async () => {
-    return { industry: "Tech", benchmark: "Market benchmark retrieved." };
+    try {
+        const marketBenchmark = await MarketSchema.find().sort({
+            date: -1,
+        });
+        return marketBenchmark;
+    } catch (err) {
+        throw new Error("Error retrieving Market Comparison: " + err.message);
+    }
 };
