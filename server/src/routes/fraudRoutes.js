@@ -1,9 +1,11 @@
 const express = require("express");
+const fraudController = require("../controllers/fraudController");
+const { authenticate } = require("../middleware/auth");
 
 const fraudRouter = express.Router();
-const fraudController = require("../controllers/fraudController");
 
-fraudRouter.post("/detect", fraudController.detectFraud);
-fraudRouter.get("/history", fraudController.getFraudHistory);
+// Protecting the POST and GET requests with authentication middleware
+fraudRouter.post("/detect/:userId", authenticate, fraudController.detectFraud);
+fraudRouter.get("/results", authenticate, fraudController.getAllFraudHistory);
 
 module.exports = fraudRouter;
