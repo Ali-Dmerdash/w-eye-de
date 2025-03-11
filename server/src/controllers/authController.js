@@ -24,7 +24,8 @@ exports.logout = async (req, res) => {
 
 exports.getSingleProfile = async (req, res) => {
     try {
-        const user = await authService.getProfile(req.user.id);
+        const userId = req.params.userId; // Get userId from request params
+        const user = await authService.getProfile(userId);
         res.status(200).json({ success: true, user });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -71,7 +72,8 @@ exports.deleteAllProfiles = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
-        const user = await authService.updateProfile(req.user.id, req.body);
+        const userId = req.params.userId; // Get userId from request params
+        const user = await authService.updateProfile(userId, req.body);
         res.status(200).json({ success: true, user });
     } catch (err) {
         res.status(400).json({ success: false, message: err.message });
