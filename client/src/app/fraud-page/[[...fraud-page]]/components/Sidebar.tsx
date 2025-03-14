@@ -52,8 +52,8 @@ export default function Sidebar() {
             {!isCollapsed && (
               <div className="flex items-center justify-between flex-1 ml-3">
                 <div>
-                  <h3 className="text-sm font-medium text-white">Ahmed</h3>
-                  <p className="text-xs text-gray-400">Online system admin</p>
+                  <h3 className="text-sm font-medium text-white">Amoura999</h3>
+                  <p className="text-xs text-gray-400">Test hahahaha</p>
                 </div>
                 <Eye className="w-5 h-5 text-gray-400" />
               </div>
