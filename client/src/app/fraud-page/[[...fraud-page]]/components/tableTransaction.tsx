@@ -169,7 +169,7 @@ const TableTransaction = () => {
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <div className="w-full bg-primary">
+      <div className="w-full h-auto  bg-primary rounded-lg">
         {/* Column Visibility Toggle Button */}
         <div className="flex items-center py-4">
           <DropdownMenu>
@@ -245,3 +245,123 @@ const TableTransaction = () => {
 };
 
 export default TableTransaction;
+// "use client"
+// import Image from "next/image"
+
+// const projects = [
+//   {
+//     id: 1,
+//     name: "Chakra Soft UI Version",
+//     icon: "/placeholder.svg?height=24&width=24",
+//     members: [
+//       "/placeholder.svg?height=24&width=24",
+//       "/placeholder.svg?height=24&width=24",
+//       "/placeholder.svg?height=24&width=24",
+//     ],
+//     budget: "$14,000",
+//     completion: 60,
+//   },
+//   {
+//     id: 2,
+//     name: "Add Progress Track",
+//     icon: "/placeholder.svg?height=24&width=24",
+//     members: ["/placeholder.svg?height=24&width=24", "/placeholder.svg?height=24&width=24"],
+//     budget: "$3,000",
+//     completion: 10,
+//   },
+//   {
+//     id: 3,
+//     name: "Fix Platform Errors",
+//     icon: "/placeholder.svg?height=24&width=24",
+//     members: ["/placeholder.svg?height=24&width=24"],
+//     budget: "Not set",
+//     completion: 100,
+//   },
+//   {
+//     id: 4,
+//     name: "Launch our Mobile App",
+//     icon: "/placeholder.svg?height=24&width=24",
+//     members: [
+//       "/placeholder.svg?height=24&width=24",
+//       "/placeholder.svg?height=24&width=24",
+//       "/placeholder.svg?height=24&width=24",
+//     ],
+//     budget: "$32,000",
+//     completion: 100,
+//   },
+// ]
+
+// export default function ProjectsTable() {
+//   return (
+//     <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
+//       <div className="flex items-center justify-between mb-6">
+//         <div>
+//           <h2 className="text-lg font-semibold text-white">Projects</h2>
+//           <p className="text-sm text-emerald-500">30 done this month</p>
+//         </div>
+//         <button className="p-2 text-gray-400 rounded-lg hover:bg-gray-800">
+//           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+//             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+//           </svg>
+//         </button>
+//       </div>
+
+//       <div className="overflow-x-auto flex-grow">
+//         <table className="w-full">
+//           <thead>
+//             <tr className="text-xs text-gray-400 uppercase">
+//               <th className="px-4 py-2 text-left">COMPANIES</th>
+//               <th className="px-4 py-2 text-left">MEMBERS</th>
+//               <th className="px-4 py-2 text-left">BUDGET</th>
+//               <th className="px-4 py-2 text-left">COMPLETION</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {projects.map((project) => (
+//               <tr key={project.id} className="border-t border-gray-800">
+//                 <td className="px-4 py-4">
+//                   <div className="flex items-center">
+//                     <Image
+//                       src={project.icon || "/placeholder.svg"}
+//                       alt={project.name}
+//                       width={24}
+//                       height={24}
+//                       className="mr-3"
+//                     />
+//                     <span className="text-sm text-white">{project.name}</span>
+//                   </div>
+//                 </td>
+//                 <td className="px-4 py-4">
+//                   <div className="flex -space-x-2">
+//                     {project.members.map((member, index) => (
+//                       <Image
+//                         key={index}
+//                         src={member || "/placeholder.svg"}
+//                         alt="Team member"
+//                         width={24}
+//                         height={24}
+//                         className="rounded-full border-2 border-[#0D1117]"
+//                       />
+//                     ))}
+//                   </div>
+//                 </td>
+//                 <td className="px-4 py-4">
+//                   <span className="text-sm text-white">{project.budget}</span>
+//                 </td>
+//                 <td className="px-4 py-4">
+//                   <div className="flex items-center">
+//                     <div className="w-24 h-2 mr-3 bg-gray-800 rounded-full">
+//                       <div className="h-2 bg-blue-500 rounded-full" style={{ width: `${project.completion}%` }} />
+//                     </div>
+//                     <span className="text-sm text-white">{project.completion}%</span>
+//                   </div>
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   )
+// }
+

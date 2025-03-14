@@ -1,121 +1,138 @@
-"use client";
+"use client"
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { useEffect, useState } from "react"
 
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { clientData, FraudRateGraphData } from "@/data/data"; // Adjust path as needed
+const data = [
+  { month: "Jan", value1: 180, value2: 500 },
+  { month: "Feb", value1: 200, value2: 300 },
+  { month: "Mar", value1: 350, value2: 250 },
+  { month: "Apr", value1: 400, value2: 300 },
+  { month: "May", value1: 450, value2: 350 },
+  { month: "Jun", value1: 400, value2: 300 },
+  { month: "Jul", value1: 300, value2: 200 },
+  { month: "Aug", value1: 350, value2: 250 },
+  { month: "Sep", value1: 300, value2: 200 },
+  { month: "Oct", value1: 200, value2: 150 },
+  { month: "Nov", value1: 400, value2: 300 },
+  { month: "Dec", value1: 450, value2: 350 },
+]
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-} from "@/components/ui/chart";
+type CircularProgressProps = {
+  percentage: number
+  size?: number
+  strokeWidth?: number
+  color?: string
+  label?: string
+}
 
-// Define the chart configuration
-const chartConfig = {
-  fraudRate: {
-    label: "Fraud Rate",
-    color: "hsl(var(--accent))", // Base color for fraud rate
-  },
-} satisfies ChartConfig;
-
-const Graph = () => {
-  // Use fraudRateGraphData from the first client
-  const fraudRateGraphData: FraudRateGraphData[] =
-    clientData[0]?.fraudRateGraphData || [];
+const CircularProgress = ({
+  percentage,
+  size = 120,
+  strokeWidth = 8,
+  color = "#3B82F6",
+  label = "Current load",
+}: CircularProgressProps) => {
+  const radius = (size - strokeWidth) / 2
+  const circumference = radius * 2 * Math.PI
+  const offset = circumference - (percentage / 100) * circumference
 
   return (
-    <Card className="bg-primary">
-      <CardHeader>
-        <CardTitle className="text-white">Fraud Rate</CardTitle>
-        <CardDescription className="text-gray-300">
-          trends over the past transactions
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <AreaChart
-            accessibilityLayer
-            data={fraudRateGraphData}
-            margin={{
-              left: 12,
-              right: 12,
+    <div className="relative flex flex-col items-center">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg className="transform -rotate-90" width={size} height={size}>
+          <circle
+            className="text-gray-700"
+            strokeWidth={strokeWidth}
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+          />
+          <circle
+            className="transition-all duration-1000 ease-in-out"
+            strokeWidth={strokeWidth}
+            stroke={color}
+            strokeLinecap="round"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+            style={{
+              strokeDasharray: circumference,
+              strokeDashoffset: offset,
             }}
-          >
-            {/* Updated CartesianGrid stroke to a lighter gray */}
-            <CartesianGrid
-              vertical={false}
-              stroke="rgba(200, 200, 200, 0.5)" // Gray color for dashed lines
-              strokeDasharray="3 3"
-            />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              tickMargin={8}
-              tick={{
-                fontSize: 12,
-                fontWeight: 500,
-              }}
-              tickFormatter={(value) => value.slice(5)}
-            />
-            <YAxis
-              tickLine={false}
-              tickMargin={8}
-              domain={[0, 0.25]}
-              tick={{
-                fill: "hsl(var(--accent))",
-                fontSize: 12,
-                fontWeight: 500,
-              }}
-              tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={({ active, payload, label }) => {
-                if (active && payload && payload.length) {
-                  const fraudRate = payload[0].value;
-                  return (
-                    <div
-                      className="bg-primary p-2 rounded"
-                      style={{
-                        border: `1px solid ${chartConfig.fraudRate.color}`,
-                      }}
-                    >
-                      <p className="text-gray-300">{label}</p>
-                      <p className="text-white font-bold">
-                        Fraud Rate:{" "}
-                        <span
-                          style={{ color: "rgba(0, 123, 255, 1)" }}
-                          className="font-semibold"
-                        >
-                          {typeof fraudRate === "number"
-                            ? (fraudRate * 100).toFixed(2)
-                            : "N/A"}
-                          %
-                        </span>
-                      </p>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Area
-              dataKey="fraudRate"
-              type="natural"
-              fill="hsl(var(--accent))"
-              stroke="rgba(119, 112, 250, 0.87)"
-            />
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-  );
-};
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-xl font-bold text-white">{percentage}%</span>
+          <span className="text-xs text-gray-400">{label}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-export default Graph;
+export default function SalesOverview() {
+  const [circleSize, setCircleSize] = useState(70)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const vh = window.innerHeight
+      setCircleSize(vh < 800 ? 60 : 70)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return (
+    <div className="p-3 bg-[#1d2328] rounded-lg h-full flex flex-col">
+      <div className="mb-2">
+        <h2 className="text-base font-semibold text-white">Sales overview</h2>
+        <p className="text-sm text-emerald-500">(+5) more in 2021</p>
+      </div>
+
+      <div className="flex-grow flex">
+        <div className="flex-grow">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorValue1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorValue2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#60A5FA" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#60A5FA" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255, 255, 255, 0.1)" />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: "#9CA3AF", fontSize: 10 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#9CA3AF", fontSize: 10 }} domain={[0, 600]} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#1F2937",
+                  border: "none",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  fontSize: "12px",
+                  padding: "4px 8px",
+                }}
+              />
+              <Area type="monotone" dataKey="value1" stroke="#3B82F6" strokeWidth={2} fill="url(#colorValue1)" />
+              <Area type="monotone" dataKey="value2" stroke="#60A5FA" strokeWidth={2} fill="url(#colorValue2)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="w-24 flex flex-col justify-center space-y-2">
+          <CircularProgress percentage={70} color="#3B82F6" size={circleSize} label="Sales" />
+          <CircularProgress percentage={50} color="#F87171" size={circleSize} label="Revenue" />
+          <CircularProgress percentage={44} color="#F87171" size={circleSize} label="Growth" />
+        </div>
+      </div>
+    </div>
+  )
+}
+

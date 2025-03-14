@@ -15,8 +15,8 @@ const ReportAmeen = () => {
     "This is the beginning of the content. Here is the rest of the text that appears when the card is expanded. It can contain more details, explanations, or even additional links.";
 
   return (
-    <div className="flex items-start justify-center flex-wrap">
-      <Card className="w-full max-w-md bg-primary text-white">
+    <div className="flex items-start justify-center flex-wrap ">
+      <Card className="w-full max-w-md bg-primary text-white border-none">
         <CardHeader className="text-center">
           <h2 className="text-lg font-semibold">Ameen Report</h2>
         </CardHeader>
