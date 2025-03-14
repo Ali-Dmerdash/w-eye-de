@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import {
   Home,
   BarChart2,
@@ -7,118 +8,114 @@ import {
   Globe,
   Upload,
   LogOut,
+  Eye,
+  Menu,
+  Search,
+  User,
 } from "lucide-react";
-import Image from "next/image";
-import Logo from "@/assets/Logo.png";
-import eye from "@/assets/eye.png";
-import { FaUserCircle } from "react-icons/fa";
 
 export default function Sidebar() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
-    <div
-      id="sidebar"
-      className="fixed top-0 left-0 z-40 w-64 h-screen bg-[#1d2328] border-r border-gray-800 transition-transform -translate-x-full sm:translate-x-0"
-    >
-      <div className="flex flex-col h-full">
-        {/* Logo */}
-        <div className="flex items-center px-6 py-4">
-          <Image src={Logo} alt="Logo" className="w-[100%]" />
-        </div>
+    <>
+      <button
+        onClick={toggleSidebar}
+        className="fixed top-4 left-4 z-50 p-2 bg-[#1d2328] rounded-lg text-gray-400 hover:text-white transition-colors"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
 
-        {/* User Profile */}
-        <div className="flex items-center px-6 py-4 space-x-3 border-b border-gray-800">
-          <div className="relative">
-            <FaUserCircle className="text-gray-400 w-10 h-10" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#0D1117] rounded-full"></div>
-          </div>
-          ;
-          <div className="flex items-center justify-between flex-1">
-            <div>
-              <h3 className="text-sm font-medium text-white">Ahmed</h3>
-              <p className="text-xs text-gray-400">Test hahahah</p>
+      <div
+        id="sidebar"
+        className={`fixed top-0 left-0 z-40 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 ${
+          isCollapsed ? "w-16" : "w-64"
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* User Profile */}
+          <div
+            className={`flex items-center px-4 py-6 ${
+              isCollapsed ? "justify-center" : ""
+            }`}
+          >
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
+                <User className="w-6 h-6 text-gray-400" />
+              </div>
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1d2328] rounded-full" />
             </div>
-            <Image src={eye} alt="Logo" />
+            {!isCollapsed && (
+              <div className="flex items-center justify-between flex-1 ml-3">
+                <div>
+                  <h3 className="text-sm font-medium text-white">Ahmed</h3>
+                  <p className="text-xs text-gray-400">Online system admin</p>
+                </div>
+                <Eye className="w-5 h-5 text-gray-400" />
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* Search */}
-        <div className="px-4 py-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search anything..."
-              className="w-full px-4 py-2 bg-[#15191c] text-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <svg
-              className="absolute w-4 h-4 text-gray-400 right-3 top-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Search */}
+          <div
+            className={`px-4 py-4 ${isCollapsed ? "flex justify-center" : ""}`}
+          >
+            {isCollapsed ? (
+              <button className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-[#1B2131] transition-colors">
+                <Search className="w-5 h-5" />
+              </button>
+            ) : (
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search anything..."
+                  className="w-full px-4 py-2 bg-[#1B2131] text-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <Search className="absolute w-4 h-4 text-gray-400 right-3 top-3" />
+              </div>
+            )}
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 px-2 space-y-1">
+            {[
+              { icon: Home, label: "Home" },
+              { icon: BarChart2, label: "Statistics" },
+              { icon: CreditCard, label: "Fraud agent" },
+              { icon: DollarSign, label: "Revenue agent" },
+              { icon: Globe, label: "Global market agent" },
+              { icon: Upload, label: "Data upload" },
+            ].map((item) => (
+              <a
+                key={item.label}
+                href="#"
+                className={`flex items-center ${
+                  isCollapsed ? "justify-center" : ""
+                } px-4 py-3 text-gray-400 rounded-lg hover:bg-[#1B2131] hover:text-white group transition-colors`}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                {!isCollapsed && <span className="ml-3">{item.label}</span>}
+              </a>
+            ))}
+          </nav>
+
+          {/* Sign Out */}
+          <div className="p-4">
+            <button
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : ""
+              } w-full px-4 py-3 text-gray-400 rounded-lg hover:bg-[#1B2131] hover:text-white transition-colors`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+              <LogOut className="w-5 h-5 flex-shrink-0" />
+              {!isCollapsed && <span className="ml-3">Sign out</span>}
+            </button>
           </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1B2131] group"
-          >
-            <Home className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-300" />
-            <span>Home</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1B2131] group"
-          >
-            <BarChart2 className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-300" />
-            <span>Statistics</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1B2131] group"
-          >
-            <CreditCard className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-300" />
-            <span>Fraud agent</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1B2131] group"
-          >
-            <DollarSign className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-300" />
-            <span>Revenue agent</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1B2131] group"
-          >
-            <Globe className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-300" />
-            <span>Global market agent</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1B2131] group"
-          >
-            <Upload className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-300" />
-            <span>Data upload</span>
-          </a>
-        </nav>
-
-        {/* Sign Out */}
-        <div className="p-4 mt-auto">
-          <button className="flex items-center justify-center w-full px-4 py-2 space-x-2 text-gray-300 rounded-lg hover:bg-[#1B2131]">
-            <LogOut className="w-5 h-5" />
-            <span>Sign out</span>
-          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
