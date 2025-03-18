@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import dynamic from "next/dynamic";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../../../components/ui/Sidebar";
 import FraudInc from "./components/FraudInc";
 import TableTransaction from "./components/tableTransaction";
-import Header from "./components/Header";
+import Header from "../../../components/ui/Header";
 const Graph = dynamic(
   () => import("@/app/fraud-page/[[...fraud-page]]/components/graph"),
   { ssr: false }
