@@ -15,31 +15,32 @@ const ReportAmeen = dynamic(
 );
 export default function Page() {
   return (
-    <div className="min-h-screen bg-[#15191c]">
+    <div className="bg-[#ff0000]">
+    
+
+    <main className=" transition-all duration-300 bg-[#ffffff]">
     <Header />
     <Sidebar />
-
-    <main className="p-4 md:p-6 sm:ml-64 pt-20 transition-all duration-300">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 ">
         {/* Top Row */}
-        <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
+        <div className=" lg:col-span-2">
           <Graph />
         </div>
 
-        <div className="min-h-[400px] lg:min-h-[40vh]">
+        <div className="lg:col-span-1">
           <FraudInc />
         </div>
 
         {/* Bottom Row */}
-        <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
+        <div className=" lg:col-span-2">
           <TableTransaction />
         </div>
 
-        <div className="min-h-[400px] lg:min-h-[40vh]">
+        <div className=" lg:col-span-1">
           <ReportAmeen />
         </div>
       </div>
     </main>
-  </div>
+    </div>
   )
 }
