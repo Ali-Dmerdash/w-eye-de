@@ -122,9 +122,11 @@ export default function Sidebar() {
               >
                 <item.icon className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} text-gray-400 group-hover:text-gray-300`} />
                 {!isCollapsed && <span className="z-10">{item.label}</span>}
-                <div className="overlay absolute top-0 left-0">
+                
+                {/* Lama n-merge hsh8l el 7eta deh 3shan elstars sh8ala bdon el hover */}
+                {/* <div className="overlay absolute top-0 left-0">
                   <Image src={stars || "/placeholder.svg"} className="w-full opacity-10" alt="Logo" />
-                </div>
+                </div> */}
 
               </a>
             ))}
