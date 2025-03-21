@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Home, BarChart2, CreditCard, DollarSign, Globe, Upload, LogOut, Search, Menu } from "lucide-react"
 import Image from "next/image"
 import Logo from "@/assets/Logo.png"
@@ -15,8 +15,15 @@ export default function Sidebar() {
       setIsMobileOpen(!isMobileOpen)
     } else {
       setIsCollapsed(!isCollapsed)
+      // Update the document with a data attribute to help with responsive styling
+      document.documentElement.setAttribute("data-sidebar-collapsed", String(!isCollapsed))
     }
   }
+
+  // Set initial data attribute on mount
+  useEffect(() => {
+    document.documentElement.setAttribute("data-sidebar-collapsed", String(isCollapsed))
+  }, [])
 
   return (
     <>
