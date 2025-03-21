@@ -1,5 +1,6 @@
 "use client"
 import { Briefcase, Users, FileText, ShoppingCart } from "lucide-react"
+import { useEffect, useState } from "react"
 import Sidebar from "@/components/ui/Sidebar"
 import Header from "@/components/ui/Header"
 import DashboardCard from "@/app/home_page/components/dashboard-card"
@@ -7,12 +8,38 @@ import WelcomeCard from "@/app/home_page/components/welcome-card"
 import ReferralCard from "@/app/home_page/components/referal-card"
 import ChartCard from "@/app/home_page/components/chart-card"
 import SphereVisualization from "@/app/home_page/components/sphere"
+
 export default function Home() {
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  // Listen for changes to the sidebar state
+  useEffect(() => {
+    const updateSidebarState = () => {
+      const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
+      setIsCollapsed(isCollapsed)
+    }
+
+    // Initial check
+    updateSidebarState()
+
+    // Set up a mutation observer to watch for attribute changes
+    const observer = new MutationObserver(updateSidebarState)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-sidebar-collapsed"],
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#15191c]">
       <Sidebar />
       <Header />
-      <div className="p-4 md:p-6 sm:ml-64 pt-20 transition-all duration-300">
+      <div
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 
+        ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}
+      >
         <div className="flex items-center mb-4">
           <p className="text-gray-400 text-sm">Pages / Dashboard</p>
         </div>
