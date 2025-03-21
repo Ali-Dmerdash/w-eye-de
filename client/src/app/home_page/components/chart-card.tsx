@@ -12,7 +12,7 @@ export default function ChartCard() {
   }, [])
 
   return (
-    <div className="bg-[#1d2328] rounded-lg p-6">
+    <div className="font-mulish bg-[#1d2328] rounded-lg p-6">
       <div className="mb-4">
         <h3 className="text-lg font-medium text-white">Active Users</h3>
         <div className="flex items-center">

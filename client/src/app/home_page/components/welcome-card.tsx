@@ -8,9 +8,9 @@ interface WelcomeCardProps {
 
 export default function WelcomeCard({ name }: WelcomeCardProps) {
   return (
-    <div className="bg-[#1d2328] rounded-lg p-6 relative overflow-hidden">
+    <div className="flex font-mulish bg-gradient-to-r from-[#1D2328] to-[#243461] rounded-lg p-6 items-center relative overflow-hidden">
       {/* Sphere background image with blur */}
-      <div className="absolute inset-0 z-0 opacity-30">
+      <div className="absolute inset-0 z-0 opacity-50 blur-sm w-[200%] -left-20">
         <Image
           src={Sphere || "/placeholder.svg"}
           alt=""
@@ -18,13 +18,12 @@ export default function WelcomeCard({ name }: WelcomeCardProps) {
           className="object-cover blur-xs"
           priority
         />
-        <div className="absolute inset-0 bg-[#1d2328] opacity-60"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="">
         <p className="text-gray-400 text-sm">Welcome back,</p>
-        <h2 className="text-2xl font-bold text-white mt-1">{name}</h2>
+        <h2 className="text-3xl font-bold text-white mt-1">{name}</h2>
         <p className="text-gray-400 mt-2">
           Glad to see you again!
           <br />

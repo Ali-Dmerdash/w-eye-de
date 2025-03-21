@@ -11,7 +11,7 @@ interface DashboardCardProps {
 
 export default function DashboardCard({ title, value, change, changeType, icon, iconBg }: DashboardCardProps) {
   return (
-    <div className="bg-[#1d2328] rounded-lg p-5 flex items-center justify-between">
+    <div className="font-mulish bg-[#1d2328] rounded-lg p-5 flex items-center justify-between">
       <div className="space-y-1">
         <p className="text-sm text-gray-400">{title}</p>
         <div className="flex items-baseline gap-2">

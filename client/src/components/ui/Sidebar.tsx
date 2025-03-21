@@ -4,6 +4,7 @@ import { Home, BarChart2, CreditCard, DollarSign, Globe, Upload, LogOut, Search,
 import Image from "next/image"
 import Logo from "@/assets/Logo.png"
 import eye from "@/assets/eye.png"
+import stars from "@/assets/nav-stars-bg.png"
 import { FaUserCircle } from "react-icons/fa"
 
 
@@ -33,7 +34,7 @@ export default function Sidebar() {
       {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed font-mulish top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 ${isCollapsed ? "w-16" : "w-64"
+        className={`fixed font-mulish z-[4854586] top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 ${isCollapsed ? "w-16" : "w-64"
           } ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}
       >
         <div className="flex flex-col h-full">
@@ -61,7 +62,7 @@ export default function Sidebar() {
                     <h3 className="text-md font-medium text-white">Amoura</h3>
                     <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">CEO</p>
                   </div>
-                  <p className="text-xs text-gray-400">Test hahahah</p>
+                  <p className="text-[0.5rem] text-gray-400">Lorem, ipsum dolor.</p>
                 </div>
                 <Image onClick={toggleSidebar} src={eye || "/placeholder.svg"} className="cursor-pointer" alt="Logo" />
               </div>
@@ -87,9 +88,21 @@ export default function Sidebar() {
           </div>
 
           {/* Navigation */}
-          <nav className={`flex-1 ${isCollapsed ? "px-2" : "px-4"} space-y-2 overflow-y-auto`}>
+          <nav className={`flex-1 pt-1 ${isCollapsed ? "px-2" : "px-4"} space-y-2 overflow-y-auto`}>
+            <a
+
+              href="#"
+              className={`flex items-center shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-black/20 bg-gradient-to-r from-[#243461] via-[#15191c] via-[46%] to-[#15191C] ${isCollapsed ? "justify-center" : ""
+                } px-4 py-2.5 text-gray-300 rounded-lg transition-colors relative overflow-hidden`}
+            >
+              <Home className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} text-gray-400 `} />
+              {!isCollapsed && <span className="z-10">Home</span>}
+              <div className="overlay absolute top-0 left-0">
+                <Image src={stars || "/placeholder.svg"} className="w-full opacity-10" alt="Logo" />
+              </div>
+
+            </a>
             {[
-              { icon: Home, label: "Home" },
               { icon: BarChart2, label: "Statistics" },
               { icon: CreditCard, label: "Fraud agent" },
               { icon: DollarSign, label: "Revenue agent" },
@@ -99,22 +112,33 @@ export default function Sidebar() {
               <a
                 key={item.label}
                 href="#"
-                className={`flex items-center bg-gradient-to-r from-[#243461] via-[#15191c] via-[46%] to-[#15191C]  ${isCollapsed ? "justify-center" : ""
-                  } px-4 py-2 text-gray-300 rounded-lg hover:bg-[#15191c] group transition-colors`}
+                className={`flex items-center ${isCollapsed ? "justify-center" : ""
+                  } px-4 py-2.5 text-gray-300 rounded-lg  relative overflow-hidden
+                  transition-colors duration-300
+                  hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-black/20 hover:bg-gradient-to-r hover:from-[#243461] hover:via-[#15191c] hover:via-[46%] hover:to-[#15191C]
+
+
+                  `}
               >
-                <item.icon className={`w-5 h-5 ${isCollapsed ? "" : "mr-3"} text-gray-400 group-hover:text-gray-300`} />
-                {!isCollapsed && <span>{item.label}</span>}
+                <item.icon className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} text-gray-400 group-hover:text-gray-300`} />
+                {!isCollapsed && <span className="z-10">{item.label}</span>}
+                <div className="overlay absolute top-0 left-0">
+                  <Image src={stars || "/placeholder.svg"} className="w-full opacity-10" alt="Logo" />
+                </div>
+
               </a>
             ))}
           </nav>
 
           {/* Sign Out */}
-          <div className={`p-4 mt-auto ${isCollapsed ? "px-2" : ""}`}>
+          <div className={`px-4 mt-auto ${isCollapsed ? "px-2" : ""}`}>
             <button
-              className={`flex items-center ${isCollapsed ? "justify-center" : ""
-                } w-full px-4 py-2 space-x-2 text-gray-300 rounded-lg hover:bg-[#15191c] transition-colors`}
+              className={`flex flex-col items-center space-y-2 ${isCollapsed ? "justify-center" : ""
+                } w-full px-4 py-8 rounded-lg rounded-b-none text-gray-300 outline outline-3 outline-black/20 bg-gradient-to-t from-[#243461] to-[#15191C] transition-all`}
             >
-              <LogOut className="w-5 h-5" />
+              <div className={`p-5 rounded-full ${isCollapsed ? "" : "outline outline-3 outline-[#98B3FF]/30 bg-gradient-to-t from-[#243461] to-[#15191C]"} `}>
+                <LogOut className="w-5 h-5 rotate-180 " />
+              </div>
               {!isCollapsed && <span>Sign out</span>}
             </button>
           </div>

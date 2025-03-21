@@ -9,7 +9,7 @@ export default function ReferralCard({ score }: ReferralCardProps) {
   const strokeDashoffset = circumference - (percentage / 100) * circumference
 
   return (
-    <div className="bg-[#1d2328] rounded-lg p-6">
+    <div className="font-mulish bg-[#1d2328] rounded-lg p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-medium text-white">Referral Tracking</h3>
         <button className="text-gray-400 hover:text-white">
@@ -31,12 +31,12 @@ export default function ReferralCard({ score }: ReferralCardProps) {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        <div className="bg-[#2a3441] rounded-lg p-4">
+      <div className="grid grid-cols-2 gap-4 mb-8 shadow-lg">
+        <div className="bg-[#243461] rounded-lg p-4">
           <p className="text-gray-400 text-sm mb-1">Invited</p>
           <p className="text-white font-medium">145 people</p>
         </div>
-        <div className="bg-[#2a3441] rounded-lg p-4">
+        <div className="bg-[#243461] rounded-lg p-4">
           <p className="text-gray-400 text-sm mb-1">Invited</p>
           <p className="text-white font-medium">1,465</p>
         </div>
