@@ -5,7 +5,7 @@ import Spline from '@splinetool/react-spline';
 
 export default function SphereVisualization() {
   return (
-    <div className="relative w-full h-full min-h-[300px] rounded-lg overflow-hidden bg-[#15191c]">
+    <div className="relative  w-full h-full min-h-[300px] rounded-lg overflow-hidden bg-[#15191c]">
       <div className="absolute inset-0 flex items-center justify-center">
         {/* <Image
           src={Sphere}

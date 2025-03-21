@@ -1,36 +1,38 @@
-"use client"
-import { Briefcase, Users, FileText, ShoppingCart } from "lucide-react"
-import { useEffect, useState } from "react"
-import Sidebar from "@/components/ui/Sidebar"
-import Header from "@/components/ui/Header"
-import DashboardCard from "@/app/home_page/components/dashboard-card"
-import WelcomeCard from "@/app/home_page/components/welcome-card"
-import ReferralCard from "@/app/home_page/components/referal-card"
-import ChartCard from "@/app/home_page/components/chart-card"
-import SphereVisualization from "@/app/home_page/components/sphere"
+"use client";
+import { Briefcase, Users, FileText, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
+import Sidebar from "@/components/ui/Sidebar";
+import Header from "@/components/ui/Header";
+import DashboardCard from "@/app/home_page/components/dashboard-card";
+import WelcomeCard from "@/app/home_page/components/welcome-card";
+import ReferralCard from "@/app/home_page/components/referal-card";
+import ChartCard from "@/app/home_page/components/chart-card";
+import SphereVisualization from "@/app/home_page/components/sphere";
 
 export default function Home() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Listen for changes to the sidebar state
   useEffect(() => {
     const updateSidebarState = () => {
-      const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
-      setIsCollapsed(isCollapsed)
-    }
+      const isCollapsed =
+        document.documentElement.getAttribute("data-sidebar-collapsed") ===
+        "true";
+      setIsCollapsed(isCollapsed);
+    };
 
     // Initial check
-    updateSidebarState()
+    updateSidebarState();
 
     // Set up a mutation observer to watch for attribute changes
-    const observer = new MutationObserver(updateSidebarState)
+    const observer = new MutationObserver(updateSidebarState);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-sidebar-collapsed"],
-    })
+    });
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#15191c]">
@@ -90,12 +92,11 @@ export default function Home() {
             </div>
             <ChartCard />
           </div>
-          <div className="lg:col-span-1 h-full">
+          <div className="hidden lg:block lg:col-span-1 h-full">
             <SphereVisualization />
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
