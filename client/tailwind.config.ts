@@ -12,6 +12,7 @@ export default {
       fontFamily: {
         mulish: "Mulish, sans-serif",
         roboto_slab: "'Robot Slab', sans-serif",
+        bayon: "'Bayon', sans-serif",
       },
       colors: {
         background: "hsl(var(--background))",

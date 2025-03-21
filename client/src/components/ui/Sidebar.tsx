@@ -6,6 +6,8 @@ import Logo from "@/assets/Logo.png"
 import eye from "@/assets/eye.png"
 import { FaUserCircle } from "react-icons/fa"
 
+
+
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
@@ -27,26 +29,18 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Toggle Button - Always visible */}
-      <button
-        onClick={toggleSidebar}
-        className="fixed top-4 left-4 z-50 p-2 bg-[#1d2328] rounded-lg text-gray-400 hover:text-white transition-colors"
-      >
-        <Menu className="w-5 h-5" />
-      </button>
 
       {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed top-0 left-0 z-40 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 ${
-          isCollapsed ? "w-16" : "w-64"
-        } ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}
+        className={`fixed font-mulish top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 ${isCollapsed ? "w-16" : "w-64"
+          } ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className={`flex items-center ${isCollapsed ? "justify-center px-2 py-4" : "px-6 py-4"}`}>
             {isCollapsed ? (
-              <span className="text-xl font-bold text-white">E</span>
+              <Image onClick={toggleSidebar} className="cursor-pointer rotate-90" src={eye || "/placeholder.svg"} alt="Logo" />
             ) : (
               <Image src={Logo || "/placeholder.svg"} alt="Logo" className="w-[100%]" />
             )}
@@ -63,10 +57,13 @@ export default function Sidebar() {
             {!isCollapsed && (
               <div className="flex items-center justify-between flex-1">
                 <div>
-                  <h3 className="text-sm font-medium text-white">Amoura</h3>
+                  <div className="flex flex-row justify-center items-center space-x-0.5">
+                    <h3 className="text-md font-medium text-white">Amoura</h3>
+                    <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">CEO</p>
+                  </div>
                   <p className="text-xs text-gray-400">Test hahahah</p>
                 </div>
-                <Image src={eye || "/placeholder.svg"} alt="Logo" />
+                <Image onClick={toggleSidebar} src={eye || "/placeholder.svg"} className="cursor-pointer" alt="Logo" />
               </div>
             )}
           </div>
@@ -102,9 +99,8 @@ export default function Sidebar() {
               <a
                 key={item.label}
                 href="#"
-                className={`flex items-center ${
-                  isCollapsed ? "justify-center" : ""
-                } px-4 py-2 text-gray-300 rounded-lg hover:bg-[#15191c] group transition-colors`}
+                className={`flex items-center bg-gradient-to-r from-[#243461] via-[#15191c] via-[46%] to-[#15191C]  ${isCollapsed ? "justify-center" : ""
+                  } px-4 py-2 text-gray-300 rounded-lg hover:bg-[#15191c] group transition-colors`}
               >
                 <item.icon className={`w-5 h-5 ${isCollapsed ? "" : "mr-3"} text-gray-400 group-hover:text-gray-300`} />
                 {!isCollapsed && <span>{item.label}</span>}
@@ -115,9 +111,8 @@ export default function Sidebar() {
           {/* Sign Out */}
           <div className={`p-4 mt-auto ${isCollapsed ? "px-2" : ""}`}>
             <button
-              className={`flex items-center ${
-                isCollapsed ? "justify-center" : ""
-              } w-full px-4 py-2 space-x-2 text-gray-300 rounded-lg hover:bg-[#15191c] transition-colors`}
+              className={`flex items-center ${isCollapsed ? "justify-center" : ""
+                } w-full px-4 py-2 space-x-2 text-gray-300 rounded-lg hover:bg-[#15191c] transition-colors`}
             >
               <LogOut className="w-5 h-5" />
               {!isCollapsed && <span>Sign out</span>}
