@@ -1,6 +1,5 @@
 require("dotenv").config();
 const express = require("express");
-const connectDB = require("./src/config/database");
 const errorHandler = require("./src/utils/errorHandler");
 const authRoutes = require("./src/routes/authRoutes");
 const fraudRoutes = require("./src/routes/fraudRoutes");
