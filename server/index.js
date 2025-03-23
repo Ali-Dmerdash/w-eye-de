@@ -11,9 +11,6 @@ const statsRoutes = require("./src/routes/statsRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to database
-connectDB();
-
 // Middleware
 app.use(express.json());
 
