@@ -19,7 +19,3 @@ export default function DashboardWrapper({ children,}: { children: React.ReactNo
         </Provider>
     );
 }
-
-// Export store types for component usage
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
