@@ -49,7 +49,7 @@ export default function Header() {
 
   return (
     <div
-      className={`fixed top-0 right-0 z-40 flex items-center justify-between w-full h-16 px-4 bg-[#15191c] transition-all duration-300 
+      className={`sticky top-0 right-0 flex items-center justify-between w-full h-16 px-4 bg-[#15191c] transition-all duration-300 
         ${isCollapsed ? "sm:ml-16 sm:w-[calc(100%-4rem)]" : "sm:ml-64 sm:w-[calc(100%-16rem)]"}`}
     >
       <div className="flex items-center">
