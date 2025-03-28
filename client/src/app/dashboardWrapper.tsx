@@ -1,18 +1,8 @@
 'use client';
 
 import type { Metadata } from 'next';
-import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import { Api } from '@/state/api';
-
-
-const store = configureStore({
-    reducer: {
-        [Api.reducerPath]: Api.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(Api.middleware),
-});
+import { store } from '@/app/redux'
 
 // Metadata export (will still work but with limitations)
 export const metadata: Metadata = {
