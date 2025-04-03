@@ -1,9 +1,11 @@
 "use client"
-import { useRef, useState, useEffect } from "react"
-import { Bell, Menu } from "lucide-react"
+import React, { useRef, useState, useEffect } from "react"
+import { ArrowLeft, ArrowRight, Bell, Dot } from "lucide-react"
+import Image from "next/image"
+import eye from "@/assets/eye.png"
+
 
 export default function Header() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -28,13 +30,6 @@ export default function Header() {
     return () => observer.disconnect()
   }, [])
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
-    const sidebar = document.getElementById("sidebar")
-    if (sidebar) {
-      sidebar.classList.toggle("-translate-x-full")
-    }
-  }
 
   const handleClick = () => {
     setIsEditing(true)
@@ -49,16 +44,18 @@ export default function Header() {
 
   return (
     <div
-      className={`sticky top-0 right-0 flex items-center justify-between w-full h-16 px-4 bg-[#15191c] transition-all duration-300 
+      className={`font-mulish top-0 right-0 z-40 flex items-center justify-between w-full px-6 py-3 bg-[#15191c] transition-all duration-300 
         ${isCollapsed ? "sm:ml-16 sm:w-[calc(100%-4rem)]" : "sm:ml-64 sm:w-[calc(100%-16rem)]"}`}
     >
+      <div className="sm:hidden flex">
+        <Image src={eye || "/placeholder.svg"} className="cursor-pointer rotate-90" alt="Logo" />
+      </div>
+
       <div className="flex items-center">
-        <button onClick={toggleSidebar} className="p-2 mr-2 text-gray-400 rounded-lg sm:hidden hover:bg-gray-700">
-          <Menu className="w-6 h-6" />
-        </button>
-        <div className="flex items-center px-4 py-2 bg-[#1B2131] rounded-lg w-60" onClick={handleClick}>
+
+        <div className="flex items-center px-4 py-2 bg-[#1B2131] rounded-xl lg:w-96 w-52" onClick={handleClick}>
           <svg
-            className="w-5 h-5 mr-2 text-blue-400"
+            className="w-5 h-5 mr-2 text-gray-200"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -81,19 +78,38 @@ export default function Header() {
               onBlur={handleBlur}
             />
           ) : (
-            <span className="text-sm font-medium text-gray-200 cursor-text">AI Assistant</span>
+            <span className="text-sm font-medium text-gray-200 opacity-80 cursor-text">AI Assistant</span>
           )}
         </div>
+
       </div>
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center">
-          <Bell className="w-5 h-5 text-gray-400" />
-          <span className="ml-1 text-sm font-medium text-white">2 NEW</span>
+
+
+      <div className="flex items-center md:space-x-4 space-x-2">
+
+        <div className="relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
+          <Bell className="w-5 h-5 text-gray-200 " />
+          <div className="absolute bottom-3 left-3 ">
+            <Dot className="w-8 h-8 bg-opacity-25 text-[#ef672d]" />
+          </div>
+
+          <div className="bg-[#3d464e70] border border-gray-200 border-opacity-30 rounded-lg px-2">
+            <span className="mx-1 md:text-sm text-xs font-medium text-white text-nowrap">2 NEW</span>
+          </div>
+
         </div>
-        <div className="hidden md:flex items-center px-3 py-1 bg-[#1B2131] rounded-lg">
-          <span className="text-sm font-medium text-gray-200">TODAY, APRIL 8</span>
+
+
+        <div className="hidden sm:flex items-center px-4 h-10 border border-gray-200 border-opacity-30 md:space-x-6 space-x-2 rounded-xl text-nowrap">
+          <ArrowLeft className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
+          <span className="md:text-sm text-xs font-medium text-gray-200">TODAY, APRIL 8</span>
+          <ArrowRight className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
         </div>
+
+
+
       </div>
+
     </div>
   )
 }
