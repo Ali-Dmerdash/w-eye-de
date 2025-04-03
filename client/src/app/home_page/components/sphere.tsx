@@ -5,15 +5,12 @@ import Spline from '@splinetool/react-spline';
 
 export default function SphereVisualization() {
   return (
-    <div className="relative  w-full h-full min-h-[300px] rounded-lg overflow-hidden bg-[#15191c]">
+    <div className="relative w-full h-full min-h-[300px] rounded-lg overflow-hidden bg-[#15191c]">
       <div className="absolute inset-0 flex items-center justify-center">
-        {/* <Image
-          src={Sphere}
-          alt="Sphere Visualization"
-          className="w-[120%] h-[150%] object-fit "
-          priority
-        /> */}
-        <Spline scene="https://prod.spline.design/PFx5G2qyftQjNcww/scene.splinecode"/>
+
+
+        {/* Spline scene code width should be handled ! */}
+        <Spline scene="https://prod.spline.design/PFx5G2qyftQjNcww/scene.splinecode" />
 
       </div>
     </div>
