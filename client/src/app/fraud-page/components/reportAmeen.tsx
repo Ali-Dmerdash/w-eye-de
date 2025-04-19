@@ -1,11 +1,6 @@
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/card";
+import { Button } from "@/components/button";
 
 const ReportAmeen = () => {
   const [expanded, setExpanded] = useState(false);

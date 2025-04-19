@@ -1,41 +1,43 @@
-"use client"
-import { useEffect, useState } from "react"
-import dynamic from "next/dynamic"
-import Sidebar from "../../../components/ui/Sidebar"
-import FraudInc from "./components/FraudInc"
-import TableTransaction from "./components/tableTransaction"
-import Header from "../../../components/ui/Header"
+"use client";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import FraudInc from "./components/FraudInc";
+import TableTransaction from "./components/tableTransaction";
+import Header from "../../components/Header";
 
-const Graph = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/graph"), { ssr: false })
-const ReportAmeen = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/reportAmeen"), { ssr: false })
+const Graph = dynamic(() => import("./components/graph"), { ssr: false });
+const ReportAmeen = dynamic(() => import("./components/reportAmeen"), {
+  ssr: false,
+});
 
 export default function Page() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Listen for changes to the sidebar state
   useEffect(() => {
     const updateSidebarState = () => {
-      const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
-      setIsCollapsed(isCollapsed)
-    }
+      const isCollapsed =
+        document.documentElement.getAttribute("data-sidebar-collapsed") ===
+        "true";
+      setIsCollapsed(isCollapsed);
+    };
 
     // Initial check
-    updateSidebarState()
+    updateSidebarState();
 
     // Set up a mutation observer to watch for attribute changes
-    const observer = new MutationObserver(updateSidebarState)
+    const observer = new MutationObserver(updateSidebarState);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-sidebar-collapsed"],
-    })
+    });
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#15191c]">
       <Header />
-      <Sidebar />
 
       <main
         className={`h-full p-4 md:p-6 pt-20 transition-all duration-300 
@@ -62,6 +64,5 @@ export default function Page() {
         </div>
       </main>
     </div>
-  )
+  );
 }
-
