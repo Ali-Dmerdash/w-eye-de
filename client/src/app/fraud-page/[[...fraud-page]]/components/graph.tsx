@@ -27,7 +27,7 @@ type CircularProgressProps = {
 
 const CircularProgress = ({
   percentage,
-  size = 120,
+  size = 150,
   strokeWidth = 8,
   color = "#3B82F6",
   label = "Current load",
@@ -74,21 +74,21 @@ const CircularProgress = ({
 }
 
 export default function SalesOverview() {
-  const [circleSize, setCircleSize] = useState(70)
+  const [circleSize, setCircleSize] = useState(100)
 
   useEffect(() => {
     const handleResize = () => {
       const vh = window.innerHeight
-      setCircleSize(vh < 800 ? 60 : 70)
+      setCircleSize(vh < 800 ? 90 : 100)
     }
-
+  
     handleResize()
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
   return (
-    <div className="p-3 bg-[#1d2328] rounded-lg h-full flex flex-col">
+    <div className="p-6 bg-[#1d2328] rounded-lg h-full flex flex-col">
       <div className="mb-2">
         <h2 className="text-base font-semibold text-white">Sales overview</h2>
         <p className="text-sm text-emerald-500">(+5) more in 2021</p>
@@ -126,12 +126,15 @@ export default function SalesOverview() {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        <div className="w-24 flex flex-col justify-center space-y-2">
-          <CircularProgress percentage={70} color="#3B82F6" size={circleSize} label="Sales" />
+        
+        <div className="w-36 flex flex-col justify-around space-y-4 items-end">
+          <CircularProgress percentage={70} color="#01B574" size={circleSize} label="Sales" />
           <CircularProgress percentage={50} color="#F87171" size={circleSize} label="Revenue" />
           <CircularProgress percentage={44} color="#F87171" size={circleSize} label="Growth" />
         </div>
+
       </div>
+      
     </div>
   )
 }
