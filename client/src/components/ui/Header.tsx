@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect, useMemo } from "react"
 import { ArrowLeft, ArrowRight, Bell, Dot } from "lucide-react"
 import Image from "next/image"
 import eye from "@/assets/eye.png"
@@ -41,6 +41,17 @@ export default function Header() {
       setIsEditing(false) // Hide input if empty
     }
   }
+
+  const todayDate = useMemo(() => {
+    const today = new Date()
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long'
+    }
+    return `${today.toLocaleDateString("en-US", options)}`
+  }, [])
+  
 
   return (
     <div
@@ -102,7 +113,7 @@ export default function Header() {
 
         <div className="hidden sm:flex items-center px-4 h-10 border border-gray-200 border-opacity-30 md:space-x-6 space-x-2 rounded-xl text-nowrap">
           <ArrowLeft className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
-          <span className="md:text-sm text-xs font-medium text-gray-200">TODAY, APRIL 8</span>
+          <span className="md:text-sm text-xs font-medium text-gray-200">{todayDate}</span>
           <ArrowRight className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
         </div>
 
