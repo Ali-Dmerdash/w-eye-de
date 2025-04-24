@@ -70,6 +70,9 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        'inner-custom': 'inset 0px 4px 10px 0 rgba(0, 18, 69, 0.7)',
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
