@@ -72,6 +72,7 @@ export default {
       },
       boxShadow: {
         'inner-custom': 'inset 0px 4px 10px 0 rgba(0, 18, 69, 0.7)',
+        'inner-custom-bg': 'inset 0px 4px 10px 0 rgba(29, 35, 40, 0.7)',
       }
     },
   },
