@@ -51,7 +51,27 @@ export default function Header() {
     }
     return `${today.toLocaleDateString("en-US", options)}`
   }, [])
-  
+
+  const yesterdayDate = useMemo(() => {
+    const today = new Date()
+    today.setDate(today.getDate() - 1);
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'numeric',
+      day: 'numeric'
+    }
+    return `${today.toLocaleDateString("en-US", options)}`
+  }, [])
+
+  const tmwDate = useMemo(() => {
+    const today = new Date()
+    today.setDate(today.getDate() + 1);
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'numeric',
+      day: 'numeric'
+    }
+    return `${today.toLocaleDateString("en-US", options)}`
+  }, [])
+
 
   return (
     <div
@@ -112,9 +132,22 @@ export default function Header() {
 
 
         <div className="hidden sm:flex items-center px-4 h-10 border border-gray-200 border-opacity-30 md:space-x-6 space-x-2 rounded-xl text-nowrap">
-          <ArrowLeft className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
+          <span className="flex flex-row items-center justify-center space-y-">
+
+            <ArrowLeft className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
+            <span className="text-gray-400 text-[0.5rem] hidden md:block">
+              {yesterdayDate}
+            </span>
+          </span>
           <span className="md:text-sm text-xs font-medium text-gray-200">{todayDate}</span>
-          <ArrowRight className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
+          <span className="flex flex-row-reverse items-center justify-center space-y-">
+
+            <ArrowRight className="md:w-5 w-3 md:h-5 h-3 text-gray-200" />
+            <span className="text-gray-400 text-[0.5rem] hidden md:block">
+              {tmwDate}
+
+            </span>
+          </span>
         </div>
 
 

@@ -54,7 +54,7 @@ export default function ProjectsTable() {
   return (
     <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
-        <div>
+        <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">Transactions</h2>
           <p className="text-sm text-emerald-500">
             {transactions.length} transactions done this month</p>
@@ -89,10 +89,10 @@ export default function ProjectsTable() {
                 <td className="px-2.5 py-3">{transaction.currency}</td>
                 <td className="px-2.5 py-3">
                   <span className={`px-2.5 py-1 text-xs rounded-full ${transaction.flag === "Orange"
-                      ? "bg-orange-500/20 text-orange-300"
-                      : transaction.flag === "Red"
-                        ? "bg-red-500/20 text-red-300"
-                        : "bg-gray-500/20 text-gray-300"
+                    ? "bg-orange-500/20 text-orange-300"
+                    : transaction.flag === "Red"
+                      ? "bg-red-500/20 text-red-300"
+                      : "bg-gray-500/20 text-gray-300"
                     }`}>
                     {transaction.flag}
                   </span>
@@ -107,8 +107,8 @@ export default function ProjectsTable() {
                 </td>
                 <td className="px-2.5 py-3">
                   <span className={`${transaction.fraudrate > 0.5
-                      ? "text-red-400"
-                      : "text-green-400"
+                    ? "text-red-400"
+                    : "text-green-400"
                     }`}>
                     {(transaction.fraudrate * 100).toFixed(0)}%
                   </span>
