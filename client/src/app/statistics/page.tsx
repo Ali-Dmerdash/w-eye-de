@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import Sidebar from "@/components/ui/Sidebar";
 import Header from "@/components/ui/Header";
 
 export default function Page() {
@@ -31,13 +32,15 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-[#15191c]">
       <Header />
+      <Sidebar />
 
       <main
-        className={`h-full p-4 md:p-6 pt-20 transition-all duration-300 
-        ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
+          isCollapsed ? "sm:ml-16" : "sm:ml-64"
+        }`}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          <h1 style={{ color: "white" }}>Statistics</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
+          {/* Top Row */}
         </div>
       </main>
     </div>
