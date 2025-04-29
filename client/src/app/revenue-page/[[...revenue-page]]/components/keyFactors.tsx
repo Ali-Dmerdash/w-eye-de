@@ -1,83 +1,80 @@
 "use client";
+import React from "react"; // Import React
+import revenueData from "../revenueData.json"; // Correct path from src/components to src
 
-const revForecast = [
-  {
-    id: 1,
-    revenue_forecast: "$1,234,567",
-    confidence_level: "High",
-    key_factors: {
-      SeasonalDemand: "0.3/High",
-      EconomicIndicators: "0.5/High",
-      MarketingCampaignEffectiveness: "0.2/Medium",
+// Define an interface for the key factors if needed, or use Record<string, string>
+interface KeyFactors {
+  [key: string]: string; // Assumes keys are strings and values are strings like "0.3/High"
+}
 
-    },
-    analysis: {
-      insights:
-        "Based on historical sales data and current market trends, we expect a significant increase in revenue due to the upcoming holiday season. The effectiveness of our marketing campaigns will also play a crucial role in driving sales.",
-      recommendation:
-        "Increase marketing budget by 10% to capitalize on seasonal demand, and optimize product offerings to align with consumer preferences.",
-    },
-  },
-];
-
-export default function KeyFactorsCard() {
-  const formatLabel = (label: string) => {
-    return label.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase();
+const KeyFactorsCard: React.FC = () => {
+  // Add React.FC type
+  const formatLabel = (label: string): string => {
+    // Add type annotation for parameter and return value
+    // Convert camelCase or PascalCase to Title Case with spaces, then uppercase
+    let result = label.replace(/([A-Z])/g, " $1");
+    // Handle potential leading space if first word starts with uppercase
+    result = result.replace(/^\s+/, "");
+    // Uppercase the whole string as per original requirement
+    return result.toUpperCase();
   };
+
+  // Access data directly from the imported JSON object
+  const forecast = revenueData;
+  // Explicitly type key_factors if necessary, or let TypeScript infer
+  const key_factors: KeyFactors = forecast.key_factors as KeyFactors;
 
   return (
     <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
+      <h2 className="text-4xl font-bayon text-white text-center mb-6">
+        Key Factors
+      </h2>
 
+      <div className="grid grid-cols-2 gap-4 text-center">
+        {Object.entries(key_factors).map(([key, value], index) => {
+          // Ensure value is treated as string before splitting
+          const parts = String(value).split("/");
+          const score = parts[0] ? parts[0].trim() : "";
+          const level = parts[1] ? parts[1].trim() : "";
 
-      {revForecast.map((forecast) => {
-        const { key_factors } = forecast;
-
-        return (
-          <div key={forecast.id}>
-            <h2 className="text-4xl font-bayon text-white text-center mb-6">
-              Key Factors
-            </h2>
-
-            <div className="grid grid-cols-2 gap-4 text-center">
-              {Object.entries(key_factors).map(([key, value], index) => {
-                const [score, level] = value.split("/");
-                const formattedKey = formatLabel(key);
-                const factorBox = (
-                  <div
-                    key={key}
-                    className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
-                  >
-                    <h3 className="text-white text-sm">
-                      {formattedKey}
-                    </h3>
-                    <p className={`${level === "High"
-                        ? "text-red-500"
-                        : level === "Medium"
-                          ? "text-orange-300"
-                          : "text-gray-300"
-                      } text-sm`}>
-                      {score.trim()} / {level.trim()}
-                    </p>
-                  </div>
-                );
-
-                if (index === 2) {
-                  return (
-                    <div className="col-span-2" key={key}>
-                      {factorBox}
-                    </div>
-                  );
-                }
-
-                return factorBox;
-              })}
+          const formattedKey = formatLabel(key); // Use the provided key directly
+          const factorBox = (
+            <div
+              key={key}
+              className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
+            >
+              <h3 className="text-white text-sm">{formattedKey}</h3>
+              <p
+                className={`${
+                  level === "High"
+                    ? "text-red-500"
+                    : level === "Medium"
+                    ? "text-orange-300"
+                    : "text-gray-300"
+                } text-sm`}
+              >
+                {score} / {level}
+              </p>
             </div>
-          </div>
-        );
-      })}
+          );
 
+          // Apply col-span-2 to the last item if there's an odd number of items
+          if (
+            Object.keys(key_factors).length % 2 !== 0 &&
+            index === Object.keys(key_factors).length - 1
+          ) {
+            return (
+              <div className="col-span-2" key={key}>
+                {factorBox}
+              </div>
+            );
+          }
 
-
+          return factorBox;
+        })}
+      </div>
     </div>
   );
-}
+};
+
+export default KeyFactorsCard;

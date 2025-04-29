@@ -60,11 +60,10 @@ export default function Page() {
           <div className="lg:min-h-[40vh]">
             <KeyFactors />
           </div>
-          
+
           <div className="lg:min-h-[40vh] lg:col-span-2 w-full ">
             <Analysis />
           </div>
-          
         </div>
       </main>
     </div>
