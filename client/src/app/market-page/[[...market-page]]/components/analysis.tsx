@@ -106,18 +106,18 @@ export default function Analysis() {
         </h2>
       </div>
 
-      <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+      <div className="max-h-[300px] overflow-y-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="pr-3 border-r border-gray-700">
             <h3 className="text-white text-base mb-2 text-center font-mulish">
               Trends
             </h3>
-            <table className="w-full text-xs font-mulish text-white border-separate border-spacing-y-2">
+            <table className="w-full text-xs font-mulish text-white">
               <thead>
-                <tr className="text-gray-400 text-left">
-                  <th className="px-2 py-1">Name</th>
-                  <th className="px-2 py-1 text-center">Growth</th>
-                  <th className="px-2 py-1 text-center">Impact</th>
+                <tr className="text-gray-400 text-left border-b-[1px]  border-[#56577A]">
+                  <th className="py-3">Name</th>
+                  <th className="py-3 text-center">Growth</th>
+                  <th className="py-3 text-center">Impact</th>
                 </tr>
               </thead>
               <tbody>
@@ -125,11 +125,13 @@ export default function Analysis() {
                   response.market_analysis.trends.map((trend, index) => (
                     <tr
                       key={index}
-                      className="bg-[#1f252b] rounded-md border border-slate-800"
+                      className="border-b-[1px]  border-[#56577A]"
                     >
-                      <td className="px-2 py-1">{trend.name}</td>
-                      <td className="px-2 py-1 text-center">{trend.growth}</td>
-                      <td className="px-2 py-1 text-center">{trend.impact}</td>
+                      <td className="py-5">{trend.name}</td>
+                      <td className="py-5 text-center">
+                        {trend.growth.match(/\d+/)?.[0]}%
+                      </td>
+                      <td className="py-5 text-center capitalize">{trend.impact}</td>
                     </tr>
                   ))
                 )}
@@ -141,11 +143,11 @@ export default function Analysis() {
             <h3 className="text-white text-base mb-2 text-center font-mulish">
               Market Share
             </h3>
-            <table className="w-full text-xs font-mulish text-white border-separate border-spacing-y-2">
+            <table className="w-full text-xs font-mulish text-white">
               <thead>
-                <tr className="text-gray-400 text-left">
-                  <th className="px-2 py-1">Name</th>
-                  <th className="px-2 py-1 text-center">Percentage</th>
+                <tr className="text-gray-400 text-left border-b-[1px]  border-[#56577A]">
+                  <th className="py-3">Name</th>
+                  <th className="py-3 text-center">Percentage</th>
                 </tr>
               </thead>
               <tbody>
@@ -154,11 +156,11 @@ export default function Analysis() {
                     ([name, percentage], index) => (
                       <tr
                         key={index}
-                        className="bg-[#1f252b] rounded-md border border-slate-800"
+                        className="border-b-[1px]  border-[#56577A]"
                       >
-                        <td className="px-2 py-1">{name}</td>
-                        <td className="px-2 py-1 text-center">
-                          {percentage}
+                        <td className="py-3.5">{name}</td>
+                        <td className="py-3.5 text-center">
+                          {percentage.match(/\d+/)?.[0]}%
                         </td>
                       </tr>
                     )
