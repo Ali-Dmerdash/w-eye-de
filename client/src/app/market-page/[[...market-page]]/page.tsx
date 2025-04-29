@@ -8,7 +8,7 @@ import Weaknesses from "./components/weaknesses";
 import Opportunities from "./components/opportunities";
 import Threats from "./components/threats";
 import PricingComparison from "./components/pricingComparison";
-import KeyFactors from "./components/keyFactors";
+import MarketMap from "./components/marketMap";
 import Header from "@/components/ui/Header";
 import Analysis from "./components/analysis";
 
@@ -67,7 +67,7 @@ export default function Page() {
           {/* Bottom Row */}
 
           <div className="lg:min-h-[40vh] lg:col-span-3">
-            <KeyFactors />
+            <MarketMap />
           </div>
 
           <div className="lg:min-h-[40vh] lg:col-span-3 w-full ">

@@ -111,10 +111,10 @@ const RevenueChart: React.FC = () => {
           label={forecast.confidence_level} // Display confidence level as label
         />
         <div className="py-4 flex flex-col">
-          <span className="text-5xl font-mulish">
+          <span className="text-5xl">
             {forecast.revenue_forecast}
           </span>
-          <span className="text-lg text-gray-400 font-mulish">
+          <span className="text-base text-gray-400 font-mulish">
             Revenue Forecast
           </span>
         </div>
