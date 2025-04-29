@@ -1,13 +1,18 @@
+"use client";
 import { useState } from "react";
+import fraudData from "../fraudData.json"; // Import the fraud data JSON file directly
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/card";
 import { Button } from "@/components/button";
 
 const ReportAmeen = () => {
   const [expanded, setExpanded] = useState(false);
 
-  const shortText = "This is the beginning of the content.";
-  const fullText =
-    "This is the beginning of the content. Here is the rest of the text that appears when the card is expanded. It can contain more details, explanations, or even additional links.";
+  // Extract analysis data from the imported JSON
+  const { cause, recommendation } = fraudData.analysis;
+
+  // Short and full text based on the analysis data
+  const shortText = `${cause}`;
+  const fullText = `${cause} <br /> ${recommendation}`; // Add line break between cause and recommendation
 
   return (
     <div className="flex items-start justify-center flex-wrap ">
@@ -16,7 +21,12 @@ const ReportAmeen = () => {
           <h2 className="text-lg font-semibold">Ameen Report</h2>
         </CardHeader>
         <CardContent>
-          <p className="text-sm">{expanded ? fullText : shortText}</p>
+          <p
+            className="text-sm"
+            dangerouslySetInnerHTML={{
+              __html: expanded ? fullText : shortText,
+            }}
+          />
         </CardContent>
         <CardFooter className="flex justify-center">
           <Button
@@ -30,4 +40,5 @@ const ReportAmeen = () => {
     </div>
   );
 };
+
 export default ReportAmeen;
