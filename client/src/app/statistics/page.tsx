@@ -39,9 +39,7 @@ export default function Page() {
           isCollapsed ? "sm:ml-16" : "sm:ml-64"
         }`}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
-          {/* Top Row */}
-        </div>
+        <h1 className="text-white">STATISTICS PAGE</h1>
       </main>
     </div>
   );
