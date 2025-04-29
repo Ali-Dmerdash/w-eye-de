@@ -107,96 +107,68 @@ export default function Analysis() {
       </div>
 
       <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          {/* Trends Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="pr-3 border-r border-gray-700">
-            <h3 className="text-white text-base mb-2 text-center font-bayon">
+            <h3 className="text-white text-base mb-2 text-center font-mulish">
               Trends
             </h3>
-            <div>
-              <div className="grid grid-cols-12 gap-2 text-xs text-gray-400 mb-1 px-1 font-mulish">
-                <div className="col-span-6">Name</div>
-                <div className="col-span-3 text-center">Growth</div>
-                <div className="col-span-3 text-center">Impact</div>
-              </div>
-
-              {marketForecast.map((response) =>
-                response.market_analysis.trends.map((trend, index) => (
-                  <div
-                    key={index}
-                    className="border-b border-gray-700 pb-2 mb-2 last:border-0"
-                  >
-                    <div className="grid grid-cols-12 gap-2 bg-[#1f252b] p-2 rounded-md border border-slate-800">
-                      <div className="col-span-6 text-white text-xs font-mulish">
-                        {trend.name}
-                      </div>
-                      <div className="col-span-3 text-center text-white text-xs font-mulish">
-                        {trend.growth}
-                      </div>
-                      <div className="col-span-3 text-center text-white text-xs font-mulish">
-                        {trend.impact}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
+            <table className="w-full text-xs font-mulish text-white border-separate border-spacing-y-2">
+              <thead>
+                <tr className="text-gray-400 text-left">
+                  <th className="px-2 py-1">Name</th>
+                  <th className="px-2 py-1 text-center">Growth</th>
+                  <th className="px-2 py-1 text-center">Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                {marketForecast.map((response) =>
+                  response.market_analysis.trends.map((trend, index) => (
+                    <tr
+                      key={index}
+                      className="bg-[#1f252b] rounded-md border border-slate-800"
+                    >
+                      <td className="px-2 py-1">{trend.name}</td>
+                      <td className="px-2 py-1 text-center">{trend.growth}</td>
+                      <td className="px-2 py-1 text-center">{trend.impact}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
 
-          {/* Market Share Section */}
           <div className="pl-3">
-            <h3 className="text-white text-base mb-2 text-center font-bayon">
+            <h3 className="text-white text-base mb-2 text-center font-mulish">
               Market Share
             </h3>
-            <div>
-              <div className="grid grid-cols-6 gap-2 text-xs text-gray-400 mb-1 px-1 font-mulish">
-                <div className="col-span-3">Name</div>
-                <div className="col-span-3 text-center">Percentage</div>
-              </div>
-
-              {marketForecast.map((response) =>
-                Object.entries(response.market_analysis.market_share).map(
-                  ([name, percentage], index) => (
-                    <div
-                      key={index}
-                      className="border-b border-gray-700 pb-2 mb-2 last:border-0"
-                    >
-                      <div className="grid grid-cols-6 gap-2 bg-[#1f252b] p-2 rounded-md border border-slate-800">
-                        <div className="col-span-3 text-white text-xs font-mulish">
-                          {name}
-                        </div>
-                        <div className="col-span-3 text-center text-white text-xs font-mulish">
+            <table className="w-full text-xs font-mulish text-white border-separate border-spacing-y-2">
+              <thead>
+                <tr className="text-gray-400 text-left">
+                  <th className="px-2 py-1">Name</th>
+                  <th className="px-2 py-1 text-center">Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                {marketForecast.map((response) =>
+                  Object.entries(response.market_analysis.market_share).map(
+                    ([name, percentage], index) => (
+                      <tr
+                        key={index}
+                        className="bg-[#1f252b] rounded-md border border-slate-800"
+                      >
+                        <td className="px-2 py-1">{name}</td>
+                        <td className="px-2 py-1 text-center">
                           {percentage}
-                        </div>
-                      </div>
-                    </div>
+                        </td>
+                      </tr>
+                    )
                   )
-                )
-              )}
-            </div>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-
-      {/* Custom scrollbar styles
-      <style jsx global>{`
-        .scrollbar-thin::-webkit-scrollbar {
-          width: 6px;
-        }
-        .scrollbar-thin::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-          background-color: rgba(75, 85, 99, 0.5);
-          border-radius: 20px;
-        }
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(75, 85, 99, 0.8);
-        }
-      `}</style> */}
-
-
-
     </div>
   );
 }
