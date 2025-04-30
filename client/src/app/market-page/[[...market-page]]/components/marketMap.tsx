@@ -25,14 +25,14 @@ export default function MarketMap() {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
 
   return (
-    <div className="bg-[#1d2328] rounded-xl min-h-[40vh] shadow-md relative overflow-hidden">
+    <div className="bg-[#1d2328] rounded-xl h-[40vh] relative overflow-hidden hidden md:block shadow-inner-custom2">
       <Image src={Map} alt="Map" fill className="object-cover opacity-15 z-0" />
 
       {locations.map((loc) => (
         <div
           key={loc.name}
           onClick={() => setSelectedLocation(loc.name)}
-          className="absolute z-10 flex flex-col items-center cursor-pointer"
+          className="absolute z-10 flex flex-col items-center cursor-pointer hover:scale-125 duration-300"
           style={{ top: loc.top, left: loc.left }}
         >
           <LocationPin />

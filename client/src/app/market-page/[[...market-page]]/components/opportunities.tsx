@@ -105,7 +105,7 @@ export default function opportunities() {
 
   return (
 
-    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
+    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center shadow-inner-custom2">
       {marketForecast.map((response) => (
         <div key={response.id} className="flex flex-col items-center justify-center h-full">
 

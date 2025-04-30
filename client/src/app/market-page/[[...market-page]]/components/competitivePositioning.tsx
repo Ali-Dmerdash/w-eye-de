@@ -104,16 +104,11 @@ export default function competitivePositioning() {
 
   return (
 
-    <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
+    <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">Competitive Positioning</h2>
         </div>
-        <button className="p-2 text-gray-400 rounded-lg hover:bg-gray-800">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
-        </button>
       </div>
 
       <div className="overflow-x-auto flex-grow text-[0.6rem] text-left font-mulish">

@@ -56,7 +56,7 @@ export default function Header() {
     const today = new Date()
     today.setDate(today.getDate() - 1);
     const options: Intl.DateTimeFormatOptions = {
-      month: 'numeric',
+      month: 'long',
       day: 'numeric'
     }
     return `${today.toLocaleDateString("en-US", options)}`
@@ -66,7 +66,7 @@ export default function Header() {
     const today = new Date()
     today.setDate(today.getDate() + 1);
     const options: Intl.DateTimeFormatOptions = {
-      month: 'numeric',
+      month: 'long',
       day: 'numeric'
     }
     return `${today.toLocaleDateString("en-US", options)}`

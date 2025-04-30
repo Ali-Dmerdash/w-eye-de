@@ -103,7 +103,7 @@ const marketForecast = [
 
 export default function PricingComparisonTable() {
   return (
-    <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
+    <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">Pricing Comparison</h2>

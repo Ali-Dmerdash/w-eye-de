@@ -99,16 +99,16 @@ const marketForecast = [
 
 export default function Analysis() {
   return (
-    <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full shadow-md h-full">
-      <div className="mb-4">
+    <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
+      <div className="">
         <h2 className="text-white text-xl md:text-2xl text-center font-bayon">
           MARKET ANALYSIS
         </h2>
       </div>
 
-      <div className="max-h-[300px] overflow-y-auto">
+      <div className="pt-5 md:pt-2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="pr-3 border-r border-gray-700">
+          <div className="pr-1">
             <h3 className="text-white text-base mb-2 text-center font-mulish">
               Trends
             </h3>
@@ -139,7 +139,7 @@ export default function Analysis() {
             </table>
           </div>
 
-          <div className="pl-3">
+          <div className="md:pl-3 md:border-l md:border-gray-700 pt-5 md:pt-0">
             <h3 className="text-white text-base mb-2 text-center font-mulish">
               Market Share
             </h3>
@@ -147,7 +147,7 @@ export default function Analysis() {
               <thead>
                 <tr className="text-gray-400 text-left border-b-[1px]  border-[#56577A]">
                   <th className="py-3">Name</th>
-                  <th className="py-3 text-center">Percentage</th>
+                  <th className="py-3 pe-2 text-end">Percentage</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,7 +159,7 @@ export default function Analysis() {
                         className="border-b-[1px]  border-[#56577A]"
                       >
                         <td className="py-3.5">{name}</td>
-                        <td className="py-3.5 text-center">
+                        <td className="py-3.5 pe-2 text-end">
                           {percentage.match(/\d+/)?.[0]}%
                         </td>
                       </tr>

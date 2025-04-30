@@ -66,7 +66,7 @@ export default function Page() {
 
           {/* Bottom Row */}
 
-          <div className="lg:min-h-[40vh] lg:col-span-3">
+          <div className="lg:min-h-[40vh] lg:col-span-3 hidden md:block">
             <MarketMap />
           </div>
 

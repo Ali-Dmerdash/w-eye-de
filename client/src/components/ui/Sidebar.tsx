@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import {
   Home,
   BarChart2,
@@ -9,7 +10,6 @@ import {
   Upload,
   LogOut,
   Search,
-  Menu,
 } from "lucide-react";
 import Image from "next/image";
 import Logo from "@/assets/Logo.png";
@@ -18,6 +18,7 @@ import stars from "@/assets/nav-stars-bg.png";
 import { FaUserCircle } from "react-icons/fa";
 
 export default function Sidebar() {
+  const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -26,7 +27,6 @@ export default function Sidebar() {
       setIsMobileOpen(!isMobileOpen);
     } else {
       setIsCollapsed(!isCollapsed);
-      // Update the document with a data attribute to help with responsive styling
       document.documentElement.setAttribute(
         "data-sidebar-collapsed",
         String(!isCollapsed)
@@ -34,7 +34,6 @@ export default function Sidebar() {
     }
   };
 
-  // Set initial data attribute on mount
   useEffect(() => {
     document.documentElement.setAttribute(
       "data-sidebar-collapsed",
@@ -42,16 +41,22 @@ export default function Sidebar() {
     );
   }, []);
 
+  const navItems = [
+    { icon: Home, label: "Home", href: "/" },
+    { icon: BarChart2, label: "Statistics", href: "/statistics" },
+    { icon: CreditCard, label: "Fraud agent", href: "/fraud-page" },
+    { icon: DollarSign, label: "Revenue agent", href: "/revenue-page" },
+    { icon: Globe, label: "Global market agent", href: "/market-page" },
+    { icon: Upload, label: "Data upload", href: "/upload" },
+  ];
+
   return (
     <>
-      {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed font-mulish z-[4854586] top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 ${
+        className={`fixed font-mulish z-[4854586] top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 rounded-e-3xl ${
           isCollapsed ? "w-16" : "w-64"
-        } ${
-          isMobileOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0`}
+        } ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -89,8 +94,8 @@ export default function Sidebar() {
             {!isCollapsed && (
               <div className="flex items-center justify-between flex-1">
                 <div>
-                  <div className="flex flex-row justify-center items-center space-x-0.5">
-                    <h3 className="text-md font-medium text-white">Amoura</h3>
+                  <div className="flex flex-row items-center space-x-0.5">
+                    <h3 className="text-sm font-medium text-white">Omaaaar</h3>
                     <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">
                       CEO
                     </p>
@@ -103,7 +108,7 @@ export default function Sidebar() {
                   onClick={toggleSidebar}
                   src={eye || "/placeholder.svg"}
                   className="cursor-pointer"
-                  alt="Logo"
+                  alt="Toggle"
                 />
               </div>
             )}
@@ -133,66 +138,40 @@ export default function Sidebar() {
               isCollapsed ? "px-2" : "px-4"
             } space-y-2 overflow-y-auto`}
           >
-            <a
-              href="/"
-              className={`flex items-center shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-black/20 bg-gradient-to-r from-[#243461] via-[#15191c] via-[46%] to-[#15191C] ${
-                isCollapsed ? "justify-center" : ""
-              } px-4 py-2.5 text-gray-300 rounded-lg transition-colors relative overflow-hidden`}
-            >
-              <Home
-                className={`w-5 h-5 z-10 ${
-                  isCollapsed ? "" : "mr-3"
-                } text-gray-400 `}
-              />
-              {!isCollapsed && <span className="z-10">Home</span>}
-              <div className="overlay absolute top-0 left-0">
-                <Image
-                  src={stars || "/placeholder.svg"}
-                  className="w-full opacity-10"
-                  alt="Logo"
-                />
-              </div>
-            </a>
-            {[
-              { icon: BarChart2, label: "Statistics", href: "statistics" },
-              { icon: CreditCard, label: "Fraud agent", href: "fraud-page" },
-              {
-                icon: DollarSign,
-                label: "Revenue agent",
-                href: "revenue-page",
-              },
-              {
-                icon: Globe,
-                label: "Global market agent",
-                href: "market-page",
-              },
-              { icon: Upload, label: "Data upload" },
-            ].map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className={`flex items-center ${
-                  isCollapsed ? "justify-center" : ""
-                } px-4 py-2.5 text-gray-300 rounded-lg  relative overflow-hidden
-                  transition-colors duration-300
-                  hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-black/20 hover:bg-gradient-to-r hover:from-[#243461] hover:via-[#15191c] hover:via-[46%] hover:to-[#15191C]
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
 
-
-                  `}
-              >
-                <item.icon
-                  className={`w-5 h-5 z-10 ${
-                    isCollapsed ? "" : "mr-3"
-                  } text-gray-400 group-hover:text-gray-300`}
-                />
-                {!isCollapsed && <span className="z-10">{item.label}</span>}
-
-                {/* Lama n-merge hsh8l el 7eta deh 3shan elstars sh8ala bdon el hover */}
-                {/* <div className="overlay absolute top-0 left-0">
-                  <Image src={stars || "/placeholder.svg"} className="w-full opacity-10" alt="Logo" />
-                </div> */}
-              </a>
-            ))}
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className={`flex items-center ${
+                    isCollapsed ? "justify-center" : ""
+                  } px-4 py-2.5 text-gray-300 rounded-lg relative overflow-hidden transition-colors duration-300
+                    ${
+                      isActive
+                        ? "shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-black/20 bg-gradient-to-r from-[#243461] via-[#15191c] via-[46%] to-[#15191C]"
+                        : "hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-black/20 hover:bg-gradient-to-r hover:from-[#243461] hover:via-[#15191c] hover:via-[46%] hover:to-[#15191C]"
+                    }`}
+                >
+                  <item.icon
+                    className={`w-5 h-5 z-10 ${
+                      isCollapsed ? "" : "mr-3"
+                    } text-gray-400`}
+                  />
+                  {!isCollapsed && <span className="z-10">{item.label}</span>}
+                  {isActive && (
+                    <div className="overlay absolute top-0 left-0">
+                      <Image
+                        src={stars || "/placeholder.svg"}
+                        className="w-full opacity-10"
+                        alt="Stars"
+                      />
+                    </div>
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Sign Out */}
