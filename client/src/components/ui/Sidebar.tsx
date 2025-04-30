@@ -95,7 +95,7 @@ export default function Sidebar() {
               <div className="flex items-center justify-between flex-1">
                 <div>
                   <div className="flex flex-row items-center space-x-0.5">
-                    <h3 className="text-sm font-medium text-white">Omaaaar</h3>
+                    <h3 className="text-sm font-medium text-white">Magdi</h3>
                     <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">
                       CEO
                     </p>
@@ -147,7 +147,7 @@ export default function Sidebar() {
                   href={item.href}
                   className={`flex items-center ${
                     isCollapsed ? "justify-center" : ""
-                  } px-4 py-2.5 text-gray-300 rounded-lg relative overflow-hidden transition-colors duration-300
+                  } px-4 py-2.5 text-gray-300 rounded-lg relative overflow-hidden transition-colors
                     ${
                       isActive
                         ? "shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-black/20 bg-gradient-to-r from-[#243461] via-[#15191c] via-[46%] to-[#15191C]"
@@ -175,15 +175,16 @@ export default function Sidebar() {
           </nav>
 
           {/* Sign Out */}
-          <div className={`px-4 mt-auto mb-5 ${isCollapsed ? "px-5" : ""}`}>
+          <div className={`group px-4 mt-auto mb-5 ${isCollapsed ? "px-5" : ""}`}>
             <button
-              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-gray-300 outline outline-3 outline-black/20 bg[#243461] transition-all`}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-gray-300 outline outline-3 outline-black/20 bg[#243461] transition-all
+              group-hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] group-hover:outline group-hover:outline-2 group-hover:-outline-offset-2 group-hover:outline-black/20 group-hover:bg-gradient-to-r group-hover:from-[#243461] group-hover:via-[#15191c] group-hover:via-[46%] group-hover:to-[#15191C]`}
             >
               <div
                 className={`p-3 rounded-full ${
                   isCollapsed
                     ? ""
-                    : "outline outline-3 outline-[#98B3FF]/30 bg-gradient-to-t from-[#243461] to-[#15191C]"
+                    : "outline outline-3 outline-[#98B3FF]/30 bg-gradient-to-t from-[#243461] to-[#15191C] group-hover:outline-none group-hover:bg-none transition-all duration-300"
                 }`}
               >
                 <LogOut className="w-4 h-4 rotate-180" />

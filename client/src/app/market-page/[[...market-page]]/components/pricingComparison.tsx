@@ -1,4 +1,5 @@
 "use client";
+import { useState } from 'react';
 
 
 const marketForecast = [
@@ -108,7 +109,8 @@ export default function PricingComparisonTable() {
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">Pricing Comparison</h2>
           <p className="text-sm text-emerald-500">
-            ( * ) Competitors are available</p>
+          {Object.entries(marketForecast[0].pricing_comparison.competitors).length} Competitors are available
+          </p>
         </div>
         <button className="p-2 text-gray-400 rounded-lg hover:bg-gray-800">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -130,6 +132,7 @@ export default function PricingComparisonTable() {
             {marketForecast.flatMap((response) =>
               Object.entries(response.pricing_comparison.competitors).map(
                 ([name, price]) => (
+                  
                   <tr key={name} className="hover:bg-gray-800/50 border-b-[1px] border-[#56577A]">
                     <td className=" py-5 font-medium">{name}</td>
                     <td className="text-center py-5">${price.match(/\d+/)?.[0]}</td>
@@ -137,6 +140,7 @@ export default function PricingComparisonTable() {
                       {response.pricing_comparison.discount_strategies[0]}
                     </td>
                   </tr>
+                  
                 )
               )
             )}

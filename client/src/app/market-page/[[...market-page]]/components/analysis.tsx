@@ -125,7 +125,7 @@ export default function Analysis() {
                   response.market_analysis.trends.map((trend, index) => (
                     <tr
                       key={index}
-                      className="border-b-[1px]  border-[#56577A]"
+                      className="border-b-[1px]  border-[#56577A] hover:bg-gray-800/50"
                     >
                       <td className="py-5">{trend.name}</td>
                       <td className="py-5 text-center">
@@ -156,7 +156,7 @@ export default function Analysis() {
                     ([name, percentage], index) => (
                       <tr
                         key={index}
-                        className="border-b-[1px]  border-[#56577A]"
+                        className="border-b-[1px] border-[#56577A] hover:bg-gray-800/50"
                       >
                         <td className="py-3.5">{name}</td>
                         <td className="py-3.5 pe-2 text-end">
