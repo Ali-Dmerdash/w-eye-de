@@ -14,10 +14,7 @@ const ReportAmeen = dynamic(
   { ssr: false }
 );
 
-
 export default function Page() {
-
-
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Listen for changes to the sidebar state
@@ -47,7 +44,11 @@ export default function Page() {
       <Header />
       <Sidebar />
 
-      <main className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
+      <main
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
+          isCollapsed ? "sm:ml-16" : "sm:ml-64"
+        }`}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           {/* Top Row */}
           <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
@@ -69,5 +70,5 @@ export default function Page() {
         </div>
       </main>
     </div>
-  )
+  );
 }

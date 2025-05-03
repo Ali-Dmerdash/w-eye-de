@@ -1,0 +1,138 @@
+{
+  "intent": "Fraudulent",
+  "category": "Risk",
+  "fraud_metrics": {
+    "incident_rate": "23%",
+    "common_patterns": {
+      "CARD-NOT-PRESENT TRANSACTIONS": "22%",
+      "TRANSACTIONS FROM HIGH-RISK COUNTRIES": "25%",
+      "ACCOUNT TAKEOVERS": "15%"
+    }
+  },
+  "analysis": {
+    "cause": "Cause: High academic pressure and low study satisfaction may indicate a student attempting to commit fraud.\n",
+    "recommendation": "Recommendation: BLA BLA Implement additional verification checks for students with high academic pressure or suspicious academic history."
+  },
+  "transactions": [
+    {
+      "name": "John Doe",
+      "amount": 1200.0,
+      "currency": "USD",
+      "flag": "orange",
+      "date": "2025-04-20",
+      "description": "Tuition payment via third-party",
+      "category": "Education",
+      "type": "Credit",
+      "fraud_rate": 0.35
+    },
+    {
+      "name": "Jane Smith",
+      "amount": 500.0,
+      "currency": "USD",
+      "flag": "green",
+      "date": "2025-04-22",
+      "description": "Bookstore purchase",
+      "category": "Retail",
+      "type": "Debit",
+      "fraud_rate": 0.05
+    },
+    {
+      "name": "John Doe",
+      "amount": 1200.0,
+      "currency": "USD",
+      "flag": "orange",
+      "date": "2025-04-20",
+      "description": "Tuition payment via third-party",
+      "category": "Education",
+      "type": "Credit",
+      "fraud_rate": 0.35
+    },
+    {
+      "name": "Jane Smith",
+      "amount": 500.0,
+      "currency": "USD",
+      "flag": "green",
+      "date": "2025-04-22",
+      "description": "Bookstore purchase",
+      "category": "Retail",
+      "type": "Debit",
+      "fraud_rate": 0.05
+    },
+    {
+      "name": "John Doe",
+      "amount": 1200.0,
+      "currency": "USD",
+      "flag": "orange",
+      "date": "2025-04-20",
+      "description": "Tuition payment via third-party",
+      "category": "Education",
+      "type": "Credit",
+      "fraud_rate": 0.35
+    },
+    {
+      "name": "Jane Smith",
+      "amount": 500.0,
+      "currency": "USD",
+      "flag": "green",
+      "date": "2025-04-22",
+      "description": "Bookstore purchase",
+      "category": "Retail",
+      "type": "Debit",
+      "fraud_rate": 0.05
+    },
+    {
+      "name": "John Doe",
+      "amount": 1200.0,
+      "currency": "USD",
+      "flag": "orange",
+      "date": "2025-04-20",
+      "description": "Tuition payment via third-party",
+      "category": "Education",
+      "type": "Credit",
+      "fraud_rate": 0.35
+    },
+    {
+      "name": "Jane Smith",
+      "amount": 500.0,
+      "currency": "USD",
+      "flag": "green",
+      "date": "2025-04-22",
+      "description": "Bookstore purchase",
+      "category": "Retail",
+      "type": "Debit",
+      "fraud_rate": 0.05
+    },
+    {
+      "name": "John Doe",
+      "amount": 1200.0,
+      "currency": "USD",
+      "flag": "orange",
+      "date": "2025-04-20",
+      "description": "Tuition payment via third-party",
+      "category": "Education",
+      "type": "Credit",
+      "fraud_rate": 0.35
+    },
+    {
+      "name": "Jane Smith",
+      "amount": 500.0,
+      "currency": "USD",
+      "flag": "green",
+      "date": "2025-04-22",
+      "description": "Bookstore purchase",
+      "category": "Retail",
+      "type": "Debit",
+      "fraud_rate": 0.05
+    }
+  ],
+  "fraud_rate_over_time": [
+    {
+      "date": "2025-04-20",
+      "fraud_rate": 0.35
+    },
+    {
+      "date": "2025-04-22",
+      "fraud_rate": 0.05
+    }
+  ]
+}
