@@ -1,24 +1,74 @@
-"use client"; // Added "use client" directive as it uses useState
-import { useState } from "react";
-import fraudData from "../fraudData.json"; // Import the fraud data JSON file directly
+"use client";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card"; // Assuming path is correct for the new structure
-import { Button } from "@/components/ui/button"; // Assuming path is correct for the new structure
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+// Define an interface for the expected data structure
+interface Analysis {
+  cause: string;
+  recommendation: string;
+}
+
+interface FraudData {
+  analysis: Analysis;
+  // Add other top-level fields if needed
+}
 
 const ReportAmeen = () => {
   const [expanded, setExpanded] = useState(false);
+  const [analysisData, setAnalysisData] = useState<Analysis | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Extract analysis data from the imported JSON, same as the old version
-  const { cause, recommendation } = fraudData.analysis;
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch("/api/fraud-data");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: FraudData = await response.json();
+        setAnalysisData(data.analysis);
+      } catch (e: any) {
+        console.error("Failed to fetch analysis data:", e);
+        setError(e.message || "Failed to load data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  // Short and full text based on the analysis data from JSON
-  // Using dangerouslySetInnerHTML to handle potential HTML like <br /> as in the old version
-  const shortText = `${cause}`;
-  const fullText = `${cause} <br /> ${recommendation}`; // Add line break between cause and recommendation
+    fetchData();
+  }, []);
+
+  if (isLoading)
+    return (
+      <div className="text-white p-6 bg-primary rounded-lg h-full flex items-center justify-center">
+        Loading Report...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="text-red-500 p-6 bg-primary rounded-lg h-full flex items-center justify-center">
+        Error: {error}
+      </div>
+    );
+  if (!analysisData)
+    return (
+      <div className="text-white p-6 bg-primary rounded-lg h-full flex items-center justify-center">
+        No analysis data available.
+      </div>
+    );
+
+  // Short and full text based on the fetched analysis data
+  const shortText = `${analysisData.cause}`;
+  const fullText = `${analysisData.cause} <br /> ${analysisData.recommendation}`;
 
   return (
     <div className="flex items-start justify-center flex-wrap ">
@@ -27,7 +77,6 @@ const ReportAmeen = () => {
           <h2 className="text-lg font-semibold">Ameen Report</h2>
         </CardHeader>
         <CardContent>
-          {/* Use dangerouslySetInnerHTML to render text from JSON */}
           <p
             className="text-sm"
             dangerouslySetInnerHTML={{
