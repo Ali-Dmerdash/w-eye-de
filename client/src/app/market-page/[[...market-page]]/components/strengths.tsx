@@ -1,123 +1,57 @@
+"use client";
 
-"use client"
+import React from "react";
 
-const marketForecast = [
-  {
-    id: 1,
-    swot_analysis: {
-      strengths: [
-        "Strong brand recognition",
-        "(Source: Market Analysis - Excerpt)"
-      ],
-      weaknesses: [
-        "High competition",
-        "(Source: Competitor Analysis - Excerpt)"
-      ],
-      opportunities: [
-        "Expansion into emerging markets",
-        "(Source: Market Trends - Excerpt)"
-      ],
-      threats: [
-        "Rapid technological changes",
-        "(Source: SWOT Analysis - Excerpt)"
-      ]
-    },
-    pricing_comparison: {
-      competitors: {
-        "Xiaomi": "599 (Source: Pricing Comparison - Excerpt)",
-        "Apple": "999 (Source: Pricing Comparison - Excerpt)",
-        "Samsung": "799 (Source: Pricing Comparison - Excerpt)"
-      },
-      discount_strategies: [
-        "Price matching",
-        "(Source: Competitor Analysis - Excerpt)"
-      ]
-    },
-    competitive_positioning: {
-      metrics: [
-        "Price",
-        "Market Share",
-        "Satisfaction",
-        "Innovation"
-      ],
-      scores: {
-        "Xiaomi": [
-          "8 (Source: Competitive Positioning - Excerpt)",
-          "20%",
-          "4.5",
-          "9"
-        ],
-        "Apple": [
-          "6 (Source: Competitive Positioning - Excerpt)",
-          "15%",
-          "4.2",
-          "7"
-        ],
-        "Samsung": [
-          "7 (Source: Competitive Positioning - Excerpt)",
-          "18%",
-          "4.3",
-          "8"
-        ]
-      },
-      visualization_note: "Radar chart recommended"
-    },
-    market_analysis: {
-      trends: [
-        {
-          name: "Increased demand for budget smartphones",
-          growth: "25% (Source: Market Analysis - Excerpt)",
-          impact: "high"
-        },
-        {
-          name: "Growing popularity of mid-range segment",
-          growth: "15% (Source: Market Analysis - Excerpt)",
-          impact: "medium"
-        }
-      ],
-      market_share: {
-        "Xiaomi": "12% (Source: Market Share - Excerpt)",
-        "Apple": "25% (Source: Market Share - Excerpt)",
-        "Samsung": "20% (Source: Market Share - Excerpt)"
-      }
-    },
-    recommendations: {
-      immediate_actions: [
-        "Invest in digital marketing",
-        "(Source: Competitor Analysis - Excerpt)"
-      ],
-      strategic_initiatives: [
-        "Develop mid-range segment offerings",
-        "(Source: Market Trends - Excerpt)"
-      ],
-      urgent_alerts: [
-        "Monitor competitor pricing strategies",
-        "(Source: Pricing Comparison - Excerpt)"
-      ]
-    }
-  }
-];
-
-
-
-
-export default function strengths() {
-
-  return (
-
-    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center shadow-inner-custom2">
-      {marketForecast.map((response) => (
-        <div key={response.id} className="flex flex-col items-center justify-center h-full">
-
-          <span className="text-3xl text-green-500">Strengths</span>
-          <div className="break-normal leading-[0.5]">
-            <span className="text-xs font-mulish">{response.swot_analysis.strengths[0]}</span>
-          </div>
-          <span className="text-[0.50rem] font-mulish text-gray-400">{response.swot_analysis.strengths[1]}</span>
-
-        </div>
-      ))}
-    </div>
-  )
+// Define the interface for the market data prop (should match the one in page.tsx)
+// Ensure this interface accurately reflects your MongoDB data structure
+interface MarketData {
+  _id: string;
+  swot_analysis: {
+    strengths: string[]; // Expecting an array like ["Strength text", "(Source...)"]
+    weaknesses: string[];
+    opportunities: string[];
+    threats: string[];
+  };
+  // Include other fields as needed
+  pricing_comparison?: { [key: string]: any };
+  competitive_positioning?: { [key: string]: any };
+  market_analysis?: { [key: string]: any };
+  recommendations?: { [key: string]: any };
 }
 
+interface StrengthsProps {
+  marketData: MarketData | null; // Accept the market data as a prop
+}
+
+export default function Strengths({ marketData }: StrengthsProps) {
+  // Handle cases where marketData or swot_analysis or strengths might be null/missing/empty
+  const strengths = marketData?.swot_analysis?.strengths;
+  const hasStrengths = strengths && strengths.length > 0;
+  const strengthText = hasStrengths
+    ? strengths[0]
+    : "No strengths data available.";
+  const strengthSource =
+    hasStrengths && strengths.length > 1 ? strengths[1] : null;
+
+  return (
+    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
+      <span className="text-3xl text-green-500 mb-2">Strengths</span>
+      {hasStrengths ? (
+        <>
+          <div className="break-words leading-tight max-w-full">
+            <span className="text-xs font-mulish">{strengthText}</span>
+          </div>
+          {strengthSource && (
+            <span className="text-[0.50rem] font-mulish text-gray-400 mt-1">
+              {strengthSource}
+            </span>
+          )}
+        </>
+      ) : (
+        <span className="text-xs font-mulish text-gray-400">
+          {strengthText}
+        </span>
+      )}
+    </div>
+  );
+}
