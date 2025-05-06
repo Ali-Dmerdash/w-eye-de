@@ -95,7 +95,7 @@ export default function Sidebar() {
               <div className="flex items-center justify-between flex-1">
                 <div>
                   <div className="flex flex-row items-center space-x-0.5">
-                    <h3 className="text-sm font-medium text-white">Magdi</h3>
+                    <h3 className="text-sm font-medium text-white">Amr</h3>
                     <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">
                       CEO
                     </p>
