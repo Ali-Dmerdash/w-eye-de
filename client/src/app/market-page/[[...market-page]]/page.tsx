@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import Sidebar from "@/components/ui/Sidebar";
 import CompetitivePositioning from "./components/competitivePositioning";
 import Strengths from "./components/strengths";
@@ -12,8 +11,66 @@ import MarketMap from "./components/marketMap";
 import Header from "@/components/ui/Header";
 import Analysis from "./components/analysis";
 
+// Define an interface for the market data structure
+// Adjust this based on the actual structure of your MongoDB data
+interface MarketData {
+  _id: string;
+  swot_analysis: {
+    strengths: string[];
+    weaknesses: string[];
+    opportunities: string[];
+    threats: string[];
+  };
+  pricing_comparison: {
+    competitors: { [key: string]: string };
+    discount_strategies: string[];
+  };
+  competitive_positioning: {
+    metrics: string[];
+    scores: { [key: string]: string[] };
+    visualization_note: string;
+  };
+  market_analysis: {
+    trends: { name: string; growth: string; impact: string }[];
+    market_share: { [key: string]: string };
+  };
+  recommendations: {
+    immediate_actions: string[];
+    strategic_initiatives: string[];
+    urgent_alerts: string[];
+  };
+  // Add other fields from your MongoDB document as needed
+}
+
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [marketData, setMarketData] = useState<MarketData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch market data from the API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/market-data");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: MarketData = await response.json();
+        setMarketData(data);
+        setError(null);
+      } catch (err: any) {
+        setError(err.message || "Failed to fetch market data");
+        setMarketData(null);
+        console.error("Error fetching market data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Listen for changes to the sidebar state
   useEffect(() => {
@@ -24,10 +81,7 @@ export default function Page() {
       setIsCollapsed(isCollapsed);
     };
 
-    // Initial check
     updateSidebarState();
-
-    // Set up a mutation observer to watch for attribute changes
     const observer = new MutationObserver(updateSidebarState);
     observer.observe(document.documentElement, {
       attributes: true,
@@ -43,38 +97,45 @@ export default function Page() {
       <Sidebar />
 
       <main
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
-          }`}
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
+          isCollapsed ? "sm:ml-16" : "sm:ml-64"
+        }`}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
-          {/* Top Row */}
+        {loading && (
+          <div className="text-white text-center">Loading market data...</div>
+        )}
+        {error && (
+          <div className="text-red-500 text-center">Error: {error}</div>
+        )}
+        {marketData && (
+          <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
+            {/* Top Row */}
+            <div className="lg:min-h-[40vh] lg:col-span-2">
+              <PricingComparison marketData={marketData} />
+            </div>
 
-          <div className=" lg:min-h-[40vh] lg:col-span-2">
-            <PricingComparison />
+            <div className="min-h-[400px] lg:min-h-[40vh] grid grid-cols-2 gap-2 lg:col-span-2">
+              <Strengths marketData={marketData} />
+              <Weaknesses marketData={marketData} />
+              <Opportunities marketData={marketData} />
+              <Threats marketData={marketData} />
+            </div>
+
+            <div className="lg:min-h-[40vh] lg:col-span-2">
+              <CompetitivePositioning marketData={marketData} />
+            </div>
+
+            {/* Bottom Row */}
+            <div className="lg:min-h-[40vh] lg:col-span-3 hidden md:block">
+              {/* MarketMap might need different data or logic, passing full data for now */}
+              <MarketMap marketData={marketData} />
+            </div>
+
+            <div className="lg:min-h-[40vh] lg:col-span-3 w-full">
+              <Analysis marketData={marketData} />
+            </div>
           </div>
-
-          <div className="min-h-[400px] lg:min-h-[40vh] grid grid-cols-2 gap-2 lg:col-span-2">
-          <Strengths/>
-          <Weaknesses/>
-          <Opportunities/>
-          <Threats/>
-          </div>
-
-          <div className=" lg:min-h-[40vh] lg:col-span-2">
-            <CompetitivePositioning />
-          </div>
-
-          {/* Bottom Row */}
-
-          <div className="lg:min-h-[40vh] lg:col-span-3 hidden md:block">
-            <MarketMap />
-          </div>
-
-          <div className="lg:min-h-[40vh] lg:col-span-3 w-full ">
-            <Analysis />
-          </div>
-
-        </div>
+        )}
       </main>
     </div>
   );
