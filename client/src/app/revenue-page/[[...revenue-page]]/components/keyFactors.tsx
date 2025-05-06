@@ -1,89 +1,80 @@
 "use client";
-import { useState, useEffect } from "react";
+import React from "react"; // Import React
+import revenueData from "../revenueData.json"; // Correct path from src/components to src
 
-// Define an interface for the expected data structure
+// Define an interface for the key factors if needed, or use Record<string, string>
 interface KeyFactors {
-  [key: string]: string; // e.g., "Seasonal Demand": "0.3/High"
+  [key: string]: string; // Assumes keys are strings and values are strings like "0.3/High"
 }
 
-interface RevenueData {
-  key_factors: KeyFactors;
-  // Add other top-level fields if needed
-}
+const KeyFactorsCard: React.FC = () => {
+  // Add React.FC type
+  const formatLabel = (label: string): string => {
+    // Add type annotation for parameter and return value
+    // Convert camelCase or PascalCase to Title Case with spaces, then uppercase
+    let result = label.replace(/([A-Z])/g, " $1");
+    // Handle potential leading space if first word starts with uppercase
+    result = result.replace(/^\s+/, "");
+    // Uppercase the whole string as per original requirement
+    return result.toUpperCase();
+  };
 
-export default function KeyFactorsComponent() {
-  // Renamed component assuming original name
-  const [keyFactorsState, setKeyFactorsState] = useState<KeyFactors | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch("/api/revenue-data"); // Fetch from the new API route
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: RevenueData = await response.json();
-        setKeyFactorsState(data.key_factors);
-      } catch (e: any) {
-        console.error("Failed to fetch key factors data:", e);
-        setError(e.message || "Failed to load data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading)
-    return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Loading Key Factors...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Error: {error}
-      </div>
-    );
-  if (!keyFactorsState)
-    return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        No key factors data available.
-      </div>
-    );
+  // Access data directly from the imported JSON object
+  const forecast = revenueData;
+  // Explicitly type key_factors if necessary, or let TypeScript infer
+  const key_factors: KeyFactors = forecast.key_factors as KeyFactors;
 
   return (
-    <div className="bg-[#1d2328] text-white p-6 rounded-lg h-full flex flex-col">
-      <h3 className="text-lg font-semibold mb-4">Key Revenue Factors</h3>
-      <ul className="space-y-3 flex-grow">
-        {Object.entries(keyFactorsState).map(([factor, value], index) => {
-          const [score, level] = value.split("/"); // Split value like "0.3/High"
-          return (
-            <li key={index} className="flex justify-between items-center">
-              <span>{factor}</span>
-              <span
-                className={`text-sm px-2 py-0.5 rounded ${
-                  level?.toLowerCase() === "high"
-                    ? "bg-green-500/20 text-green-300"
-                    : level?.toLowerCase() === "medium"
-                    ? "bg-yellow-500/20 text-yellow-300"
-                    : "bg-gray-500/20 text-gray-300"
-                }`}
+    <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
+      <h2 className="text-4xl font-bayon text-white text-center mb-6">
+        Key Factors
+      </h2>
+
+      <div className="grid grid-cols-2 gap-4 text-center">
+        {Object.entries(key_factors).map(([key, value], index) => {
+          // Ensure value is treated as string before splitting
+          const parts = String(value).split("/");
+          const score = parts[0] ? parts[0].trim() : "";
+          const level = parts[1] ? parts[1].trim() : "";
+
+          const formattedKey = formatLabel(key); // Use the provided key directly
+          const factorBox = (
+            <div
+              key={key}
+              className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
+            >
+              <h3 className="text-white text-sm">{formattedKey}</h3>
+              <p
+                className={`${
+                  level === "High"
+                    ? "text-red-500"
+                    : level === "Medium"
+                    ? "text-orange-300"
+                    : "text-gray-300"
+                } text-sm`}
               >
-                {level} ({score})
-              </span>
-            </li>
+                {score} / {level}
+              </p>
+            </div>
           );
+
+          // Apply col-span-2 to the last item if there's an odd number of items
+          if (
+            Object.keys(key_factors).length % 2 !== 0 &&
+            index === Object.keys(key_factors).length - 1
+          ) {
+            return (
+              <div className="col-span-2" key={key}>
+                {factorBox}
+              </div>
+            );
+          }
+
+          return factorBox;
         })}
-      </ul>
+      </div>
     </div>
   );
-}
+};
+
+export default KeyFactorsCard;

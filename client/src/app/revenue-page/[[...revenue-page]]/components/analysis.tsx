@@ -1,84 +1,58 @@
-"use client";
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Assuming similar imports
+import React, { useState } from "react"; // Import React
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import revenueData from "../revenueData.json"; // Correct path from src/components to src
 
-// Define an interface for the expected data structure
-interface Analysis {
-  insights: string;
-  recommendation: string;
-}
+const Analysis: React.FC = () => {
+  // Add React.FC type
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Add type for state
 
-interface RevenueData {
-  analysis: Analysis;
-  // Add other top-level fields if needed
-}
-
-export default function AnalysisComponent() {
-  // Renamed component assuming original name
-  const [analysisState, setAnalysisState] = useState<Analysis | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch("/api/revenue-data"); // Fetch from the new API route
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: RevenueData = await response.json();
-        setAnalysisState(data.analysis);
-      } catch (e: any) {
-        console.error("Failed to fetch analysis data:", e);
-        setError(e.message || "Failed to load data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading)
-    return (
-      <div className="text-white p-6 bg-primary rounded-lg h-full flex items-center justify-center">
-        Loading Analysis...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="text-red-500 p-6 bg-primary rounded-lg h-full flex items-center justify-center">
-        Error: {error}
-      </div>
-    );
-  if (!analysisState)
-    return (
-      <div className="text-white p-6 bg-primary rounded-lg h-full flex items-center justify-center">
-        No analysis data available.
-      </div>
-    );
+  // Access data directly from the imported JSON object
+  const forecast = revenueData;
 
   return (
-    <Card className="w-full bg-primary text-white border-none h-full flex flex-col">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          Revenue Analysis
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex-grow flex flex-col space-y-4">
-        <div>
-          <h4 className="text-md font-medium mb-1">Insights:</h4>
-          <p className="text-sm text-gray-300">{analysisState.insights}</p>
-        </div>
-        <div>
-          <h4 className="text-md font-medium mb-1">Recommendation:</h4>
-          <p className="text-sm text-gray-300">
-            {analysisState.recommendation}
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="flex items-start justify-center flex-wrap">
+      <Card className="w-full bg-primary text-white border-none">
+        <CardHeader className="text-center">
+          <h2 className="text-4xl font-bayon">Analysis</h2>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-center font-mulish text-gray-400">
+            <p className="text-sm">{forecast.analysis.insights}</p>
+
+            <div className="pt-4">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Recommendation
+              </button>
+
+              {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="bg-[#1D2328] rounded-lg p-6 max-w-md w-full shadow-lg dark:bg-gray-700">
+                    <h3 className="text-lg font-semibold text-gray-200 dark:text-white">
+                      Model Recommendation
+                    </h3>
+                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-300">
+                      {forecast.analysis.recommendation}
+                    </p>
+                    <div className="flex justify-end mt-4">
+                      <button
+                        onClick={() => setIsModalOpen(false)}
+                        className="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
-}
+};
+
+export default Analysis;
