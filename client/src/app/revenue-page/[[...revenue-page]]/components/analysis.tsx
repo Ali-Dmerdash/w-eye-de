@@ -45,7 +45,7 @@ export default function AnalysisComponent() {
   if (isLoading)
     return (
       <div className="flex items-start justify-center flex-wrap">
-        <div className="w-full bg-primary text-white border-none rounded-lg p-6 animate-pulse">
+        <div className="w-full bg-primary text-white border-none rounded-lg p-6">
           <div className="text-center mb-6">
             <div className="h-6 w-48 bg-gray-700 rounded mx-auto mb-4" />
           </div>

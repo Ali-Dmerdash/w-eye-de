@@ -3,6 +3,8 @@ import React, { useRef, useState, useEffect, useMemo } from "react"
 import { ArrowLeft, ArrowRight, Bell, Dot } from "lucide-react"
 import Image from "next/image"
 import eye from "@/assets/eye.png"
+import 'animate.css';
+
 
 
 export default function Header() {
@@ -119,10 +121,16 @@ export default function Header() {
       <div className="flex items-center md:space-x-4 space-x-2">
 
         <div className="relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
-          <Bell className="w-5 h-5 text-gray-200 " />
-          <div className="absolute bottom-3 left-3 ">
-            <Dot className="w-8 h-8 bg-opacity-25 text-[#ef672d]" />
+          <Bell className="w-5 h-5 text-gray-200" />
+          <div className="absolute bottom-[1.4rem] left-6 ">
+            <span className="relative flex items-center justify-center size-[0.5rem]">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ef672d] opacity-75" />
+              <span className="relative inline-flex size-[0.4rem] rounded-full bg-[#ef672d]" />
+            </span>
+
           </div>
+
+
 
           <div className="bg-[#3d464e70] border border-gray-200 border-opacity-30 rounded-lg px-2">
             <span className="mx-1 md:text-sm text-xs font-medium text-white text-nowrap">2 NEW</span>

@@ -105,7 +105,7 @@ const RevenueChart: React.FC = () => {
   if (isLoading)
     return (
       <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col items-center justify-center space-y-6">
-        <div className="animate-pulse space-y-6">
+        <div className="space-y-6">
         <LoadingSpinner width="8rem" height="8rem" />
 
           <div className="h-6 bg-gray-700 rounded w-56 mx-auto mb-4" />
