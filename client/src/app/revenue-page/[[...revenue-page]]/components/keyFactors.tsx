@@ -55,8 +55,8 @@ const KeyFactorsCard: React.FC = () => {
               key={index}
               className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
             >
-              <div className="h-4 bg-gray-700 rounded w-24 mx-auto mb-4" />
-              <div className="h-4 bg-gray-700 rounded w-20 mx-auto" />
+              <div className="h-4 bg-gray-700 rounded w-24 mx-auto mb-4 pulse" />
+              <div className="h-4 bg-gray-700 rounded w-20 mx-auto pulse" />
             </div>
           ))}
         </div>

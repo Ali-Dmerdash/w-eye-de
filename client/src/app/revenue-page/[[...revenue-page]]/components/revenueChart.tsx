@@ -108,10 +108,10 @@ const RevenueChart: React.FC = () => {
         <div className="space-y-6">
         <LoadingSpinner width="8rem" height="8rem" />
 
-          <div className="h-6 bg-gray-700 rounded w-56 mx-auto mb-4" />
+          <div className="h-6 bg-gray-700 rounded w-56 mx-auto mb-4 pulse" />
           <div className="space-y-2">
-            <div className="h-4 bg-gray-700 rounded w-28 mx-auto" />
-            <div className="h-4 bg-gray-700 rounded w-20 mx-auto" />
+            <div className="h-4 bg-gray-700 rounded w-28 mx-auto pulse" />
+            <div className="h-4 bg-gray-700 rounded w-20 mx-auto pulse" />
           </div>
         </div>
       </div>

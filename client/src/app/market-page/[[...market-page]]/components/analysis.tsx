@@ -44,13 +44,13 @@ export default function Analysis() {
             <h3 className="text-white text-base mb-2 text-center font-mulish">
               Trends
             </h3>
-            <TableSkeleton columns={3} rows={4} />
+            <TableSkeleton columns={3} rows={3} />
           </div>
           <div className="md:pl-3 md:border-l md:border-gray-700 pt-5 md:pt-0">
             <h3 className="text-white text-base mb-2 text-center font-mulish">
               Market Share
             </h3>
-            <TableSkeleton columns={2} rows={4} />
+            <TableSkeleton columns={2} rows={3} />
           </div>
         </div>
       </div>

@@ -47,15 +47,15 @@ export default function AnalysisComponent() {
       <div className="flex items-start justify-center flex-wrap">
         <div className="w-full bg-primary text-white border-none rounded-lg p-6">
           <div className="text-center mb-6">
-            <div className="h-6 w-48 bg-gray-700 rounded mx-auto mb-4" />
+            <div className="h-6 w-48 bg-gray-700 rounded mx-auto mb-4 pulse" />
           </div>
           <div className="space-y-3 mb-6">
-            <div className="h-4 bg-gray-700 rounded w-full" />
-            <div className="h-4 bg-gray-700 rounded w-11/12" />
-            <div className="h-4 bg-gray-700 rounded w-10/12" />
+            <div className="h-4 bg-gray-700 rounded w-full pulse" />
+            <div className="h-4 bg-gray-700 rounded w-11/12 pulse" />
+            <div className="h-4 bg-gray-700 rounded w-10/12 pulse" />
           </div>
           <div className="mt-4 flex justify-center">
-            <div className="h-10 w-36 bg-gray-600 rounded" />
+            <div className="h-10 w-36 bg-gray-600 rounded pulse" />
           </div>
         </div>
       </div>

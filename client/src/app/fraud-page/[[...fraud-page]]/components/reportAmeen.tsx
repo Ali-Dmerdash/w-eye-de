@@ -48,17 +48,17 @@ const ReportAmeen = () => {
   if (isLoading)
     return (
       <div className="flex items-start justify-center flex-wrap">
-        <div className="w-full max-w-md bg-primary text-white border-none rounded-lg p-6 animate-pulse">
+        <div className="w-full max-w-md bg-primary text-white border-none rounded-lg p-6">
           <div className="text-center mb-4">
-            <div className="h-5 w-32 bg-gray-700 rounded mx-auto" />
+            <div className="h-5 w-32 bg-gray-700 rounded mx-auto pulse" />
           </div>
           <div className="space-y-3">
-            <div className="h-4 bg-gray-700 rounded w-full" />
-            <div className="h-4 bg-gray-700 rounded w-11/12" />
-            <div className="h-4 bg-gray-700 rounded w-10/12" />
+            <div className="h-4 bg-gray-700 rounded w-full pulse" />
+            <div className="h-4 bg-gray-700 rounded w-11/12 pulse" />
+            <div className="h-4 bg-gray-700 rounded w-10/12 pulse" />
           </div>
           <div className="mt-6 flex justify-center">
-            <div className="h-9 w-32 bg-gray-600 rounded" />
+            <div className="h-9 w-32 bg-gray-600 rounded pulse" />
           </div>
         </div>
       </div>
