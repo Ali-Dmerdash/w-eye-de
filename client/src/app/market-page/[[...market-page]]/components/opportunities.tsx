@@ -1,42 +1,49 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-// Define the interface for the market data prop (should match the one in page.tsx)
-// Ensure this interface accurately reflects your MongoDB data structure
-interface MarketData {
-  _id: string;
-  swot_analysis: {
-    strengths: string[];
-    weaknesses: string[];
-    opportunities: string[]; // Expecting an array like ["Opportunity text", "(Source...)"]
-    threats: string[];
-  };
-  // Include other fields as needed
-  pricing_comparison?: { [key: string]: any };
-  competitive_positioning?: { [key: string]: any };
-  market_analysis?: { [key: string]: any };
-  recommendations?: { [key: string]: any };
-}
+export default function Opportunities() {
+  const [opportunities, setOpportunities] = useState<string[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-interface OpportunitiesProps {
-  marketData: MarketData | null; // Accept the market data as a prop
-}
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/market-data");
+        if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
+        const data = await res.json();
 
-export default function Opportunities({ marketData }: OpportunitiesProps) {
-  // Handle cases where marketData or swot_analysis or opportunities might be null/missing/empty
-  const opportunities = marketData?.swot_analysis?.opportunities;
-  const hasOpportunities = opportunities && opportunities.length > 0;
-  const opportunityText = hasOpportunities
-    ? opportunities[0]
-    : "No opportunities data available.";
+        const opps = data?.swot_analysis?.opportunities || null;
+        setOpportunities(Array.isArray(opps) ? opps : null);
+        setError(null);
+      } catch (err: any) {
+        setError(err.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const opportunityText =
+    opportunities && opportunities.length > 0
+      ? opportunities[0]
+      : "No opportunities data available.";
+
   const opportunitySource =
-    hasOpportunities && opportunities.length > 1 ? opportunities[1] : null;
+    opportunities && opportunities.length > 1 ? opportunities[1] : null;
 
   return (
     <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
       <span className="text-3xl text-yellow-500 mb-2">Opportunities</span>
-      {hasOpportunities ? (
+
+      {loading ? (
+        <span className="text-xs font-mulish text-gray-400">Loading...</span>
+      ) : error ? (
+        <span className="text-xs font-mulish text-red-400">{error}</span>
+      ) : (
         <>
           <div className="break-words leading-tight max-w-full">
             <span className="text-xs font-mulish">{opportunityText}</span>
@@ -47,10 +54,6 @@ export default function Opportunities({ marketData }: OpportunitiesProps) {
             </span>
           )}
         </>
-      ) : (
-        <span className="text-xs font-mulish text-gray-400">
-          {opportunityText}
-        </span>
       )}
     </div>
   );

@@ -1,25 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import Map from "@/assets/map.png"; // Assuming the map asset path is correct relative to this component
+import React, { useEffect, useState } from "react";
+import Map from "@/assets/map.png";
 import Image from "next/image";
-
-// Define the interface for the market data prop (should match the one in page.tsx)
-interface MarketData {
-  _id: string;
-  // Include other fields as needed, especially those relevant to the map/modal
-  pricing_comparison?: {
-    competitors: { [key: string]: string };
-  };
-  competitive_positioning?: {
-    scores: { [key: string]: string[] };
-  };
-  // Add other fields from your MongoDB document as needed
-}
-
-interface MarketMapProps {
-  marketData: MarketData | null; // Accept the market data as a prop
-}
 
 const LocationPin = () => (
   <svg
@@ -32,52 +15,83 @@ const LocationPin = () => (
   </svg>
 );
 
-// Define static positions for known competitors.
-// Ideally, this positioning data might also come from the backend/CMS in the future.
 const competitorPositions: { [key: string]: { top: string; left: string } } = {
   APPLE: { top: "45%", left: "15%" },
   XIAOMI: { top: "30%", left: "65%" },
   SAMSUNG: { top: "70%", left: "48%" },
-  // Add positions for other potential competitors if needed
 };
 
-export default function MarketMap({ marketData }: MarketMapProps) {
+export default function MarketMap() {
+  const [pricing, setPricing] = useState<{ [key: string]: string }>({});
+  const [scores, setScores] = useState<{ [key: string]: string[] }>({});
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Determine locations to display based on competitors in marketData
-  // Use competitors from pricing_comparison or competitive_positioning
-  const competitors = marketData?.pricing_comparison?.competitors
-    ? Object.keys(marketData.pricing_comparison.competitors)
-    : marketData?.competitive_positioning?.scores
-    ? Object.keys(marketData.competitive_positioning.scores)
-    : [];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/market-data");
+        if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
+
+        const result = await res.json();
+        setPricing(result.pricing_comparison?.competitors || {});
+        setScores(result.competitive_positioning?.scores || {});
+        setError(null);
+      } catch (err: any) {
+        setError(err.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const competitors = [
+    ...new Set([
+      ...Object.keys(pricing || {}),
+      ...Object.keys(scores || {}),
+    ]),
+  ];
 
   const locations = competitors
-    .map((name) => name.toUpperCase()) // Normalize name to uppercase for matching
-    .filter((upperName) => competitorPositions[upperName]) // Only include competitors with defined positions
-    .map((upperName) => ({
-      name: upperName, // Keep uppercase or use original name if needed
-      ...competitorPositions[upperName],
+    .map((name) => name.toUpperCase())
+    .filter((name) => competitorPositions[name])
+    .map((name) => ({
+      name,
+      ...competitorPositions[name],
     }));
 
-  // Get details for the selected competitor for the modal
-  const selectedCompetitorData =
-    selectedLocation && marketData
+  const selectedData =
+    selectedLocation && (pricing || scores)
       ? {
           price:
-            marketData.pricing_comparison?.competitors?.[selectedLocation] ||
-            marketData.pricing_comparison?.competitors?.[
-              selectedLocation.toLowerCase()
-            ] ||
+            pricing[selectedLocation] ||
+            pricing[selectedLocation.toLowerCase()] ||
             "N/A",
           scores:
-            marketData.competitive_positioning?.scores?.[selectedLocation] ||
-            marketData.competitive_positioning?.scores?.[
-              selectedLocation.toLowerCase()
-            ] ||
+            scores[selectedLocation] ||
+            scores[selectedLocation.toLowerCase()] ||
             [],
         }
       : null;
+
+  if (loading) {
+    return (
+      <div className="bg-[#1d2328] rounded-xl h-[40vh] flex items-center justify-center text-white">
+        Loading map...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-[#1d2328] rounded-xl h-[40vh] flex items-center justify-center text-red-400">
+        Error: {error}
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#1d2328] rounded-xl h-[40vh] relative overflow-hidden hidden md:block shadow-inner-custom2">
@@ -87,36 +101,31 @@ export default function MarketMap({ marketData }: MarketMapProps) {
         locations.map((loc) => (
           <div
             key={loc.name}
-            onClick={() => setSelectedLocation(loc.name)} // Use the name used in the data (e.g., APPLE)
+            onClick={() => setSelectedLocation(loc.name)}
             className="absolute z-10 flex flex-col items-center cursor-pointer hover:scale-125 duration-300"
             style={{ top: loc.top, left: loc.left }}
           >
             <LocationPin />
             <span className="text-xs bg-white/20 text-white font-mulish px-2 py-0.5 rounded">
-              {/* Display name consistently, e.g., capitalize */}
               {loc.name.charAt(0) + loc.name.slice(1).toLowerCase()}
             </span>
           </div>
         ))
       ) : (
         <div className="absolute inset-0 flex items-center justify-center z-10">
-          <p className="text-gray-400">
-            No competitor location data available.
-          </p>
+          <p className="text-gray-400">No competitor location data available.</p>
         </div>
       )}
 
-      {selectedLocation && selectedCompetitorData && (
+      {selectedLocation && selectedData && (
         <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
           onClick={() => setSelectedLocation(null)}
         >
-          {/* Added background click to close */}
           <div
             className="bg-[#1d2328] rounded-lg p-6 w-96 relative"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Prevent modal close on content click */}
             <button
               className="absolute top-2 right-2 text-gray-400 hover:text-white"
               onClick={() => setSelectedLocation(null)}
@@ -124,35 +133,27 @@ export default function MarketMap({ marketData }: MarketMapProps) {
               ✕
             </button>
             <h2 className="text-lg font-semibold mb-4 text-white">
-              {selectedLocation.charAt(0) +
-                selectedLocation.slice(1).toLowerCase()}{" "}
-              Details
+              {selectedLocation.charAt(0) + selectedLocation.slice(1).toLowerCase()} Details
             </h2>
             <div className="text-sm text-gray-300 space-y-2 font-mulish">
               <p>
-                <strong>Price:</strong> $
-                {selectedCompetitorData.price?.match(/\d+/)?.[0] ?? "N/A"}
+                <strong>Price:</strong> ${selectedData.price.match(/\d+/)?.[0] ?? "N/A"}
               </p>
-              {/* Display scores if available */}
-              {selectedCompetitorData.scores.length > 1 && (
+              {selectedData.scores.length > 1 && (
                 <p>
-                  <strong>Market Share:</strong>{" "}
-                  {selectedCompetitorData.scores[1] ?? "N/A"}
+                  <strong>Market Share:</strong> {selectedData.scores[1]}
                 </p>
               )}
-              {selectedCompetitorData.scores.length > 2 && (
+              {selectedData.scores.length > 2 && (
                 <p>
-                  <strong>Satisfaction:</strong>{" "}
-                  {selectedCompetitorData.scores[2] ?? "N/A"}
+                  <strong>Satisfaction:</strong> {selectedData.scores[2]}
                 </p>
               )}
-              {selectedCompetitorData.scores.length > 3 && (
+              {selectedData.scores.length > 3 && (
                 <p>
-                  <strong>Innovation:</strong>{" "}
-                  {selectedCompetitorData.scores[3] ?? "N/A"}
+                  <strong>Innovation:</strong> {selectedData.scores[3]}
                 </p>
               )}
-              {/* Add more details from marketData as needed */}
             </div>
           </div>
         </div>

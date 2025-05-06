@@ -12,6 +12,7 @@ export default {
       fontFamily: {
         mulish: "Mulish, sans-serif",
         roboto_slab: "'Robot Slab', sans-serif",
+        bayon: "'Bayon', sans-serif",
       },
       colors: {
         background: "hsl(var(--background))",
@@ -69,6 +70,10 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        'inner-custom': 'inset 0px 4px 10px 0 rgba(0, 18, 69, 0.7)',
+        'inner-custom2': 'inset 0px 4px 10px 0 rgba(0, 0, 0, 0.2)',
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -1,123 +1,103 @@
 "use client";
+import React, { useEffect, useState } from "react";
 
-import React from "react";
+export default function PricingComparison() {
+  const [competitors, setCompetitors] = useState<{ [key: string]: string }>({});
+  const [discountStrategies, setDiscountStrategies] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-// Define the interface for the market data prop (should match the one in page.tsx)
-// Ensure this interface accurately reflects your MongoDB data structure
-interface MarketData {
-  _id: string;
-  swot_analysis: {
-    strengths: string[];
-    weaknesses: string[];
-    opportunities: string[];
-    threats: string[];
-  };
-  pricing_comparison: {
-    competitors: { [key: string]: string }; // e.g., { "Xiaomi": "599 (Source...)" }
-    discount_strategies: string[];
-  };
-  competitive_positioning: {
-    metrics: string[];
-    scores: { [key: string]: string[] }; // e.g., { "Xiaomi": ["8 (Source...)", "20%", "4.5", "9"] }
-    visualization_note: string;
-  };
-  market_analysis: {
-    trends: { name: string; growth: string; impact: string }[];
-    market_share: { [key: string]: string };
-  };
-  recommendations: {
-    immediate_actions: string[];
-    strategic_initiatives: string[];
-    urgent_alerts: string[];
-  };
-  // Add other fields as needed
-}
+  useEffect(() => {
+    const fetchMarketData = async () => {
+      try {
+        const res = await fetch("/api/market-data");
+        if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
+        const data = await res.json();
 
-interface CompetitivePositioningProps {
-  marketData: MarketData | null; // Accept the market data as a prop
-}
+        const pc = data?.pricing_comparison;
+        if (pc?.competitors && typeof pc.competitors === "object") {
+          setCompetitors(pc.competitors);
+        }
 
-export default function CompetitivePositioning({
-  marketData,
-}: CompetitivePositioningProps) {
-  // Handle cases where marketData or necessary nested data might be null/missing
-  if (
-    !marketData ||
-    !marketData.competitive_positioning ||
-    !marketData.pricing_comparison
-  ) {
-    return (
-      <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col justify-center items-center text-white shadow-inner-custom2">
-        Loading competitive positioning data or data unavailable...
-      </div>
-    );
-  }
+        if (Array.isArray(pc?.discount_strategies)) {
+          setDiscountStrategies(pc.discount_strategies);
+        }
 
-  // Destructure the necessary data from the prop
-  const { scores } = marketData.competitive_positioning;
-  const prices = marketData.pricing_comparison.competitors;
+        setError(null);
+      } catch (err: any) {
+        setError(err.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Check if scores and prices objects exist and are not empty
-  const hasScores = scores && Object.keys(scores).length > 0;
-  const hasPrices = prices && Object.keys(prices).length > 0;
+    fetchMarketData();
+  }, []);
+
+  const hasCompetitors = Object.keys(competitors).length > 0;
+  const firstDiscountStrategy = discountStrategies[0] || "N/A";
 
   return (
     <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
+      {/* Title Section */}
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">
-            Competitive Positioning
+            Pricing Comparison
           </h2>
+          <p className="text-sm text-emerald-500">
+            {hasCompetitors
+              ? `${Object.keys(competitors).length} Competitor${
+                  Object.keys(competitors).length > 1 ? "s are" : " is"
+                } available`
+              : "No competitors available"}
+          </p>
         </div>
       </div>
 
-      <div className="overflow-x-auto flex-grow text-[0.6rem] text-left font-mulish">
-        <table className="w-full">
-          <thead>
-            <tr className="text-gray-400 uppercase border-b-[1px] border-[#56577A]">
-              {/* Dynamically generate headers from metrics if needed, or keep static */}
-              <th className="py-1">Name</th>
-              <th className="text-center py-1">Market Share</th>
-              <th className="text-center py-1">Price</th>
-              <th className="text-center py-1">Satisfaction</th>
-              <th className="text-center py-1">Innovation</th>
-            </tr>
-          </thead>
-          <tbody className="text-white">
-            {hasScores && hasPrices ? (
-              Object.entries(scores).map(([name, scoreArray]) => {
-                // Safely extract price, handle if competitor name doesn't exist in prices object
-                const priceString = prices[name];
-                const priceValue = priceString?.match(/\d+/)?.[0] ?? "N/A";
-
-                // Ensure scoreArray has enough elements before accessing indices
-                const marketShare = scoreArray?.[1] ?? "N/A";
-                const satisfaction = scoreArray?.[2] ?? "N/A";
-                const innovation = scoreArray?.[3] ?? "N/A";
-
-                return (
-                  <tr
-                    key={name}
-                    className="hover:bg-gray-800/50 border-b-[1px] border-[#56577A]"
-                  >
-                    <td className="py-5 font-medium">{name}</td>
-                    <td className="text-center py-5">{marketShare}</td>
-                    <td className="text-center py-5">${priceValue}</td>
-                    <td className="text-center py-5">{satisfaction}</td>
-                    <td className="text-center py-5">{innovation}</td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan={5} className="text-center py-5 text-gray-400">
-                  No competitive positioning data available.
-                </td>
+      {/* Table Section */}
+      {loading ? (
+        <div className="text-xs text-center text-gray-400">Loading...</div>
+      ) : error ? (
+        <div className="text-xs text-center text-red-400">{error}</div>
+      ) : (
+        <div className="overflow-x-auto flex-grow text-xs text-left font-mulish">
+          <table className="w-full">
+            <thead>
+              <tr className="text-xs text-gray-400 uppercase border-b-[1px] border-[#56577A]">
+                <th className="py-3">Name</th>
+                <th className="text-center py-3">Price</th>
+                <th className="text-center py-3">Discount Strategies</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="text-white">
+              {hasCompetitors ? (
+                Object.entries(competitors).map(([name, priceString]) => {
+                  const priceValue = priceString?.match(/\d+/)?.[0] ?? "N/A";
+                  return (
+                    <tr
+                      key={name}
+                      className="hover:bg-gray-800/50 border-b-[1px] border-[#56577A]"
+                    >
+                      <td className="py-5 font-medium">{name}</td>
+                      <td className="text-center py-5">${priceValue}</td>
+                      <td className="text-center py-5">
+                        {firstDiscountStrategy}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={3} className="text-center py-5 text-gray-400">
+                    No pricing comparison data available.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

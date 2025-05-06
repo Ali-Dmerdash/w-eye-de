@@ -104,35 +104,31 @@ export default function Page() {
         {loading && (
           <div className="text-white text-center">Loading market data...</div>
         )}
-        {error && (
-          <div className="text-red-500 text-center">Error: {error}</div>
-        )}
-        {marketData && (
+        {!loading && (
           <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
             {/* Top Row */}
             <div className="lg:min-h-[40vh] lg:col-span-2">
-              <PricingComparison marketData={marketData} />
+              <PricingComparison />
             </div>
 
-            <div className="min-h-[400px] lg:min-h-[40vh] grid grid-cols-2 gap-2 lg:col-span-2">
-              <Strengths marketData={marketData} />
-              <Weaknesses marketData={marketData} />
-              <Opportunities marketData={marketData} />
-              <Threats marketData={marketData} />
+            <div className="min-h-[400px] lg:min-h-[40vh] grid grid-cols-2 gap-2 lg:col-span-2 ">
+              <Strengths />
+              <Weaknesses />
+              <Opportunities />
+              <Threats />
             </div>
 
             <div className="lg:min-h-[40vh] lg:col-span-2">
-              <CompetitivePositioning marketData={marketData} />
+              <CompetitivePositioning />
             </div>
 
             {/* Bottom Row */}
             <div className="lg:min-h-[40vh] lg:col-span-3 hidden md:block">
-              {/* MarketMap might need different data or logic, passing full data for now */}
-              <MarketMap marketData={marketData} />
+              <MarketMap />
             </div>
 
             <div className="lg:min-h-[40vh] lg:col-span-3 w-full">
-              <Analysis marketData={marketData} />
+              <Analysis />
             </div>
           </div>
         )}
