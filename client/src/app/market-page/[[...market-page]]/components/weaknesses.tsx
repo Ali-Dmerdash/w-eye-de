@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import LoadingSpinner from './../../../../components/ui/loadingSpinner';
 
 export default function Weaknesses() {
   const [weaknesses, setWeaknesses] = useState<string[]>([]);
@@ -39,7 +40,7 @@ export default function Weaknesses() {
       <span className="text-3xl text-red-500 mb-2">Weaknesses</span>
 
       {loading ? (
-        <span className="text-xs font-mulish text-gray-400">Loading...</span>
+        <LoadingSpinner />
       ) : error ? (
         <span className="text-xs font-mulish text-red-400">{error}</span>
       ) : hasWeaknesses ? (

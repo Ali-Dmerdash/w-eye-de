@@ -45,8 +45,21 @@ const KeyFactorsCard: React.FC = () => {
 
   if (isLoading)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Loading Key Factors...
+      <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
+        <h2 className="text-4xl font-bayon text-white text-center mb-6">
+          Key Factors
+        </h2>
+        <div className="grid grid-cols-2 gap-4 text-center">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              key={index}
+              className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg animate-pulse"
+            >
+              <div className="h-4 bg-gray-700 rounded w-24 mx-auto mb-4" />
+              <div className="h-4 bg-gray-700 rounded w-20 mx-auto" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   if (error)
@@ -84,13 +97,12 @@ const KeyFactorsCard: React.FC = () => {
             >
               <h3 className="text-white text-sm">{formattedKey}</h3>
               <p
-                className={`${
-                  level === "High"
+                className={`${level === "High"
                     ? "text-red-500"
                     : level === "Medium"
-                    ? "text-orange-300"
-                    : "text-gray-300"
-                } text-sm`}
+                      ? "text-orange-300"
+                      : "text-gray-300"
+                  } text-sm`}
               >
                 {score} / {level}
               </p>

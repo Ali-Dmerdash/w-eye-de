@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingSpinner from "@/components/ui/loadingSpinner";
 import React, { useEffect, useState } from "react";
 
 export default function Opportunities() {
@@ -39,9 +40,9 @@ export default function Opportunities() {
     <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
       <span className="text-3xl text-yellow-500 mb-2">Opportunities</span>
 
-      {loading ? (
-        <span className="text-xs font-mulish text-gray-400">Loading...</span>
-      ) : error ? (
+      {loading ? <>
+        <LoadingSpinner />
+      </> : error ? (
         <span className="text-xs font-mulish text-red-400">{error}</span>
       ) : (
         <>

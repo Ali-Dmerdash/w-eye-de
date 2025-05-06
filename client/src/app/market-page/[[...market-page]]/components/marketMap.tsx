@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Map from "@/assets/map.png";
 import Image from "next/image";
+import LoadingSpinner from "@/components/ui/loadingSpinner";
 
 const LocationPin = () => (
   <svg
@@ -80,7 +81,7 @@ export default function MarketMap() {
   if (loading) {
     return (
       <div className="bg-[#1d2328] rounded-xl h-[40vh] flex items-center justify-center text-white">
-        Loading map...
+        <LoadingSpinner />
       </div>
     );
   }

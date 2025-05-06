@@ -10,6 +10,7 @@ import PricingComparison from "./components/pricingComparison";
 import MarketMap from "./components/marketMap";
 import Header from "@/components/ui/Header";
 import Analysis from "./components/analysis";
+import LoadingSpinner from "@/components/ui/loadingSpinner";
 
 // Define an interface for the market data structure
 // Adjust this based on the actual structure of your MongoDB data
@@ -97,13 +98,17 @@ export default function Page() {
       <Sidebar />
 
       <main
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
-          isCollapsed ? "sm:ml-16" : "sm:ml-64"
-        }`}
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
+          }`}
       >
-        {loading && (
-          <div className="text-white text-center">Loading market data...</div>
-        )}
+        {loading && <>
+          <div className="flex flex-col items-center justify-center h-screen space-y-3">
+            <LoadingSpinner />
+            <div className="text-white text-2xl font-mulish text-center">Loading market data...</div>
+
+          </div>
+        </>
+        }
         {!loading && (
           <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
             {/* Top Row */}

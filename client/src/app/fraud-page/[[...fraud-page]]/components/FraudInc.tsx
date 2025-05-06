@@ -1,4 +1,5 @@
 "use client";
+import TableSkeleton from "@/components/ui/TableSkeleton";
 import { useState, useEffect } from "react";
 
 // Define an interface for the expected data structure (optional but recommended)
@@ -41,10 +42,33 @@ export default function FraudInc() {
 
   if (isLoading)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Loading...
+      <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col animate-pulse">
+        <div className="shadow-lg">
+          <div className="bg-[#243461] shadow-inner-custom p-6 rounded-lg text-center mb-6">
+            <div className="h-6 w-48 mx-auto bg-gray-700 rounded mb-4" />
+            <div className="h-4 w-32 mx-auto bg-red-800 rounded" />
+          </div>
+        </div>
+  
+        <div className="w-full border-t border-gray-700 mb-6"></div>
+  
+        <div className="flex-grow">
+          <div className="h-6 w-60 bg-gray-700 rounded mb-6" />
+          <ul className="space-y-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-4"
+              >
+                <div className="h-4 w-16 bg-gray-600 rounded" />
+                <div className="h-4 w-56 bg-gray-700 rounded" />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
+  
   if (error)
     return (
       <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">

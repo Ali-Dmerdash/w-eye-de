@@ -1,5 +1,6 @@
 "use client";
 
+import TableSkeleton from "@/components/ui/tableSkeleton";
 import React, { useEffect, useState } from "react";
 
 interface MarketAnalysis {
@@ -34,11 +35,28 @@ export default function Analysis() {
 
   if (loading) {
     return (
-      <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] flex items-center justify-center text-white shadow-inner-custom2">
-        Loading market analysis...
+      <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
+        <h2 className="text-white text-xl md:text-2xl text-center font-bayon mb-5">
+          MARKET ANALYSIS
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="pr-1">
+            <h3 className="text-white text-base mb-2 text-center font-mulish">
+              Trends
+            </h3>
+            <TableSkeleton columns={3} rows={4} />
+          </div>
+          <div className="md:pl-3 md:border-l md:border-gray-700 pt-5 md:pt-0">
+            <h3 className="text-white text-base mb-2 text-center font-mulish">
+              Market Share
+            </h3>
+            <TableSkeleton columns={2} rows={4} />
+          </div>
+        </div>
       </div>
     );
   }
+  
 
   if (error || !data) {
     return (

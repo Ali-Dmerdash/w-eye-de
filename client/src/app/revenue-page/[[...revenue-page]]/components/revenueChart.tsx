@@ -1,4 +1,5 @@
 "use client";
+import LoadingSpinner from "@/components/ui/loadingSpinner";
 import React, { useState, useEffect } from "react";
 
 // Define props type for CircularProgress
@@ -103,8 +104,16 @@ const RevenueChart: React.FC = () => {
 
   if (isLoading)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Loading...
+      <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col items-center justify-center space-y-6">
+        <div className="animate-pulse space-y-6">
+        <LoadingSpinner width="8rem" height="8rem" />
+
+          <div className="h-6 bg-gray-700 rounded w-56 mx-auto mb-4" />
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-700 rounded w-28 mx-auto" />
+            <div className="h-4 bg-gray-700 rounded w-20 mx-auto" />
+          </div>
+        </div>
       </div>
     );
 

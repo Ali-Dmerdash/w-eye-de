@@ -1,4 +1,5 @@
 "use client";
+import TableSkeleton from "@/components/ui/tableSkeleton";
 import React, { useEffect, useState } from "react";
 
 export default function PricingComparison() {
@@ -47,17 +48,15 @@ export default function PricingComparison() {
           </h2>
           <p className="text-sm text-emerald-500">
             {hasCompetitors
-              ? `${Object.keys(competitors).length} Competitor${
-                  Object.keys(competitors).length > 1 ? "s are" : " is"
-                } available`
+              ? `${Object.keys(competitors).length} Competitor${Object.keys(competitors).length > 1 ? "s are" : " is"
+              } available`
               : "No competitors available"}
           </p>
         </div>
       </div>
 
-      {/* Table Section */}
       {loading ? (
-        <div className="text-xs text-center text-gray-400">Loading...</div>
+        <TableSkeleton columns={3} />
       ) : error ? (
         <div className="text-xs text-center text-red-400">{error}</div>
       ) : (
