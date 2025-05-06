@@ -16,6 +16,8 @@ import Logo from "@/assets/Logo.png";
 import eye from "@/assets/eye.png";
 import stars from "@/assets/nav-stars-bg.png";
 import { FaUserCircle } from "react-icons/fa";
+import { UserButton } from "@clerk/nextjs";
+
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -89,6 +91,8 @@ export default function Sidebar() {
           >
             <div className="relative">
               <FaUserCircle className="text-gray-400 w-10 h-10" />
+              {/* <UserButton /> */}
+              
               <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1d2328] rounded-full" />
             </div>
             {!isCollapsed && (
