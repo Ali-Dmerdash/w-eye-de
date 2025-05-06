@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto+Slab:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Bayon&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -117,8 +119,44 @@ body {
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground;
     @apply font-roboto_slab;
+  }
+}
+
+*{
+  user-select: none;          
+  -webkit-user-select: none;   
+  -moz-user-select: none;      
+  -ms-user-select: none; 
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1d2328;
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #364152, #49566b);
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background: #1d2328 url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 1L1 3H5L3 1Z' fill='%23ccc'/%3E%3C/svg%3E") no-repeat center;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-button:single-button:vertical:increment {
+    background: #1d2328 url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 5L5 3H1L3 5Z' fill='%23ccc'/%3E%3C/svg%3E") no-repeat center;
+    height: 8px;
   }
 }
