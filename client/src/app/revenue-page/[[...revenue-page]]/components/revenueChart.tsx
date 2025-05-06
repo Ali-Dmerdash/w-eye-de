@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react"; // Import React
-import revenueData from "../revenueData.json"; // Correct path from src/components to src
+import React, { useState, useEffect } from "react";
 
 // Define props type for CircularProgress
 type CircularProgressProps = {
@@ -15,12 +14,11 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   percentage,
   size = 150,
   strokeWidth = 8,
-  color = "#3B82F6", // Default color
-  label = "", // Default empty label
+  color = "#3B82F6",
+  label = "",
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
-  // Ensure percentage is within 0-100 range
   const validPercentage = Math.max(0, Math.min(100, percentage));
   const offset = circumference - (validPercentage / 100) * circumference;
 
@@ -29,7 +27,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
       <div className="relative" style={{ width: size, height: size }}>
         <svg className="transform -rotate-90" width={size} height={size}>
           <circle
-            className="text-gray-700" // Background circle color
+            className="text-gray-700"
             strokeWidth={strokeWidth}
             stroke="currentColor"
             fill="transparent"
@@ -40,7 +38,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
           <circle
             className="transition-all duration-1000 ease-in-out"
             strokeWidth={strokeWidth}
-            stroke={color} // Progress circle color based on props
+            stroke={color}
             strokeLinecap="round"
             fill="transparent"
             r={radius}
@@ -53,65 +51,97 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          {/* Display percentage only if it's a valid number */}
-          {typeof validPercentage === "number" && !isNaN(validPercentage) && (
-            <span className="text-xl font-bold text-white">
-              {validPercentage}%
-            </span>
-          )}
-          {/* Display label if provided */}
+          <span className="text-xl font-bold text-white">
+            {validPercentage}%
+          </span>
           {label && (
             <span className="text-xs text-gray-400">{label.toUpperCase()}</span>
-          )}{" "}
-          {/* Uppercase label */}
+          )}
         </div>
       </div>
     </div>
   );
 };
 
+type RevenueData = {
+  revenue_forecast: string;
+  confidence_level: string;
+};
+
 const RevenueChart: React.FC = () => {
-  // Add React.FC type
-  const [circleSize, setCircleSize] = useState<number>(300); // Add type for state
+  const [circleSize, setCircleSize] = useState<number>(300);
+  const [revenueData, setRevenueData] = useState<RevenueData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
       const vh = window.innerHeight;
-      // Adjust size based on viewport height, providing a fallback
       setCircleSize(vh < 800 ? 200 : vh < 1000 ? 250 : 300);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Access data directly from the imported JSON object
-  const forecast = revenueData;
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch("/api/revenue-data");
+        if (!res.ok) throw new Error("Failed to fetch data");
+        const data: RevenueData = await res.json();
+        setRevenueData(data);
+      } catch (err: any) {
+        setError(err.message || "Failed to load data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-  // Determine color based on confidence level
+  if (isLoading)
+    return (
+      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+        Loading...
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+        Error: {error}
+      </div>
+    );
+
+  if (!revenueData)
+    return (
+      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+        No data available.
+      </div>
+    );
+
   const confidenceColor =
-    forecast.confidence_level === "High"
-      ? "#E31A1A" // Red
-      : forecast.confidence_level === "Medium"
-      ? "#F97316" // Orange
-      : "#01B574"; // Green (or a default)
+    revenueData.confidence_level === "High"
+      ? "#E31A1A"
+      : revenueData.confidence_level === "Medium"
+      ? "#F97316"
+      : "#01B574";
 
-  // Assuming the 70% is static or derived differently, using a fixed value for now
-  // If confidence_level maps to percentage, logic needs adjustment
-  const displayPercentage = 70; // Hardcoded based on image, adjust if dynamic
+  const displayPercentage = 70; // Still static unless you have logic to convert confidence level to %
 
   return (
     <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
       <div className="flex flex-col items-center justify-center h-full">
         <CircularProgress
-          percentage={displayPercentage} // Use the determined percentage
-          color={confidenceColor} // Use the determined color
+          percentage={displayPercentage}
+          color={confidenceColor}
           size={circleSize}
-          label={forecast.confidence_level} // Display confidence level as label
+          label={revenueData.confidence_level}
         />
         <div className="py-4 flex flex-col">
-          <span className="text-5xl">{forecast.revenue_forecast}</span>
+          <span className="text-5xl">{revenueData.revenue_forecast}</span>
           <span className="text-base text-gray-400 font-mulish">
             Revenue Forecast
           </span>

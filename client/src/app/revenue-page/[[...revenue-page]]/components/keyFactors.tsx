@@ -1,28 +1,68 @@
 "use client";
-import React from "react"; // Import React
-import revenueData from "../revenueData.json"; // Correct path from src/components to src
+import React, { useState, useEffect } from "react";
 
-// Define an interface for the key factors if needed, or use Record<string, string>
 interface KeyFactors {
-  [key: string]: string; // Assumes keys are strings and values are strings like "0.3/High"
+  [key: string]: string; // e.g., "Seasonal Demand": "0.3/High"
+}
+
+interface RevenueData {
+  key_factors: KeyFactors;
 }
 
 const KeyFactorsCard: React.FC = () => {
-  // Add React.FC type
+  const [keyFactorsState, setKeyFactorsState] = useState<KeyFactors | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const formatLabel = (label: string): string => {
-    // Add type annotation for parameter and return value
-    // Convert camelCase or PascalCase to Title Case with spaces, then uppercase
     let result = label.replace(/([A-Z])/g, " $1");
-    // Handle potential leading space if first word starts with uppercase
     result = result.replace(/^\s+/, "");
-    // Uppercase the whole string as per original requirement
     return result.toUpperCase();
   };
 
-  // Access data directly from the imported JSON object
-  const forecast = revenueData;
-  // Explicitly type key_factors if necessary, or let TypeScript infer
-  const key_factors: KeyFactors = forecast.key_factors as KeyFactors;
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch("/api/revenue-data");
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
+        const data: RevenueData = await response.json();
+        setKeyFactorsState(data.key_factors);
+      } catch (e: any) {
+        console.error("Failed to fetch key factors data:", e);
+        setError(e.message || "Failed to load data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading)
+    return (
+      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+        Loading Key Factors...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+        Error: {error}
+      </div>
+    );
+  if (!keyFactorsState)
+    return (
+      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+        No key factors data available.
+      </div>
+    );
+
+  const entries = Object.entries(keyFactorsState);
 
   return (
     <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
@@ -31,13 +71,12 @@ const KeyFactorsCard: React.FC = () => {
       </h2>
 
       <div className="grid grid-cols-2 gap-4 text-center">
-        {Object.entries(key_factors).map(([key, value], index) => {
-          // Ensure value is treated as string before splitting
-          const parts = String(value).split("/");
-          const score = parts[0] ? parts[0].trim() : "";
-          const level = parts[1] ? parts[1].trim() : "";
+        {entries.map(([key, value], index) => {
+          const [score = "", level = ""] = value
+            .split("/")
+            .map((s) => s.trim());
+          const formattedKey = formatLabel(key);
 
-          const formattedKey = formatLabel(key); // Use the provided key directly
           const factorBox = (
             <div
               key={key}
@@ -58,11 +97,7 @@ const KeyFactorsCard: React.FC = () => {
             </div>
           );
 
-          // Apply col-span-2 to the last item if there's an odd number of items
-          if (
-            Object.keys(key_factors).length % 2 !== 0 &&
-            index === Object.keys(key_factors).length - 1
-          ) {
+          if (entries.length % 2 !== 0 && index === entries.length - 1) {
             return (
               <div className="col-span-2" key={key}>
                 {factorBox}

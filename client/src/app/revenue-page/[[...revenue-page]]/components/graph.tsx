@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useEffect, useState } from "react";
 
 const data = [
   { month: "Jan", value1: 180, value2: 500 },
