@@ -6,7 +6,7 @@ import Image from "next/image"
 import Logo from "@/assets/Logo.png"
 import eye from "@/assets/eye.png"
 import stars from "@/assets/nav-stars-bg.png"
-import { UserButton, useClerk, useUser  } from "@clerk/nextjs"
+  import { UserButton, useClerk, useUser  } from "@clerk/nextjs"
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -47,7 +47,7 @@ export default function Sidebar() {
     <>
       <div
         id="sidebar"
-        className={`fixed font-mulish z-[4854586] top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 rounded-e-3xl ${
+        className={`fixed font-mulish z-[4854586]  top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 rounded-e-3xl ${
           isCollapsed ? "w-16" : "w-64"
         } ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}
       >
@@ -73,7 +73,11 @@ export default function Sidebar() {
             } py-4 space-x-3 border-b border-gray-800`}
           >
             <div className="relative">
-              <UserButton />
+              <UserButton appearance={{
+                elements: {
+                  userButtonPopoverCard : "z-[4854587]"
+                }
+              }}/>
               <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1d2328] rounded-full" />
             </div>
             {!isCollapsed && (
@@ -103,7 +107,7 @@ export default function Sidebar() {
           </div>
 
           {/* Search */}
-          <div className={`${isCollapsed ? "px-2" : "px-4"} py-4`}>
+          <div className={`${isCollapsed ? "px-2" : "px-4"} hidden py-4`}>
             {isCollapsed ? (
               <button className="w-full flex justify-center p-2 text-gray-400 hover:text-white rounded-lg hover:bg-[#15191c] transition-colors">
                 <Search className="w-5 h-5" />
@@ -121,7 +125,7 @@ export default function Sidebar() {
           </div>
 
           {/* Navigation */}
-          <nav className={`flex-1 pt-1 ${isCollapsed ? "px-2" : "px-4"} space-y-2 overflow-y-auto`}>
+          <nav className={`flex-1 pt-5 ${isCollapsed ? "px-2" : "px-4"} space-y-4 overflow-y-auto`}>
             {navItems.map((item) => {
               const isActive = pathname === item.href
 

@@ -79,7 +79,7 @@ const ReportAmeen = () => {
 
   // Short and full text based on the fetched analysis data
   const shortText = `${analysisData.cause}`;
-  const fullText = `${analysisData.cause} <br /> ${analysisData.recommendation}`;
+  const fullText = `${analysisData.cause} <br /><br /> ${analysisData.recommendation}`;
 
   return (
     <div className="flex items-start justify-center flex-wrap ">

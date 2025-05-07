@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Page from "@/app/sign-in/[[...sign-in]]/page";
@@ -28,9 +29,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         
-        <body
-          className={`bg-black`}
-        >
+        <body className="bg-black">
             <SignedOut>
               <Page />
             </SignedOut>
