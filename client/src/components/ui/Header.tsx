@@ -12,17 +12,14 @@ export default function Header() {
   const [isEditing, setIsEditing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Listen for changes to the sidebar state
   useEffect(() => {
     const updateSidebarState = () => {
       const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
       setIsCollapsed(isCollapsed)
     }
 
-    // Initial check
     updateSidebarState()
 
-    // Set up a mutation observer to watch for attribute changes
     const observer = new MutationObserver(updateSidebarState)
     observer.observe(document.documentElement, {
       attributes: true,
@@ -35,12 +32,12 @@ export default function Header() {
 
   const handleClick = () => {
     setIsEditing(true)
-    setTimeout(() => inputRef.current?.focus(), 100) // Auto-focus
+    setTimeout(() => inputRef.current?.focus(), 100)
   }
 
   const handleBlur = () => {
     if (!inputRef.current?.value) {
-      setIsEditing(false) // Hide input if empty
+      setIsEditing(false)
     }
   }
 
@@ -119,6 +116,35 @@ export default function Header() {
 
 
       <div className="flex items-center md:space-x-4 space-x-2">
+
+        <div id="lightMode-btn" className=" relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
+
+
+            <button type="button" className="flex items-center rounded-full text-sm text-white" >
+              <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <circle cx={12} cy={12} r={4} />
+                <path d="M12 2v2" />
+                <path d="M12 20v2" />
+                <path d="m4.93 4.93 1.41 1.41" />
+                <path d="m17.66 17.66 1.41 1.41" />
+                <path d="M2 12h2" />
+                <path d="M20 12h2" />
+                <path d="m6.34 17.66-1.41 1.41" />
+                <path d="m19.07 4.93-1.41 1.41" />
+              </svg>
+
+            </button>
+          </div>
+
+
+        <div id="darkMode-btn" className="hidden relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
+
+            <button type="button" className="flex items-center rounded-full text-sm text-white">
+              <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+              </svg>
+            </button>
+          </div>
 
         <div className="relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
           <Bell className="w-5 h-5 text-gray-200" />
