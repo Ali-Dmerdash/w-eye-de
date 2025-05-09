@@ -11,11 +11,11 @@ export default function Opportunities() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results");
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
         const data = await res.json();
 
-        const opps = data?.swot_analysis?.opportunities || null;
+        const opps = data[0]?.swot_analysis?.opportunities || null;
         setOpportunities(Array.isArray(opps) ? opps : null);
         setError(null);
       } catch (err: any) {
@@ -30,7 +30,7 @@ export default function Opportunities() {
 
   const opportunityText =
     opportunities && opportunities.length > 0
-      ? opportunities[0]
+      ? opportunities[0].split(" (Source:")[0] // clean text
       : "No opportunities data available.";
 
   const opportunitySource =
@@ -40,9 +40,9 @@ export default function Opportunities() {
     <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
       <span className="text-3xl text-yellow-500 mb-2">Opportunities</span>
 
-      {loading ? <>
+      {loading ? (
         <LoadingSpinner />
-      </> : error ? (
+      ) : error ? (
         <span className="text-xs font-mulish text-red-400">{error}</span>
       ) : (
         <>

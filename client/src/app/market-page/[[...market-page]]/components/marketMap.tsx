@@ -32,12 +32,15 @@ export default function MarketMap() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results");
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
 
         const result = await res.json();
-        setPricing(result.pricing_comparison?.competitors || {});
-        setScores(result.competitive_positioning?.scores || {});
+        const pc = result?.[0]?.pricing_comparison;
+        const cp = result?.[0]?.competitive_positioning;
+
+        setPricing(pc?.competitors || {});
+        setScores(cp?.scores || {});
         setError(null);
       } catch (err: any) {
         setError(err.message || "Unknown error");
@@ -50,10 +53,7 @@ export default function MarketMap() {
   }, []);
 
   const competitors = [
-    ...new Set([
-      ...Object.keys(pricing || {}),
-      ...Object.keys(scores || {}),
-    ]),
+    ...new Set([...Object.keys(pricing || {}), ...Object.keys(scores || {})]),
   ];
 
   const locations = competitors
@@ -114,7 +114,9 @@ export default function MarketMap() {
         ))
       ) : (
         <div className="absolute inset-0 flex items-center justify-center z-10">
-          <p className="text-gray-400">No competitor location data available.</p>
+          <p className="text-gray-400">
+            No competitor location data available.
+          </p>
         </div>
       )}
 
@@ -134,11 +136,14 @@ export default function MarketMap() {
               ✕
             </button>
             <h2 className="text-lg font-semibold mb-4 text-white">
-              {selectedLocation.charAt(0) + selectedLocation.slice(1).toLowerCase()} Details
+              {selectedLocation.charAt(0) +
+                selectedLocation.slice(1).toLowerCase()}{" "}
+              Details
             </h2>
             <div className="text-sm text-gray-300 space-y-2 font-mulish">
               <p>
-                <strong>Price:</strong> ${selectedData.price.match(/\d+/)?.[0] ?? "N/A"}
+                <strong>Price:</strong> $
+                {selectedData.price.match(/\d+/)?.[0] ?? "N/A"}
               </p>
               {selectedData.scores.length > 1 && (
                 <p>

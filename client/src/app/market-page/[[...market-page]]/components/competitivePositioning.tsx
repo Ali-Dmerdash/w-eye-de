@@ -12,10 +12,21 @@ export default function CompetitivePositioning() {
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const res = await fetch("/api/market-data");
-        if (!res.ok) throw new Error("Failed to fetch market data");
-        const data = await res.json();
+        const res = await fetch("http://localhost:3001/api/market/results", {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
+        if (!res.ok) throw new Error("Failed to fetch market data");
+
+        const json = await res.json();
+        if (!Array.isArray(json) || json.length === 0) {
+          throw new Error("No market data available.");
+        }
+
+        const data = json[0];
         const cp = data?.competitive_positioning;
         const pc = data?.pricing_comparison;
 
@@ -29,7 +40,10 @@ export default function CompetitivePositioning() {
 
         setError(null);
       } catch (err: any) {
+        console.error("Fetch error:", err);
         setError(err.message || "Unknown error");
+        setScores({});
+        setPrices({});
       } finally {
         setLoading(false);
       }

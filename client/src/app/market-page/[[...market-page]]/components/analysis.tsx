@@ -16,13 +16,27 @@ export default function Analysis() {
   useEffect(() => {
     const fetchMarketAnalysis = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results", {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
 
-        const result = await res.json();
-        setData(result.market_analysis ?? null);
+        const json = await res.json();
+        if (!Array.isArray(json) || json.length === 0) {
+          throw new Error("No market analysis data available.");
+        }
+
+        const result = json[0]?.market_analysis;
+        if (!result) throw new Error("Market analysis data missing.");
+
+        setData(result);
         setError(null);
       } catch (err: any) {
+        console.error("Fetch error:", err);
         setError(err.message || "Unknown error occurred");
         setData(null);
       } finally {
@@ -56,7 +70,6 @@ export default function Analysis() {
       </div>
     );
   }
-  
 
   if (error || !data) {
     return (

@@ -11,11 +11,11 @@ export default function PricingComparison() {
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results");
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
         const data = await res.json();
 
-        const pc = data?.pricing_comparison;
+        const pc = data?.[0]?.pricing_comparison;
         if (pc?.competitors && typeof pc.competitors === "object") {
           setCompetitors(pc.competitors);
         }
@@ -40,7 +40,6 @@ export default function PricingComparison() {
 
   return (
     <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
-      {/* Title Section */}
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">
@@ -48,8 +47,9 @@ export default function PricingComparison() {
           </h2>
           <p className="text-sm text-emerald-500">
             {hasCompetitors
-              ? `${Object.keys(competitors).length} Competitor${Object.keys(competitors).length > 1 ? "s are" : " is"
-              } available`
+              ? `${Object.keys(competitors).length} Competitor${
+                  Object.keys(competitors).length > 1 ? "s are" : " is"
+                } available`
               : "No competitors available"}
           </p>
         </div>

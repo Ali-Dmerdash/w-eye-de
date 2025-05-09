@@ -11,11 +11,11 @@ export default function Threats() {
   useEffect(() => {
     const fetchThreats = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results");
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
         const data = await res.json();
 
-        const swot = data?.swot_analysis;
+        const swot = data?.[0]?.swot_analysis;
         if (Array.isArray(swot?.threats)) {
           setThreats(swot.threats);
         }
@@ -39,9 +39,11 @@ export default function Threats() {
     <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
       <span className="text-3xl text-orange-500 mb-2 font-bayon">Threats</span>
 
-      {loading ? <>
-        <LoadingSpinner />
-      </> : error ? (
+      {loading ? (
+        <>
+          <LoadingSpinner />
+        </>
+      ) : error ? (
         <span className="text-xs font-mulish text-red-400">{error}</span>
       ) : hasThreats ? (
         <>
