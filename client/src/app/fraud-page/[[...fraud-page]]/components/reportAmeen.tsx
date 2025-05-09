@@ -48,7 +48,7 @@ const ReportAmeen = () => {
   if (isLoading)
     return (
       <div className="flex items-start justify-center flex-wrap">
-        <div className="w-full max-w-md bg-primary text-white border-none rounded-lg p-6">
+        <div className="w-full max-w-md bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl p-6">
           <div className="text-center mb-4">
             <div className="h-5 w-32 bg-gray-700 rounded mx-auto pulse" />
           </div>
@@ -66,13 +66,13 @@ const ReportAmeen = () => {
   
   if (error)
     return (
-      <div className="text-red-500 p-6 bg-primary rounded-lg h-full flex items-center justify-center">
+      <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         Error: {error}
       </div>
     );
   if (!analysisData)
     return (
-      <div className="text-white p-6 bg-primary rounded-lg h-full flex items-center justify-center">
+      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         No analysis data available.
       </div>
     );
@@ -83,7 +83,7 @@ const ReportAmeen = () => {
 
   return (
     <div className="flex items-start justify-center flex-wrap ">
-      <Card className="w-full max-w-md bg-primary text-white border-none">
+      <Card className="w-full max-w-md bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl">
         <CardHeader className="text-center">
           <h2 className="text-lg font-semibold">Ameen Report</h2>
         </CardHeader>

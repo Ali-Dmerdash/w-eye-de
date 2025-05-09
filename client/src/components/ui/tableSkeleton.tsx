@@ -10,10 +10,10 @@ const TableSkeleton: React.FC<TableSkeletonProps> = ({ columns, rows = 3 }) => {
         <div className="flex-grow text-xs text-left font-mulish ">
             <table className="w-full">
                 <thead>
-                    <tr className="text-gray-400 uppercase border-b-[1px] border-[#56577A]">
+                    <tr className="text-gray-400/50 uppercase border-b-[1px] border-[#56577A]">
                         {Array.from({ length: columns }).map((_, colIdx) => (
                             <th key={colIdx} className="py-3 text-center ">
-                                <div className="h-3 bg-gray-700 rounded w-3/4 mx-auto pulse" />
+                                <div className="h-3 bg-gray-700/50 rounded w-3/4 mx-auto pulse" />
                             </th>
                         ))}
                     </tr>
@@ -26,7 +26,7 @@ const TableSkeleton: React.FC<TableSkeletonProps> = ({ columns, rows = 3 }) => {
                         >
                             {Array.from({ length: columns }).map((_, colIdx) => (
                                 <td key={colIdx} className="py-5 text-center">
-                                    <div className="h-3 bg-gray-700 rounded w-2/3 mx-auto pulse" />
+                                    <div className="h-3 bg-gray-700/50 rounded w-2/3 mx-auto pulse" />
                                 </td>
                             ))}
                         </tr>

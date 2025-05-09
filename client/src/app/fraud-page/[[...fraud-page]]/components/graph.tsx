@@ -88,7 +88,7 @@ export default function SalesOverview() {
   }, [])
 
   return (
-    <div className="p-6 bg-[#1d2328] rounded-lg h-full flex flex-col">
+    <div className="p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex flex-col">
       <div className="mb-2">
         <h2 className="text-base font-semibold text-white">Sales overview</h2>
         <p className="text-sm text-emerald-500">(+5) more in 2021</p>

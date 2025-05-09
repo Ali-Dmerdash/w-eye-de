@@ -58,7 +58,7 @@ export default function ProjectsTable() {
 
   if (isLoading)
     return (
-      <div className="text-white p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
+      <div className="text-white p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex flex-col">
         <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">Transactions</h2>
@@ -77,13 +77,13 @@ export default function ProjectsTable() {
     );
   if (error)
     return (
-      <div className="text-red-500 p-8 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+      <div className="text-red-500 p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         Error: {error}
       </div>
     );
 
   return (
-    <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
+    <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">Transactions</h2>

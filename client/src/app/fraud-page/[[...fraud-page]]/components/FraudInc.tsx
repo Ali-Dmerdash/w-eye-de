@@ -42,10 +42,10 @@ export default function FraudInc() {
 
   if (isLoading)
     return (
-      <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col ">
+      <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-xl h-full flex flex-col ">
         <div className="shadow-lg">
-          <div className="bg-[#243461] shadow-inner-custom p-6 rounded-lg text-center mb-6">
-            <div className="h-6 w-48 mx-auto bg-gray-700 rounded mb-4 pulse" />
+          <div className="bg-[#AEC3FF]/50 dark:bg-[#243461] shadow-inner-custom p-6 rounded-xl text-center mb-6">
+            <div className="h-6 w-48 mx-auto bg-gray-300/50 rounded mb-4 pulse" />
             <div className="h-4 w-32 mx-auto bg-red-800 rounded pulse" />
           </div>
         </div>
@@ -53,15 +53,15 @@ export default function FraudInc() {
         <div className="w-full border-t border-gray-700 mb-6"></div>
   
         <div className="flex-grow">
-          <div className="h-6 w-60 bg-gray-700 rounded mb-6 pulse" />
+          <div className="h-6 w-60 bg-gray-300/50 rounded mb-6 pulse" />
           <ul className="space-y-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <li
                 key={i}
                 className="flex items-center gap-4"
               >
-                <div className="h-4 w-16 bg-gray-600 rounded pulse" />
-                <div className="h-4 w-56 bg-gray-700 rounded pulse" />
+                <div className="h-4 w-16 bg-gray-400/50 rounded pulse" />
+                <div className="h-4 w-56 bg-gray-300/50 rounded pulse" />
               </li>
             ))}
           </ul>
@@ -71,22 +71,22 @@ export default function FraudInc() {
   
   if (error)
     return (
-      <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+      <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         Error: {error}
       </div>
     );
   if (!fraudDataState)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         No data available.
       </div>
     );
 
   return (
-    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col">
+    <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-xl h-full flex flex-col">
       {/* Fraud Incidence Rate Box */}
       <div className="shadow-lg">
-        <div className="bg-[#243461] shadow-inner-custom p-6 rounded-lg text-center mb-6">
+        <div className="bg-[#AEC3FF]/50 dark:bg-[#243461] shadow-inner-custom p-6 rounded-xl text-center mb-6">
           <h2 className="text-2xl tracking-wider text-white mb-2">
             FRAUD INCIDENCE RATE
           </h2>

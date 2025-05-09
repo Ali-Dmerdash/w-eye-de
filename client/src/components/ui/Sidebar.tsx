@@ -63,7 +63,7 @@ export default function Sidebar() {
             <Image
               onClick={toggleSidebar}
               className="cursor-pointer rotate-90"
-              src={eye || "/placeholder.svg"}
+              src={theme === "dark" ?  eye : eyeLight|| "/placeholder.svg"}
               alt="Logo"
             />
           ) : (

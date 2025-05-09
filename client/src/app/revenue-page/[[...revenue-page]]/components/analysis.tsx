@@ -85,7 +85,7 @@ export default function AnalysisComponent() {
           <div className="pt-4">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="block hover:text-[#484B6A] text-white hover:text-[#fafafa] dark:bg-gray-700 dark:hover:bg-gray-800 bg-[#AEC3FF] hover:bg-[#AEC3FF]/50 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              className="block text-white hover:text-[#fafafa] dark:bg-gray-700 dark:hover:bg-gray-800 hover:bg-[#AEC3FF] bg-[#AEC3FF]/50 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             >
               Recommendation
             </button>
