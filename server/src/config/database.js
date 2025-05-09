@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-})
-.then(() => {
+  })
+  .then(() => {
     console.log("MongoDB connected");
     app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
-})
-.catch((err) => {
+  })
+  .catch((err) => {
     console.error("MongoDB connection error:", err);
-});
+  });

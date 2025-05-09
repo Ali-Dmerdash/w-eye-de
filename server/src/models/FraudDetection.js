@@ -1,13 +1,8 @@
 const mongoose = require("mongoose");
 
-const FraudDetectionSchema = new mongoose.Schema({
-    detectedAt: { type: Date, default: Date.now },
-    status: {
-        type: String,
-        enum: ["Fraud detected", "No fraud"],
-        required: true,
-    },
-    details: { type: String, required: true },
-});
+const fraudSchema = new mongoose.Schema({}, { strict: false });
 
-module.exports = mongoose.model("FraudDetection", FraudDetectionSchema);
+// The third parameter here explicitly sets the collection name
+const Fraud = mongoose.model("Fraud", fraudSchema, "Fraud_LLM_Output");
+
+module.exports = Fraud;
