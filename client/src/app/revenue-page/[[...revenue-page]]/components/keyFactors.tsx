@@ -1,33 +1,35 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-// Define an interface for the expected data structure
 interface KeyFactors {
   [key: string]: string; // e.g., "Seasonal Demand": "0.3/High"
 }
 
 interface RevenueData {
   key_factors: KeyFactors;
-  // Add other top-level fields if needed
 }
 
-export default function KeyFactorsComponent() {
-  // Renamed component assuming original name
+const KeyFactorsCard: React.FC = () => {
   const [keyFactorsState, setKeyFactorsState] = useState<KeyFactors | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const formatLabel = (label: string): string => {
+    let result = label.replace(/([A-Z])/g, " $1");
+    result = result.replace(/^\s+/, "");
+    return result.toUpperCase();
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch("/api/revenue-data"); // Fetch from the new API route
-        if (!response.ok) {
+        const response = await fetch("/api/revenue-data");
+        if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
         const data: RevenueData = await response.json();
         setKeyFactorsState(data.key_factors);
       } catch (e: any) {
@@ -43,8 +45,21 @@ export default function KeyFactorsComponent() {
 
   if (isLoading)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Loading Key Factors...
+      <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
+        <h2 className="text-4xl font-bayon text-white text-center mb-6">
+          Key Factors
+        </h2>
+        <div className="grid grid-cols-2 gap-4 text-center">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              key={index}
+              className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
+            >
+              <div className="h-4 bg-gray-700 rounded w-24 mx-auto mb-4 pulse" />
+              <div className="h-4 bg-gray-700 rounded w-20 mx-auto pulse" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   if (error)
@@ -60,30 +75,53 @@ export default function KeyFactorsComponent() {
       </div>
     );
 
+  const entries = Object.entries(keyFactorsState);
+
   return (
-    <div className="bg-[#1d2328] text-white p-6 rounded-lg h-full flex flex-col">
-      <h3 className="text-lg font-semibold mb-4">Key Revenue Factors</h3>
-      <ul className="space-y-3 flex-grow">
-        {Object.entries(keyFactorsState).map(([factor, value], index) => {
-          const [score, level] = value.split("/"); // Split value like "0.3/High"
-          return (
-            <li key={index} className="flex justify-between items-center">
-              <span>{factor}</span>
-              <span
-                className={`text-sm px-2 py-0.5 rounded ${
-                  level?.toLowerCase() === "high"
-                    ? "bg-green-500/20 text-green-300"
-                    : level?.toLowerCase() === "medium"
-                    ? "bg-yellow-500/20 text-yellow-300"
-                    : "bg-gray-500/20 text-gray-300"
-                }`}
+    <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
+      <h2 className="text-4xl font-bayon text-white text-center mb-6">
+        Key Factors
+      </h2>
+
+      <div className="grid grid-cols-2 gap-4 text-center">
+        {entries.map(([key, value], index) => {
+          const [score = "", level = ""] = value
+            .split("/")
+            .map((s) => s.trim());
+          const formattedKey = formatLabel(key);
+
+          const factorBox = (
+            <div
+              key={key}
+              className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
+            >
+              <h3 className="text-white text-sm">{formattedKey}</h3>
+              <p
+                className={`${level === "High"
+                    ? "text-red-500"
+                    : level === "Medium"
+                      ? "text-orange-300"
+                      : "text-gray-300"
+                  } text-sm`}
               >
-                {level} ({score})
-              </span>
-            </li>
+                {score} / {level}
+              </p>
+            </div>
           );
+
+          if (entries.length % 2 !== 0 && index === entries.length - 1) {
+            return (
+              <div className="col-span-2" key={key}>
+                {factorBox}
+              </div>
+            );
+          }
+
+          return factorBox;
         })}
-      </ul>
+      </div>
     </div>
   );
-}
+};
+
+export default KeyFactorsCard;

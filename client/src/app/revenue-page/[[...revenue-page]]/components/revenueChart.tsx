@@ -1,132 +1,163 @@
 "use client";
-import { useState, useEffect } from "react";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts"; // Assuming similar imports
+import LoadingSpinner from "@/components/ui/loadingSpinner";
+import React, { useState, useEffect } from "react";
 
-// Define an interface for the expected data structure (adjust as needed)
-interface RevenueData {
+// Define props type for CircularProgress
+type CircularProgressProps = {
+  percentage: number;
+  size?: number;
+  strokeWidth?: number;
+  color?: string;
+  label?: string;
+};
+
+const CircularProgress: React.FC<CircularProgressProps> = ({
+  percentage,
+  size = 150,
+  strokeWidth = 8,
+  color = "#3B82F6",
+  label = "",
+}) => {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const validPercentage = Math.max(0, Math.min(100, percentage));
+  const offset = circumference - (validPercentage / 100) * circumference;
+
+  return (
+    <div className="relative flex flex-col items-center">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg className="transform -rotate-90" width={size} height={size}>
+          <circle
+            className="text-gray-700"
+            strokeWidth={strokeWidth}
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+          />
+          <circle
+            className="transition-all duration-1000 ease-in-out"
+            strokeWidth={strokeWidth}
+            stroke={color}
+            strokeLinecap="round"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+            style={{
+              strokeDasharray: circumference,
+              strokeDashoffset: offset,
+            }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-xl font-bold text-white">
+            {validPercentage}%
+          </span>
+          {label && (
+            <span className="text-xs text-gray-400">{label.toUpperCase()}</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type RevenueData = {
   revenue_forecast: string;
   confidence_level: string;
-  // Add other fields if the chart uses them
-}
+};
 
-// Dummy data for the chart - replace or fetch real chart data if needed
-const chartData = [
-  { month: "Jan", value: 400 },
-  { month: "Feb", value: 300 },
-  { month: "Mar", value: 600 },
-  { month: "Apr", value: 500 },
-  // ... add more data points
-];
-
-export default function RevenueChart() {
-  const [revenueDataState, setRevenueDataState] = useState<RevenueData | null>(
-    null
-  );
+const RevenueChart: React.FC = () => {
+  const [circleSize, setCircleSize] = useState<number>(300);
+  const [revenueData, setRevenueData] = useState<RevenueData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const handleResize = () => {
+      const vh = window.innerHeight;
+      setCircleSize(vh < 800 ? 200 : vh < 1000 ? 250 : 300);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      setError(null);
       try {
-        const response = await fetch("/api/revenue-data"); // Fetch from the new API route
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: RevenueData = await response.json();
-        setRevenueDataState(data);
-      } catch (e: any) {
-        console.error("Failed to fetch revenue data:", e);
-        setError(e.message || "Failed to load data");
+        const res = await fetch("/api/revenue-data");
+        if (!res.ok) throw new Error("Failed to fetch data");
+        const data: RevenueData = await res.json();
+        setRevenueData(data);
+      } catch (err: any) {
+        setError(err.message || "Failed to load data");
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
   if (isLoading)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Loading Chart...
+      <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col items-center justify-center space-y-6">
+        <div className="space-y-6">
+        <LoadingSpinner width="8rem" height="8rem" />
+
+          <div className="h-6 bg-gray-700 rounded w-56 mx-auto mb-4 pulse" />
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-700 rounded w-28 mx-auto pulse" />
+            <div className="h-4 bg-gray-700 rounded w-20 mx-auto pulse" />
+          </div>
+        </div>
       </div>
     );
+
   if (error)
     return (
       <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Error loading chart data: {error}
+        Error: {error}
       </div>
     );
-  // if (!revenueDataState) return <div className="text-white p-6">No forecast data.</div>; // Optional: Check if forecast data is needed before rendering chart
+
+  if (!revenueData)
+    return (
+      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+        No data available.
+      </div>
+    );
+
+  const confidenceColor =
+    revenueData.confidence_level === "High"
+      ? "#E31A1A"
+      : revenueData.confidence_level === "Medium"
+      ? "#F97316"
+      : "#01B574";
+
+  const displayPercentage = 70; // Still static unless you have logic to convert confidence level to %
 
   return (
-    <div className="p-6 bg-[#1d2328] rounded-lg h-full flex flex-col text-white">
-      <h2 className="text-lg font-semibold mb-2">Revenue Overview</h2>
-      {revenueDataState && (
-        <p className="text-sm mb-4">
-          Forecast: {revenueDataState.revenue_forecast} (Confidence:{" "}
-          {revenueDataState.confidence_level})
-        </p>
-      )}
-      <div className="flex-grow">
-        {/* Assuming a similar chart structure - adapt as needed */}
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={chartData}
-            margin={{ top: 5, right: 10, left: -20, bottom: 0 }}
-          >
-            <defs>
-              <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              vertical={false}
-              stroke="rgba(255, 255, 255, 0.1)"
-            />
-            <XAxis
-              dataKey="month"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#9CA3AF", fontSize: 10 }}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#9CA3AF", fontSize: 10 }}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#1F2937",
-                border: "none",
-                borderRadius: "8px",
-                color: "#fff",
-                fontSize: "12px",
-                padding: "4px 8px",
-              }}
-            />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              strokeWidth={2}
-              fill="url(#colorRevenue)"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
+      <div className="flex flex-col items-center justify-center h-full">
+        <CircularProgress
+          percentage={displayPercentage}
+          color={confidenceColor}
+          size={circleSize}
+          label={revenueData.confidence_level}
+        />
+        <div className="py-4 flex flex-col">
+          <span className="text-5xl">{revenueData.revenue_forecast}</span>
+          <span className="text-base text-gray-400 font-mulish">
+            Revenue Forecast
+          </span>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default RevenueChart;

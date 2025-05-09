@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
+import TableSkeleton from "@/components/ui/tableSkeleton";
 
 // Define interfaces for the expected data structure
 interface Transaction {
@@ -55,11 +56,23 @@ export default function ProjectsTable() {
     fetchData();
   }, []);
 
-  // Display loading/error states
   if (isLoading)
     return (
-      <div className="text-white p-8 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Loading Transactions...
+      <div className="text-white p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
+        <div className="flex items-center justify-between mb-6">
+        <div className="font-mulish">
+          <h2 className="text-lg font-semibold text-white">Transactions</h2>
+          <p className="text-sm text-emerald-500">
+            Loading transactions...
+          </p>
+        </div>
+        <button className="p-2 text-gray-400 rounded-lg hover:bg-gray-800">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+          </svg>
+        </button>
+      </div>
+        <TableSkeleton columns={9} rows={5} />
       </div>
     );
   if (error)

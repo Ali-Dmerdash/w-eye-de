@@ -1,59 +1,76 @@
 "use client";
 
-import React from "react";
+import TableSkeleton from "@/components/ui/tableSkeleton";
+import React, { useEffect, useState } from "react";
 
-// Define the interface for the market data prop (should match the one in page.tsx)
-// Ensure this interface accurately reflects your MongoDB data structure
-interface MarketData {
-  _id: string;
-  swot_analysis: {
-    strengths: string[];
-    weaknesses: string[];
-    opportunities: string[];
-    threats: string[];
-  };
-  pricing_comparison: {
-    competitors: { [key: string]: string };
-    discount_strategies: string[];
-  };
-  competitive_positioning: {
-    metrics: string[];
-    scores: { [key: string]: string[] };
-    visualization_note: string;
-  };
-  market_analysis: {
-    trends: { name: string; growth: string; impact: string }[];
-    market_share: { [key: string]: string };
-  };
-  recommendations: {
-    immediate_actions: string[];
-    strategic_initiatives: string[];
-    urgent_alerts: string[];
-  };
-  // Add other fields as needed
+interface MarketAnalysis {
+  trends: { name: string; growth: string; impact: string }[];
+  market_share: { [key: string]: string };
 }
 
-interface AnalysisProps {
-  marketData: MarketData | null; // Accept the market data as a prop
-}
+export default function Analysis() {
+  const [data, setData] = useState<MarketAnalysis | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default function Analysis({ marketData }: AnalysisProps) {
-  // Handle cases where marketData might be null or missing expected fields
-  if (!marketData || !marketData.market_analysis) {
-    // Optionally return a loading state or an error message
+  useEffect(() => {
+    const fetchMarketAnalysis = async () => {
+      try {
+        const res = await fetch("/api/market-data");
+        if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
+
+        const result = await res.json();
+        setData(result.market_analysis ?? null);
+        setError(null);
+      } catch (err: any) {
+        setError(err.message || "Unknown error occurred");
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMarketAnalysis();
+  }, []);
+
+  if (loading) {
     return (
-      <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] flex items-center justify-center text-white shadow-inner-custom2">
-        Loading analysis data or data unavailable...
+      <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
+        <h2 className="text-white text-xl md:text-2xl text-center font-bayon mb-5">
+          MARKET ANALYSIS
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="pr-1">
+            <h3 className="text-white text-base mb-2 text-center font-mulish">
+              Trends
+            </h3>
+            <TableSkeleton columns={3} rows={3} />
+          </div>
+          <div className="md:pl-3 md:border-l md:border-gray-700 pt-5 md:pt-0">
+            <h3 className="text-white text-base mb-2 text-center font-mulish">
+              Market Share
+            </h3>
+            <TableSkeleton columns={2} rows={3} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+
+  if (error || !data) {
+    return (
+      <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] flex items-center justify-center text-red-400 shadow-inner-custom2">
+        Error: {error ?? "Market analysis data unavailable"}
       </div>
     );
   }
 
-  // Destructure the necessary data from the prop
-  const { trends, market_share } = marketData.market_analysis;
+  const { trends, market_share } = data;
 
   return (
     <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
-      <div className="">
+      <div>
         <h2 className="text-white text-xl md:text-2xl text-center font-bayon">
           MARKET ANALYSIS
         </h2>
@@ -74,8 +91,7 @@ export default function Analysis({ marketData }: AnalysisProps) {
                 </tr>
               </thead>
               <tbody>
-                {/* Check if trends exist before mapping */}
-                {trends && trends.length > 0 ? (
+                {trends?.length > 0 ? (
                   trends.map((trend, index) => (
                     <tr
                       key={index}
@@ -83,7 +99,6 @@ export default function Analysis({ marketData }: AnalysisProps) {
                     >
                       <td className="py-5">{trend.name}</td>
                       <td className="py-5 text-center">
-                        {/* Use optional chaining and nullish coalescing for safety */}
                         {trend.growth?.match(/\d+/)?.[0] ?? "N/A"}%
                       </td>
                       <td className="py-5 text-center capitalize">
@@ -114,7 +129,6 @@ export default function Analysis({ marketData }: AnalysisProps) {
                 </tr>
               </thead>
               <tbody>
-                {/* Check if market_share exists and has entries before mapping */}
                 {market_share && Object.keys(market_share).length > 0 ? (
                   Object.entries(market_share).map(
                     ([name, percentage], index) => (
@@ -124,7 +138,6 @@ export default function Analysis({ marketData }: AnalysisProps) {
                       >
                         <td className="py-3.5">{name}</td>
                         <td className="py-3.5 pe-2 text-end">
-                          {/* Use optional chaining and nullish coalescing for safety */}
                           {percentage?.match(/\d+/)?.[0] ?? "N/A"}%
                         </td>
                       </tr>
