@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors"); // ✅ Add this
 
 const errorHandler = require("./src/utils/errorHandler");
 const fraudRoutes = require("./src/routes/fraudRoutes");
@@ -9,7 +10,15 @@ const marketRoutes = require("./src/routes/marketRoutes");
 const statsRoutes = require("./src/routes/statsRoutes");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
+// ✅ CORS configuration
+app.use(
+  cors({
+    origin: "http://localhost:3000", // your frontend origin
+    credentials: true, // allow cookies or auth headers if needed
+  })
+);
 
 // Middleware
 app.use(express.json());

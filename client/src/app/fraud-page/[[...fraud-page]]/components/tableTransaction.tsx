@@ -39,12 +39,27 @@ export default function ProjectsTable() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch("/api/fraud-data");
+        const response = await fetch(
+          "http://localhost:3001/api/fraud/results",
+          {
+            credentials: "include", // If you're using cookies for auth
+            headers: {
+              "Content-Type": "application/json",
+              // "Authorization": `Bearer ${yourToken}` // if you're using Bearer tokens
+            },
+          }
+        );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: FraudData = await response.json();
-        setTransactions(data.transactions || []); // Use fetched transactions
+
+        const json: FraudData[] = await response.json();
+
+        if (!Array.isArray(json) || json.length === 0) {
+          throw new Error("No analysis data available.");
+        }
+        setTransactions(json[0].transactions);
       } catch (e: any) {
         console.error("Failed to fetch transaction data:", e);
         setError(e.message || "Failed to load data");
@@ -60,18 +75,16 @@ export default function ProjectsTable() {
     return (
       <div className="text-white p-8 bg-[#1d2328] rounded-lg h-full flex flex-col">
         <div className="flex items-center justify-between mb-6">
-        <div className="font-mulish">
-          <h2 className="text-lg font-semibold text-white">Transactions</h2>
-          <p className="text-sm text-emerald-500">
-            Loading transactions...
-          </p>
+          <div className="font-mulish">
+            <h2 className="text-lg font-semibold text-white">Transactions</h2>
+            <p className="text-sm text-emerald-500">Loading transactions...</p>
+          </div>
+          <button className="p-2 text-gray-400 rounded-lg hover:bg-gray-800">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+            </svg>
+          </button>
         </div>
-        <button className="p-2 text-gray-400 rounded-lg hover:bg-gray-800">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
-        </button>
-      </div>
         <TableSkeleton columns={9} rows={5} />
       </div>
     );
