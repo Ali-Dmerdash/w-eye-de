@@ -12,7 +12,7 @@ export default function ChartCard() {
   }, [])
 
   return (
-    <div className="font-mulish bg-[#1d2328] rounded-lg p-6">
+    <div className="font-mulish rounded-lg p-6 bg-[#4B65AB] dark:bg-[#1d2328]">
       <div className="mb-4">
         <h3 className="text-lg font-medium text-white">Active Users</h3>
         <div className="flex items-center">
@@ -20,11 +20,8 @@ export default function ChartCard() {
           <span className="text-gray-400 text-sm ml-1">than last week</span>
         </div>
       </div>
-
-      {/* Chart with Y-axis labels and improved styling */}
-      <div className="h-48 flex relative mb-6 border-b border-gray-700 pb-4">
-        {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-gray-400 pr-2">
+      <div className="h-48 flex relative mb-6 border-b border-gray-700 pb-4 bg-[#E4E7F6] dark:bg-[#1B2131] rounded-xl">
+        <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-gray-400 pr-2 p-3 text-[#4B65AB] dark:text-gray-400">
           <span>500</span>
           <span>400</span>
           <span>300</span>
@@ -32,9 +29,7 @@ export default function ChartCard() {
           <span>100</span>
           <span>0</span>
         </div>
-
-        {/* Chart bars */}
-        <div className="flex-1 flex items-end justify-between pl-8">
+        <div className="flex-1 flex items-end justify-between pl-8 p-3 text-[#4B65AB] dark:text-[#E4E5F1]">
           {mounted &&
             data.map((value, index) => (
               <div key={index} className="flex flex-col items-center">
@@ -51,8 +46,6 @@ export default function ChartCard() {
             ))}
         </div>
       </div>
-
-      {/* Metrics */}
       <div className="grid grid-cols-4 gap-4 mt-8">
         <div className="space-y-1">
           <div className="flex items-center">
@@ -64,7 +57,6 @@ export default function ChartCard() {
           <p className="text-white font-medium">32,984</p>
           <div className="w-full h-1 bg-blue-500 rounded-full"></div>
         </div>
-
         <div className="space-y-1">
           <div className="flex items-center">
             <div className="bg-blue-500 p-1 rounded mr-2">
@@ -75,7 +67,6 @@ export default function ChartCard() {
           <p className="text-white font-medium">2.42m</p>
           <div className="w-full h-1 bg-blue-500 rounded-full"></div>
         </div>
-
         <div className="space-y-1">
           <div className="flex items-center">
             <div className="bg-blue-500 p-1 rounded mr-2">
@@ -86,7 +77,6 @@ export default function ChartCard() {
           <p className="text-white font-medium">2,400$</p>
           <div className="w-full h-1 bg-blue-500 rounded-full"></div>
         </div>
-
         <div className="space-y-1">
           <div className="flex items-center">
             <div className="bg-blue-500 p-1 rounded mr-2">

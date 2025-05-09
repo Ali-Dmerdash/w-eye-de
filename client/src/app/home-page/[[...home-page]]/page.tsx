@@ -8,9 +8,11 @@ import WelcomeCard from "./components/welcome-card";
 import ReferralCard from "./components/referal-card";
 import ChartCard from "./components/chart-card";
 import SphereVisualization from "./components/sphere";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Home() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { theme } = useTheme();
 
   // Listen for changes to the sidebar state
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#15191c]">
+    <div className={`min-h-screen transition-colors duration-300 ${theme === "dark" ? "bg-[#15191c]" : "bg-[#FAFAFA]"}`}>
       <Sidebar />
       <Header />
       <div
@@ -87,7 +89,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           <div className="lg:col-span-2 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <WelcomeCard name="Amr Ahmed" />
+              <WelcomeCard />
               <ReferralCard score={9.3} />
             </div>
             <ChartCard />

@@ -1,9 +1,9 @@
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Page from "@/app/sign-in/[[...sign-in]]/page";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +34,9 @@ export default function RootLayout({
               <Page />
             </SignedOut>
             <SignedIn>
-              <main>{children}</main>
+              <ThemeProvider>
+                <main>{children}</main>
+              </ThemeProvider>
             </SignedIn>
         </body>
       </html>
