@@ -50,7 +50,7 @@ export default function Sidebar() {
   return (
     <div
       id="sidebar"
-      className={`fixed font-mulish z-[4854586] top-0 left-0 h-screen transition-all duration-300 rounded-e-3xl
+      className={`fixed font-mulish z-50 top-0 left-0 h-screen transition-all duration-300 rounded-e-3xl
         ${isCollapsed ? "w-16" : "w-64"}
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0
         bg-[#E4E5F1] border-r border-gray-300 shadow-[6px_0_16px_0_rgba(44,62,80,0.15)]
@@ -77,7 +77,7 @@ export default function Sidebar() {
           <div className="relative">
             <UserButton appearance={{
               elements: {
-                userButtonPopoverCard: "z-[4854587]"
+                userButtonPopoverCard: "z-100"
               }
             }} />
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1d2328] rounded-full" />
