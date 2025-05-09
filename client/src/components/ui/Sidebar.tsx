@@ -6,6 +6,7 @@ import Image from "next/image"
 import LogoLight from "@/assets/LogoLight.png"
 import LogoDark from "@/assets/Logo.png"
 import eye from "@/assets/eye.png"
+import eyeLight from "@/assets/eyeLight.png"
 import stars from "@/assets/nav-stars-bg.png"
 import { UserButton, useClerk, useUser } from "@clerk/nextjs"
 import { useTheme } from "@/context/ThemeContext"
@@ -98,7 +99,7 @@ export default function Sidebar() {
               </div>
               <Image
                 onClick={toggleSidebar}
-                src={eye || "/placeholder.svg"}
+                src={theme === "dark" ?  eye : eyeLight|| "/placeholder.svg"}
                 className="cursor-pointer"
                 alt="Toggle"
               />

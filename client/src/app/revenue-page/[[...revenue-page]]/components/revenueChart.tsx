@@ -151,7 +151,7 @@ const RevenueChart: React.FC = () => {
         />
         <div className="py-4 flex flex-col">
           <span className="text-5xl">{revenueData.revenue_forecast}</span>
-          <span className="text-base text-[#AEC3FF] font-mulish">
+          <span className="text-base text-[#AEC3FF] dark:text-gray-400 font-mulish">
             Revenue Forecast
           </span>
         </div>

@@ -98,7 +98,7 @@ const KeyFactorsCard: React.FC = () => {
               <h3 className="text-white text-sm">{formattedKey}</h3>
               <p
                 className={`${level === "High"
-                    ? "text-red-500"
+                    ? "dark:text-red-500 text-red-700"
                     : level === "Medium"
                       ? "text-orange-300"
                       : "text-gray-300"
