@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
 
-const MarketSchema = new mongoose.Schema({
-    date: { type: Date, default: Date.now },
-    industry: { type: String, required: true },
-    competitors: { type: [String], required: true },
-    benchmark: { type: String, required: true },
-});
+const marketSchema = new mongoose.Schema({}, { strict: false });
 
-module.exports = mongoose.model("Market", MarketSchema);
+// The third parameter here explicitly sets the collection name
+const Market = mongoose.model("Market", marketSchema, "Market_LLM_Output");
+
+module.exports = Market;
