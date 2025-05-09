@@ -104,14 +104,14 @@ const RevenueChart: React.FC = () => {
 
   if (isLoading)
     return (
-      <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col items-center justify-center space-y-6">
+      <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col items-center justify-center space-y-6">
         <div className="space-y-6">
         <LoadingSpinner width="8rem" height="8rem" />
 
-          <div className="h-6 bg-gray-700 rounded w-56 mx-auto mb-4 pulse" />
+          <div className="h-6 bg-[#AEC3FF]/50 rounded w-56 mx-auto mb-4 pulse" />
           <div className="space-y-2">
-            <div className="h-4 bg-gray-700 rounded w-28 mx-auto pulse" />
-            <div className="h-4 bg-gray-700 rounded w-20 mx-auto pulse" />
+            <div className="h-4 bg-[#AEC3FF]/50 rounded w-28 mx-auto pulse" />
+            <div className="h-4 bg-[#AEC3FF]/50 rounded w-20 mx-auto pulse" />
           </div>
         </div>
       </div>
@@ -119,14 +119,14 @@ const RevenueChart: React.FC = () => {
 
   if (error)
     return (
-      <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+      <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
         Error: {error}
       </div>
     );
 
   if (!revenueData)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
         No data available.
       </div>
     );
@@ -141,7 +141,7 @@ const RevenueChart: React.FC = () => {
   const displayPercentage = 70; // Still static unless you have logic to convert confidence level to %
 
   return (
-    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
+    <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
       <div className="flex flex-col items-center justify-center h-full">
         <CircularProgress
           percentage={displayPercentage}
@@ -151,7 +151,7 @@ const RevenueChart: React.FC = () => {
         />
         <div className="py-4 flex flex-col">
           <span className="text-5xl">{revenueData.revenue_forecast}</span>
-          <span className="text-base text-gray-400 font-mulish">
+          <span className="text-base text-[#AEC3FF] font-mulish">
             Revenue Forecast
           </span>
         </div>

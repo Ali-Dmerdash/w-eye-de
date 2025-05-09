@@ -45,7 +45,7 @@ const KeyFactorsCard: React.FC = () => {
 
   if (isLoading)
     return (
-      <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
+      <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
         <h2 className="text-4xl font-bayon text-white text-center mb-6">
           Key Factors
         </h2>
@@ -53,10 +53,10 @@ const KeyFactorsCard: React.FC = () => {
           {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
+              className="bg-[#AEC3FF]/50 dark:bg-[#1f252b] border border-slate-500 dark:border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
             >
-              <div className="h-4 bg-gray-700 rounded w-24 mx-auto mb-4 pulse" />
-              <div className="h-4 bg-gray-700 rounded w-20 mx-auto pulse" />
+              <div className="h-4 bg-[#AEC3FF]/50 rounded w-24 mx-auto mb-4 pulse" />
+              <div className="h-4 bg-[#AEC3FF]/50 rounded w-20 mx-auto pulse" />
             </div>
           ))}
         </div>
@@ -64,13 +64,13 @@ const KeyFactorsCard: React.FC = () => {
     );
   if (error)
     return (
-      <div className="text-red-500 p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+      <div className="text-red-500 p-6  bg-[#4B65AB] dark:bg-[#1d2328]  rounded-lg h-full flex items-center justify-center">
         Error: {error}
       </div>
     );
   if (!keyFactorsState)
     return (
-      <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
+      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
         No key factors data available.
       </div>
     );
@@ -78,7 +78,7 @@ const KeyFactorsCard: React.FC = () => {
   const entries = Object.entries(keyFactorsState);
 
   return (
-    <div className="p-8 bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
+    <div className="p-8  bg-[#4B65AB] dark:bg-[#1d2328]  rounded-xl w-full max-w-md mx-auto shadow-md">
       <h2 className="text-4xl font-bayon text-white text-center mb-6">
         Key Factors
       </h2>
@@ -93,7 +93,7 @@ const KeyFactorsCard: React.FC = () => {
           const factorBox = (
             <div
               key={key}
-              className="bg-[#1f252b] border border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
+              className="dark:bg-[#1f252b] bg-[#AEC3FF]/50 border dark:border-slate-800 border-slate-500 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
             >
               <h3 className="text-white text-sm">{formattedKey}</h3>
               <p

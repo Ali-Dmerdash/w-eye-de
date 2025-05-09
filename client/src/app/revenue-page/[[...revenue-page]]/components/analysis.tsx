@@ -45,17 +45,17 @@ export default function AnalysisComponent() {
   if (isLoading)
     return (
       <div className="flex items-start justify-center flex-wrap">
-        <div className="w-full bg-primary text-white border-none rounded-lg p-6">
+        <div className="w-full bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl p-8 shadow-md">
           <div className="text-center mb-6">
-            <div className="h-6 w-48 bg-gray-700 rounded mx-auto mb-4 pulse" />
+            <div className="h-6 w-48 bg-[#AEC3FF]/50 rounded mx-auto mb-4 pulse" />
           </div>
           <div className="space-y-3 mb-6">
-            <div className="h-4 bg-gray-700 rounded w-full pulse" />
-            <div className="h-4 bg-gray-700 rounded w-11/12 pulse" />
-            <div className="h-4 bg-gray-700 rounded w-10/12 pulse" />
+            <div className="h-4 bg-[#AEC3FF]/50 rounded w-full pulse" />
+            <div className="h-4 bg-[#AEC3FF]/50 rounded w-11/12 pulse" />
+            <div className="h-4 bg-[#AEC3FF]/50 rounded w-10/12 pulse" />
           </div>
           <div className="mt-4 flex justify-center">
-            <div className="h-10 w-36 bg-gray-600 rounded pulse" />
+            <div className="h-10 w-36 bg-[#AEC3FF]/50 rounded pulse" />
           </div>
         </div>
       </div>
@@ -63,59 +63,53 @@ export default function AnalysisComponent() {
   
   if (error)
     return (
-      <div className="text-red-500 p-6 bg-primary rounded-lg h-full flex items-center justify-center">
+      <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         Error: {error}
       </div>
     );
   if (!analysisState)
     return (
-      <div className="text-white p-6 bg-primary rounded-lg h-full flex items-center justify-center">
+      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         No analysis data available.
       </div>
     );
 
   return (
     <div className="flex items-start justify-center flex-wrap">
-      <Card className="w-full bg-primary text-white border-none">
-        <CardHeader className="text-center">
-          <h2 className="text-4xl font-bayon">Revenue Analysis</h2>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col items-center font-mulish text-gray-400">
-            <p className="text-sm">{analysisState.insights}</p>
-
-            <div className="pt-4">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                Recommendation
-              </button>
-
-              {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                  <div className="bg-[#1D2328] rounded-lg p-6 max-w-md w-full shadow-lg dark:bg-gray-700">
-                    <h3 className="text-lg font-semibold text-gray-200 dark:text-white">
-                      Model Recommendation
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-400 dark:text-gray-300">
-                      {analysisState.recommendation}
-                    </p>
-                    <div className="flex justify-end mt-4">
-                      <button
-                        onClick={() => setIsModalOpen(false)}
-                        className="block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                      >
-                        Close
-                      </button>
-                    </div>
+      <div className="w-full p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl shadow-md">
+        <div className="text-center mb-6">
+          <h2 className="text-4xl font-bayon text-white">Revenue Analysis</h2>
+        </div>
+        <div className="flex flex-col items-center font-mulish text-gray-300">
+          <p className="text-sm">{analysisState.insights}</p>
+          <div className="pt-4">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="block hover:text-[#484B6A] text-white hover:text-[#fafafa] dark:bg-gray-700 dark:hover:bg-gray-800 bg-[#AEC3FF] hover:bg-[#AEC3FF]/50 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              Recommendation
+            </button>
+            {isModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-[#4B65AB] dark:bg-[#1d2328] border border-slate-500 dark:border-slate-800 rounded-xl p-6 max-w-md w-full shadow-lg">
+                  <h3 className="text-lg font-bayon text-white">Model Recommendation</h3>
+                  <p className="mt-2 text-sm text-gray-300">
+                    {analysisState.recommendation}
+                  </p>
+                  <div className="flex justify-end mt-4">
+                    <button
+                      onClick={() => setIsModalOpen(false)}
+                      className="block text-white dark:hover:text-[#484B6A] hover:text-[#fafafa] dark:bg-gray-700 dark:hover:bg-gray-800 bg-[#AEC3FF] hover:bg-[#AEC3FF]/50 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

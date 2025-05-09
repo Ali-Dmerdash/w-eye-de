@@ -35,7 +35,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#15191c]">
+    <div className="min-h-screen transition-colors duration-300 bg-[#FAFAFA] dark:bg-[#15191c]">
       <Header />
       <Sidebar />
 
