@@ -1,5 +1,4 @@
 "use client";
-import TableSkeleton from "@/components/ui/TableSkeleton";
 import { useState, useEffect } from "react";
 
 // Define an interface for the expected data structure
