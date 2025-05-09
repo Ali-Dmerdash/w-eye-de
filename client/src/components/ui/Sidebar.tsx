@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { Home, BarChart2, CreditCard, DollarSign, Globe, Upload, LogOut, Search } from "lucide-react"
 import Image from "next/image"
-import Logo from "@/assets/Logo.png"
+import LogoLight from "@/assets/LogoLight.png"
 import eye from "@/assets/eye.png"
 import stars from "@/assets/nav-stars-bg.png"
   import { UserButton, useClerk, useUser  } from "@clerk/nextjs"
@@ -47,7 +47,7 @@ export default function Sidebar() {
     <>
       <div
         id="sidebar"
-        className={`fixed font-mulish z-[4854586]  top-0 left-0 h-screen bg-[#1d2328] border-r border-gray-800 transition-all duration-300 rounded-e-3xl ${
+        className={`fixed font-mulish z-[4854586]  top-0 left-0 h-screen bg-[#E4E5F1] border-r border-gray-800 transition-all duration-300 rounded-e-3xl ${
           isCollapsed ? "w-16" : "w-64"
         } ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0`}
       >
@@ -62,7 +62,7 @@ export default function Sidebar() {
                 alt="Logo"
               />
             ) : (
-              <Image src={Logo || "/placeholder.svg"} alt="Logo" className="w-[100%]" />
+              <Image src={LogoLight || "/placeholder.svg"} alt="Logo" className="w-[100%]" />
             )}
           </div>
 
@@ -70,7 +70,7 @@ export default function Sidebar() {
           <div
             className={`flex items-center ${
               isCollapsed ? "justify-center px-2" : "px-6"
-            } py-4 space-x-3 border-b border-gray-800`}
+            } py-4 space-x-3 border-b border-gray-300`}
           >
             <div className="relative">
               <UserButton appearance={{
@@ -84,7 +84,7 @@ export default function Sidebar() {
               <div className="flex items-center justify-between flex-1">
                 <div>
                   <div className="flex flex-row items-center space-x-0.5">
-                    <h3 className="text-sm font-medium text-white">
+                    <h3 className="text-sm font-medium text-[#9394A5]">
                       {isLoaded ? user?.username : "Loading..."}
                     </h3>
                     <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">
@@ -133,42 +133,40 @@ export default function Sidebar() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`flex items-center ${
+                  className={`group flex items-center ${
                     isCollapsed ? "justify-center" : ""
-                  } px-4 py-2.5 text-gray-300 rounded-lg relative overflow-hidden transition-colors
+                  } px-4 py-2.5 rounded-lg relative overflow-hidden transition-colors
                     ${
                       isActive
-                        ? "shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-black/20 bg-gradient-to-r from-[#243461] via-[#15191c] via-[46%] to-[#15191C]"
-                        : "hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-black/20 hover:bg-gradient-to-r hover:from-[#243461] hover:via-[#15191c] hover:via-[46%] hover:to-[#15191C]"
+                        ? "text-[#E4E5F1] shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#4B65AB] via-[46%] to-[#4B65AB]"
+                        : "text-[#686868] hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB]"
                     }`}
                 >
-                  <item.icon className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} text-gray-400`} />
+                  <item.icon className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} ${isActive ? "text-[#E4E5F1]" : "text-[#686868] group-hover:text-[#E4E5F1]"}`} />
                   {!isCollapsed && <span className="z-10">{item.label}</span>}
                   {isActive && (
-                    <div className="overlay absolute top-0 left-0">
+                    <div className="hidden overlay absolute top-0 left-0">
                       <Image src={stars || "/placeholder.svg"} className="w-full opacity-10" alt="Stars" />
                     </div>
                   )}
                 </a>
-              )
+                )
             })}
           </nav>
 
           {/* Sign Out */}
-          <div className={`group px-4 mt-auto mb-5 `}>
+          <div className={`group px-4 mt-auto mb-5`}>
             <button
               onClick={handleSignOut}
-              className={`flex items-center space-x-3 w-full ${isCollapsed? "justify-center rounded-full outline outline-3 outline-[#98B3FF]/30 bg-gradient-to-t from-[#243461] to-[#15191C] group-hover:outline-none group-hover:bg-none transition-all duration-300 " : "rounded-lg" } px-4 py-3 text-gray-300 outline outline-3 outline-black/20 bg[#243461] transition-all
-              group-hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] group-hover:outline group-hover:outline-2 group-hover:-outline-offset-2 group-hover:outline-black/20 group-hover:bg-gradient-to-r group-hover:from-[#243461] group-hover:via-[#15191c] group-hover:via-[46%] group-hover:to-[#15191C]`}
+              className={`flex items-center ${isCollapsed ? "justify-center" : ""} w-full px-4 py-3 rounded-lg 
+                text-[#686868] transition-colors duration-300
+                hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB]`}
             >
-              <div
-                className={`p-3 rounded-full ${
-                  isCollapsed
-                    ? ""
-                    : "outline outline-3 outline-[#98B3FF]/30 bg-gradient-to-t from-[#243461] to-[#15191C] group-hover:outline-none group-hover:bg-none transition-all duration-300"
-                }`}
+              <div className={`p-3 rounded-full ${isCollapsed ? "" : "mr-3"}
+                shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#4B65AB] via-[46%] to-[#4B65AB]
+                group-hover:bg-none group-hover:outline-none group-hover:shadow-none transition-all duration-300`}
               >
-                <LogOut className={`rotate-180 w-4 h-4`} />
+                <LogOut className={`rotate-180 w-4 h-4 text-[#E4E5F1]`} />
               </div>
               {!isCollapsed && <span>Sign out</span>}
             </button>
