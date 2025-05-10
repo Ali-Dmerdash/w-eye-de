@@ -132,12 +132,12 @@ export default function Sidebar() {
                 className={`group flex items-center ${isCollapsed ? "justify-center" : ""} px-4 py-2.5 rounded-lg relative overflow-hidden transition-all duration-300
                   ${isActive
                     ? "text-[#E4E5F1] shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#4B65AB] via-[46%] to-[#4B65AB] dark:from-[#243461] dark:via-[#15191c] dark:via-[46%] dark:to-[#15191C]"
-                    : "text-[#686868] transition-all duration-300 hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB] dark:hover:from-[#243461] dark:hover:via-[#15191c] dark:hover:via-[46%] dark:hover:to-[#15191C]"}`}
+                    : "text-[#686868] hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB] dark:hover:from-[#243461] dark:hover:via-[#15191c] dark:hover:via-[46%] dark:hover:to-[#15191C]"}`}
               >
                 <item.icon className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} transition-colors duration-300 ${isActive ? "text-[#E4E5F1]" : "text-[#686868] group-hover:text-[#E4E5F1]"}`} />
                 {!isCollapsed && <span className="z-10">{item.label}</span>}
                 {isActive && (
-                  <div className="overlay absolute dark:top-0 dark:left-0 hidden dark:block duration-300">
+                  <div className="overlay absolute dark:top-0 dark:left-0 hidden dark:block">
                     <Image src={stars || "/placeholder.svg"} className="w-full opacity-10" alt="Stars" />
                   </div>
                 )}

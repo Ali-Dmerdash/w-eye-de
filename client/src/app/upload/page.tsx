@@ -60,7 +60,7 @@ export default function DataUpload() {
   }
 
   const handleFiles = (fileList: FileList) => {
-    if (files.length > 0) return 
+    if (files.length > 0) return
     const file = fileList[0]
     const newFile = {
       id: Math.random().toString(36).substring(2, 9),
@@ -118,7 +118,7 @@ export default function DataUpload() {
             <div className={`${files.length > 0 ? "opacity-50" : ""} flex flex-col items-center`}>
               <p className="dark:text-gray-400 text-[#AEC3FF] text-lg mb-2">Drag & drop or click to choose files</p>
               <div className="flex flex-col dark:text-gray-500 text-[#AEC3FF]/60 items-center">
-              <p>Accepted files: .pdf, .csv, .xls, .xlsx,</p>
+                <p>Accepted files: .pdf, .csv, .xls, .xlsx,</p>
 
                 <div className="flex items-center">
                   <Info className="w-5 h-5 mr-2" />
@@ -168,14 +168,14 @@ export default function DataUpload() {
                     >
                       <Trash2 className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
                     </button>
-                    
+
                   </div>
                 </div>
               ))}
-              <div className="flex justify-center mb-6 font-mulish">
+              <div className="flex justify-center font-mulish">
                 <button
                   disabled
-                  className="dark:bg-[#1d2328] dark:text-white font-medium py-4 px-32 border dark:border-gray-700 rounded-lg opacity-50 transition-colors text-lg"
+                  className="dark:bg-[#1d2328] bg-[#AEC3FF]/10 dark:text-white text-[#AEC3FF] font-medium py-4 px-32 border dark:border-gray-700 border-[#AEC3FF]/50  rounded-lg opacity-50 transition-colors text-lg"
                 >
                   Add
                 </button>
