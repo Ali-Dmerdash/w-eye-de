@@ -84,7 +84,7 @@ export default function Header() {
     <div
       className={`font-mulish top-0 right-0 z-40 flex items-center justify-between w-full px-6 py-3 bg-[#fafafa] dark:bg-[#15191c] transition-all duration-300 ${isCollapsed ? "sm:ml-16 sm:w-[calc(100%-4rem)]" : "sm:ml-64 sm:w-[calc(100%-16rem)]"}`}
     >
-      <div className="md:hidden flex items-center">
+      <div className="sm:hidden flex items-center">
         <Image
           onClick={() => setIsMobileOpen((prev) => !prev)}
           src={theme === "dark" ? eye : eyeLight || "/placeholder.svg"}
