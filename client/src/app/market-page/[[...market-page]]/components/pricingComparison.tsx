@@ -39,14 +39,14 @@ export default function PricingComparison() {
   const firstDiscountStrategy = discountStrategies[0] || "N/A";
 
   return (
-    <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
+    <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
       {/* Title Section */}
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">
             Pricing Comparison
           </h2>
-          <p className="text-sm text-emerald-500">
+          <p className="text-sm text-emerald-300">
             {hasCompetitors
               ? `${Object.keys(competitors).length} Competitor${Object.keys(competitors).length > 1 ? "s are" : " is"
               } available`
@@ -61,9 +61,9 @@ export default function PricingComparison() {
         <div className="text-xs text-center text-red-400">{error}</div>
       ) : (
         <div className="overflow-x-auto flex-grow text-xs text-left font-mulish">
-          <table className="w-full">
+          <table className="w-full text-white">
             <thead>
-              <tr className="text-xs text-gray-400 uppercase border-b-[1px] border-[#56577A]">
+              <tr className="text-xs text-white/70 uppercase border-b-[1px] border-white/20 dark:border-[#56577A]">
                 <th className="py-3">Name</th>
                 <th className="text-center py-3">Price</th>
                 <th className="text-center py-3">Discount Strategies</th>
@@ -76,7 +76,7 @@ export default function PricingComparison() {
                   return (
                     <tr
                       key={name}
-                      className="hover:bg-gray-800/50 border-b-[1px] border-[#56577A]"
+                      className="hover:bg-white/10 dark:hover:bg-gray-800/50 border-b-[1px] border-white/20 dark:border-[#56577A]"
                     >
                       <td className="py-5 font-medium">{name}</td>
                       <td className="text-center py-5">${priceValue}</td>
@@ -88,7 +88,7 @@ export default function PricingComparison() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={3} className="text-center py-5 text-gray-400">
+                  <td colSpan={3} className="text-center py-5 text-gray-200">
                     No pricing comparison data available.
                   </td>
                 </tr>

@@ -87,7 +87,7 @@ export default function ProjectsTable() {
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">Transactions</h2>
-          <p className="text-sm text-emerald-500">
+          <p className="text-sm dark:text-emerald-500 text-emerald-300">
             {transactions.length} transactions found
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function ProjectsTable() {
       <div className="overflow-x-auto flex-grow text-xs text-center font-mulish">
         <table className="w-full">
           <thead>
-            <tr className="text-xs text-gray-400 uppercase">
+            <tr className="text-xs dark:text-gray-400 text-[#AEC3FF] uppercase">
               <th className="px-2.5 py-3">name</th>
               <th className="px-2.5 py-3">amount</th>
               <th className="px-2.5 py-3">currency</th>
@@ -144,7 +144,7 @@ export default function ProjectsTable() {
                   </span>
                 </td>
                 <td className="px-2.5 py-3">{transaction.date}</td>
-                <td className="px-2.5 py-3 text-gray-400">
+                <td className="px-2.5 py-3">
                   {transaction.description}
                 </td>
                 <td className="px-2.5 py-3">{transaction.category}</td>

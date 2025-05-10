@@ -78,7 +78,7 @@ const KeyFactorsCard: React.FC = () => {
   const entries = Object.entries(keyFactorsState);
 
   return (
-    <div className="p-8  bg-[#4B65AB] dark:bg-[#1d2328]  rounded-xl w-full max-w-md mx-auto shadow-md">
+    <div className="p-8  bg-[#4B65AB] dark:bg-[#1d2328]  rounded-xl w-full  mx-auto shadow-md">
       <h2 className="text-4xl font-bayon text-white text-center mb-6">
         Key Factors
       </h2>

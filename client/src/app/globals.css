@@ -66,6 +66,10 @@ body {
     --chart-5: 27 87% 67%;
 
     --radius: 0.5rem;
+
+    --axis-color: #01325b;
+
+    --second-gradient: #204d72;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -115,6 +119,10 @@ body {
     --chart-4: 280 65% 60%;
 
     --chart-5: 340 75% 55%;
+
+    --axis-color: #AEC3FF;
+
+    --second-gradient: #4B65AB;
   }
 }
 

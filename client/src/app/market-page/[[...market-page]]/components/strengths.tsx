@@ -36,7 +36,7 @@ export default function Strengths() {
   const strengthSource = hasStrengths && strengths.length > 1 ? strengths[1] : null;
 
   return (
-    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
+    <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
       <span className="text-3xl text-green-500 mb-2">Strengths</span>
 
       {loading ? <>

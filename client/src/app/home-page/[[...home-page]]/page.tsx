@@ -37,17 +37,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${theme === "dark" ? "bg-[#15191c]" : "bg-[#FAFAFA]"}`}>
+    <div className={`min-h-screen transition-colors duration-300 dark:bg-[#15191c] bg-[#FAFAFA]`}>
       <Sidebar />
       <Header />
       <div
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 
+        className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 
         ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}
       >
         <div className="flex items-center mb-4">
           <p className="text-gray-400 text-sm">Pages / Dashboard</p>
         </div>
-        <h1 className="text-white text-xl font-medium mb-6">Dashboard</h1>
+        <h1 className="dark:text-white text-gray-700 text-xl font-medium mb-6">Dashboard</h1>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

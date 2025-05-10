@@ -37,7 +37,7 @@ export default function Opportunities() {
     opportunities && opportunities.length > 1 ? opportunities[1] : null;
 
   return (
-    <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
+    <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
       <span className="text-3xl text-yellow-500 mb-2">Opportunities</span>
 
       {loading ? <>

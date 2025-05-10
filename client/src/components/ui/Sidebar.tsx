@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { Home, BarChart2, CreditCard, DollarSign, Globe, Upload, LogOut, Search } from "lucide-react"
 import Image from "next/image"
@@ -10,11 +10,11 @@ import eyeLight from "@/assets/eyeLight.png"
 import stars from "@/assets/nav-stars-bg.png"
 import { UserButton, useClerk, useUser } from "@clerk/nextjs"
 import { useTheme } from "@/context/ThemeContext"
+import { useSidebar } from "@/context/SidebarContext"
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar();
   const { signOut } = useClerk()
   const { user, isLoaded } = useUser()
   const [email] = user?.primaryEmailAddress?.emailAddress.split("@") || [""]
@@ -23,16 +23,14 @@ export default function Sidebar() {
 
   const toggleSidebar = () => {
     if (window.innerWidth < 640) {
-      setIsMobileOpen(!isMobileOpen)
+      setIsMobileOpen((prev) => !prev);
     } else {
-      setIsCollapsed(!isCollapsed)
-      document.documentElement.setAttribute("data-sidebar-collapsed", String(!isCollapsed))
+      setIsCollapsed((prev) => {
+        document.documentElement.setAttribute("data-sidebar-collapsed", String(!prev));
+        return !prev;
+      });
     }
   }
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-sidebar-collapsed", String(isCollapsed))
-  }, [isCollapsed])
 
   const navItems = [
     { icon: Home, label: "Home", href: "/" },
@@ -131,15 +129,15 @@ export default function Sidebar() {
               <a
                 key={item.label}
                 href={item.href}
-                className={`group flex items-center ${isCollapsed ? "justify-center" : ""} px-4 py-2.5 rounded-lg relative overflow-hidden transition-all duration-500
+                className={`group flex items-center ${isCollapsed ? "justify-center" : ""} px-4 py-2.5 rounded-lg relative overflow-hidden transition-all duration-300
                   ${isActive
-                    ? "text-[#E4E5F1] shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#4B65AB] via-[46%] to-[#4B65AB] dark:from-[#243461] dark:via-[#15191c] dark:via-[46%] dark:to-[#15191C]"
-                    : "text-[#686868] hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB] dark:hover:from-[#243461] dark:hover:via-[#15191c] dark:hover:via-[46%] dark:hover:to-[#15191C]"}`}
+                    ? "text-[#E4E5F1] shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#4B65AB] via-[46%] to-[#4B65AB] dark:from-[#243461] dark:via-[#15191c] dark:via-[46%] dark:to-[#15191C]"
+                    : "text-[#686868] transition-all duration-300 hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB] dark:hover:from-[#243461] dark:hover:via-[#15191c] dark:hover:via-[46%] dark:hover:to-[#15191C]"}`}
               >
-                <item.icon className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} ${isActive ? "text-[#E4E5F1]" : "text-[#686868] group-hover:text-[#E4E5F1]"}`} />
+                <item.icon className={`w-5 h-5 z-10 ${isCollapsed ? "" : "mr-3"} transition-colors duration-300 ${isActive ? "text-[#E4E5F1]" : "text-[#686868] group-hover:text-[#E4E5F1]"}`} />
                 {!isCollapsed && <span className="z-10">{item.label}</span>}
                 {isActive && (
-                  <div className="hidden overlay absolute top-0 left-0">
+                  <div className="overlay absolute dark:top-0 dark:left-0 hidden dark:block duration-300">
                     <Image src={stars || "/placeholder.svg"} className="w-full opacity-10" alt="Stars" />
                   </div>
                 )}

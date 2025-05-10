@@ -42,7 +42,7 @@ export default function CompetitivePositioning() {
   const hasPrices = Object.keys(prices).length > 0;
 
   return (
-    <div className="p-8 bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
+    <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex flex-col shadow-inner-custom2">
       <div className="flex items-center justify-between mb-6">
         <div className="font-mulish">
           <h2 className="text-lg font-semibold text-white">
@@ -57,9 +57,9 @@ export default function CompetitivePositioning() {
         <div className="text-xs text-center text-red-500">{error}</div>
       ) : (
         <div className="overflow-x-auto flex-grow text-[0.6rem] text-left font-mulish">
-          <table className="w-full">
+          <table className="w-full text-white">
             <thead>
-              <tr className="text-gray-400 uppercase border-b-[1px] border-[#56577A]">
+              <tr className="text-white/70 uppercase border-b-[1px] border-white/20 dark:border-[#56577A]">
                 <th className="py-1">Name</th>
                 <th className="text-center py-1">Market Share</th>
                 <th className="text-center py-1">Price</th>
@@ -80,7 +80,7 @@ export default function CompetitivePositioning() {
                   return (
                     <tr
                       key={name}
-                      className="hover:bg-gray-800/50 border-b-[1px] border-[#56577A]"
+                      className="hover:bg-white/10 dark:hover:bg-gray-800/50 border-b-[1px] border-white/20 dark:border-[#56577A]"
                     >
                       <td className="py-5 font-medium">{name}</td>
                       <td className="text-center py-5">{marketShare}</td>
@@ -92,7 +92,7 @@ export default function CompetitivePositioning() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={5} className="text-center py-5 text-gray-400">
+                  <td colSpan={5} className="text-center py-5 text-gray-200">
                     No competitive positioning data available.
                   </td>
                 </tr>

@@ -35,19 +35,19 @@ export default function Analysis() {
 
   if (loading) {
     return (
-      <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
-        <h2 className="text-white text-xl md:text-2xl text-center font-bayon mb-5">
+      <div className="p-4 md:p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
+        <h2 className="text-white dark:text-white text-xl md:text-2xl text-center font-bayon mb-5">
           MARKET ANALYSIS
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="pr-1">
-            <h3 className="text-white text-base mb-2 text-center font-mulish">
+            <h3 className="text-white dark:text-white text-base mb-2 text-center font-mulish">
               Trends
             </h3>
             <TableSkeleton columns={3} rows={3} />
           </div>
-          <div className="md:pl-3 md:border-l md:border-gray-700 pt-5 md:pt-0">
-            <h3 className="text-white text-base mb-2 text-center font-mulish">
+          <div className="md:pl-3 md:border-l border-white/20 dark:border-gray-700 pt-5 md:pt-0">
+            <h3 className="text-white dark:text-white text-base mb-2 text-center font-mulish">
               Market Share
             </h3>
             <TableSkeleton columns={2} rows={3} />
@@ -60,7 +60,7 @@ export default function Analysis() {
 
   if (error || !data) {
     return (
-      <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] flex items-center justify-center text-red-400 shadow-inner-custom2">
+      <div className="p-4 md:p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full h-[40vh] flex items-center justify-center text-red-100 dark:text-red-400 shadow-inner-custom2">
         Error: {error ?? "Market analysis data unavailable"}
       </div>
     );
@@ -69,9 +69,9 @@ export default function Analysis() {
   const { trends, market_share } = data;
 
   return (
-    <div className="p-4 md:p-6 bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
+    <div className="p-4 md:p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
       <div>
-        <h2 className="text-white text-xl md:text-2xl text-center font-bayon">
+        <h2 className="text-white dark:text-white text-xl md:text-2xl text-center font-bayon">
           MARKET ANALYSIS
         </h2>
       </div>
@@ -79,12 +79,12 @@ export default function Analysis() {
       <div className="pt-5 md:pt-2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="pr-1">
-            <h3 className="text-white text-base mb-2 text-center font-mulish">
+            <h3 className="text-white dark:text-white text-base mb-2 text-center font-mulish">
               Trends
             </h3>
-            <table className="w-full text-xs font-mulish text-white">
+            <table className="w-full text-xs font-mulish text-white dark:text-white">
               <thead>
-                <tr className="text-gray-400 text-left border-b-[1px] border-[#56577A]">
+                <tr className="text-white/70 dark:text-gray-400 text-left border-b-[1px] border-white/20 dark:border-[#56577A]">
                   <th className="py-3">Name</th>
                   <th className="py-3 text-center">Growth</th>
                   <th className="py-3 text-center">Impact</th>
@@ -95,7 +95,7 @@ export default function Analysis() {
                   trends.map((trend, index) => (
                     <tr
                       key={index}
-                      className="border-b-[1px] border-[#56577A] hover:bg-gray-800/50"
+                      className="border-b-[1px] border-white/20 dark:border-[#56577A] hover:bg-white/10 dark:hover:bg-gray-800/50"
                     >
                       <td className="py-5">{trend.name}</td>
                       <td className="py-5 text-center">
@@ -117,13 +117,13 @@ export default function Analysis() {
             </table>
           </div>
 
-          <div className="md:pl-3 md:border-l md:border-gray-700 pt-5 md:pt-0">
-            <h3 className="text-white text-base mb-2 text-center font-mulish">
+          <div className="md:pl-3 md:border-l border-white/20 dark:border-gray-700 pt-5 md:pt-0">
+            <h3 className="text-white dark:text-white text-base mb-2 text-center font-mulish">
               Market Share
             </h3>
-            <table className="w-full text-xs font-mulish text-white">
+            <table className="w-full text-xs font-mulish text-white dark:text-white">
               <thead>
-                <tr className="text-gray-400 text-left border-b-[1px] border-[#56577A]">
+                <tr className="text-white/70 dark:text-gray-400 text-left border-b-[1px] border-white/20 dark:border-[#56577A]">
                   <th className="py-3">Name</th>
                   <th className="py-3 pe-2 text-end">Percentage</th>
                 </tr>
@@ -134,7 +134,7 @@ export default function Analysis() {
                     ([name, percentage], index) => (
                       <tr
                         key={index}
-                        className="border-b-[1px] border-[#56577A] hover:bg-gray-800/50"
+                        className="border-b-[1px] border-white/20 dark:border-[#56577A] hover:bg-white/10 dark:hover:bg-gray-800/50"
                       >
                         <td className="py-3.5">{name}</td>
                         <td className="py-3.5 pe-2 text-end">

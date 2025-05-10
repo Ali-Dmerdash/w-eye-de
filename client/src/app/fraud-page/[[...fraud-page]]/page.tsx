@@ -45,7 +45,7 @@ export default function Page() {
       <Sidebar />
 
       <main
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
+        className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${
           isCollapsed ? "sm:ml-16" : "sm:ml-64"
         }`}
       >

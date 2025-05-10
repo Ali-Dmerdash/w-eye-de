@@ -1,30 +1,17 @@
 "use client"
-import React, { useRef, useState, useEffect, useMemo } from "react"
+import React, { useRef, useEffect, useMemo } from "react"
 import { ArrowLeft, ArrowRight, Bell } from "lucide-react"
 import Image from "next/image"
 import eye from "@/assets/eye.png"
-import 'animate.css';
+import eyeLight from "@/assets/eyeLight.png"
 import { useTheme } from "@/context/ThemeContext";
+import { useSidebar } from "@/context/SidebarContext";
 
 export default function Header() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar();
+  const [isEditing, setIsEditing] = React.useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
-
-  useEffect(() => {
-    const updateSidebarState = () => {
-      const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true";
-      setIsCollapsed(isCollapsed);
-    };
-    updateSidebarState();
-    const observer = new MutationObserver(updateSidebarState);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-sidebar-collapsed"],
-    });
-    return () => observer.disconnect();
-  }, []);
 
   const handleClick = () => {
     setIsEditing(true);
@@ -69,7 +56,7 @@ export default function Header() {
 
   const toggleButton = theme === "dark" ? (
     <div id="lightMode-btn" className="relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
-      <button type="button" className="flex items-center rounded-full text-sm text-white" onClick={() => setTheme("light")}> 
+      <button type="button" className="flex items-center rounded-full text-sm text-white" onClick={() => setTheme("light")}>
         <svg className="shrink-0 size-4 text-white" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <circle cx={12} cy={12} r={4} />
           <path d="M12 2v2" />
@@ -85,7 +72,7 @@ export default function Header() {
     </div>
   ) : (
     <div id="darkMode-btn" className="relative flex items-center border border-[#15191c] border-opacity-40 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
-      <button type="button" className="flex items-center rounded-full text-sm text-[#15191c]" onClick={() => setTheme("dark")}> 
+      <button type="button" className="flex items-center rounded-full text-sm text-[#15191c]" onClick={() => setTheme("dark")}>
         <svg className="shrink-0 size-4 text-[#15191c]" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
         </svg>
@@ -97,11 +84,16 @@ export default function Header() {
     <div
       className={`font-mulish top-0 right-0 z-40 flex items-center justify-between w-full px-6 py-3 bg-[#fafafa] dark:bg-[#15191c] transition-all duration-300 ${isCollapsed ? "sm:ml-16 sm:w-[calc(100%-4rem)]" : "sm:ml-64 sm:w-[calc(100%-16rem)]"}`}
     >
-      <div className="sm:hidden flex">
-        <Image src={eye || "/placeholder.svg"} className="cursor-pointer rotate-90" alt="Logo" />
+      <div className="md:hidden flex items-center">
+        <Image
+          onClick={() => setIsMobileOpen((prev) => !prev)}
+          src={theme === "dark" ? eye : eyeLight || "/placeholder.svg"}
+          className="cursor-pointer rotate-90 md:hidden"
+          alt="Logo"
+        />
       </div>
       <div className="flex items-center">
-        <div className="flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-52" onClick={handleClick}>
+        <div className="hidden md:flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-52" onClick={handleClick}>
           <svg
             className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200"
             fill="none"

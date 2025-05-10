@@ -50,15 +50,15 @@ const ReportAmeen = () => {
       <div className="flex items-start justify-center flex-wrap">
         <div className="w-full max-w-md bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl p-6">
           <div className="text-center mb-4">
-            <div className="h-5 w-32 bg-gray-700 rounded mx-auto pulse" />
+            <div className="h-5 w-32 dark:bg-gray-700 bg-gray-300/50 rounded mx-auto pulse" />
           </div>
           <div className="space-y-3">
-            <div className="h-4 bg-gray-700 rounded w-full pulse" />
-            <div className="h-4 bg-gray-700 rounded w-11/12 pulse" />
-            <div className="h-4 bg-gray-700 rounded w-10/12 pulse" />
+            <div className="h-4 dark:bg-gray-700 bg-gray-300/50 rounded w-full pulse" />
+            <div className="h-4 dark:bg-gray-700 bg-gray-300/50 rounded w-11/12 pulse" />
+            <div className="h-4 dark:bg-gray-700 bg-gray-300/50 rounded w-10/12 pulse" />
           </div>
           <div className="mt-6 flex justify-center">
-            <div className="h-9 w-32 bg-gray-600 rounded pulse" />
+            <div className="h-9 w-32 dark:bg-gray-600 bg-gray-300/50 rounded pulse" />
           </div>
         </div>
       </div>

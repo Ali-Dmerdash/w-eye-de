@@ -90,19 +90,19 @@ export default function DataUpload() {
   }
 
   return (
-    <div className="min-h-screen bg-[#15191c]">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#15191c] transition-all duration-300">
       <Sidebar />
       <Header />
       <div className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
         <div className="flex items-center mb-4">
           <p className="text-gray-400 text-sm">Pages / Data Upload</p>
         </div>
-        <div className="bg-[#191e21] p-8 rounded-xl">
+        <div className="bg-[#4B65AB] dark:bg-[#191e21] p-8 rounded-xl">
           <h1 className="text-white text-3xl  mb-6 font-bayon">UPLOAD FILE</h1>
 
           {/* Upload Area */}
           <div
-            className={`border-2 border-dashed border-gray-600 rounded-lg mb-6 py-16 flex flex-col items-center justify-center cursor-pointer transition-all duration-300
+            className={`border-2 border-dashed dark:border-gray-600 border-[#AEC3FF]/50 rounded-lg mb-6 py-16 flex flex-col items-center justify-center cursor-pointer transition-all duration-300
     ${isDragging ? "bg-[#1d2328] border-blue-500" : "bg-transparent"}
     ${files.length > 0 ? "pointer-events-none" : ""}
   `}
@@ -111,15 +111,19 @@ export default function DataUpload() {
             onDrop={handleDrop}
             onClick={handleClickUpload}
           >
-            <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center mb-4 border border-gray-600 bg-opacity-10">
-              <Plus className="w-10 h-10 text-gray-400" />
+            <div className="w-20 h-20 dark:bg-gray-700/30 bg-[#AEC3FF]/20 rounded-full flex items-center justify-center mb-4 border dark:border-gray-600 border-[#AEC3FF]/50 bg-opacity-10">
+              <Plus className="w-10 h-10 dark:text-gray-400 text-[#AEC3FF]" />
             </div>
 
             <div className={`${files.length > 0 ? "opacity-50" : ""} flex flex-col items-center`}>
-              <p className="text-gray-400 text-lg mb-2">Drag & drop or click to choose files</p>
-              <div className="flex items-center text-gray-500">
-                <Info className="w-5 h-5 mr-2" />
-                <p>Max file size : 10 MB</p>
+              <p className="dark:text-gray-400 text-[#AEC3FF] text-lg mb-2">Drag & drop or click to choose files</p>
+              <div className="flex flex-col dark:text-gray-500 text-[#AEC3FF]/60 items-center">
+              <p>Accepted files: .pdf, .csv, .xls, .xlsx,</p>
+
+                <div className="flex items-center">
+                  <Info className="w-5 h-5 mr-2" />
+                  <p>Max file size : ***** MB</p>
+                </div>
               </div>
             </div>
 
@@ -138,15 +142,15 @@ export default function DataUpload() {
               {files.map((file) => (
                 <div
                   key={file.id}
-                  className="bg-[#1d2328] rounded-lg p-4 flex items-center justify-between shadow-sm"
+                  className="dark:bg-[#1d2328] bg-[#AEC3FF]/10 rounded-lg p-4 flex items-center justify-between shadow-sm"
                 >
                   <div className="flex items-center">
                     <div className="mr-4">
                       <FileIcon className="w-12 h-12" />
                     </div>
                     <div>
-                      <h3 className="text-white text-lg font-medium">{file.name}</h3>
-                      <p className="text-gray-400">
+                      <h3 className="dark:text-white text-[#AEC3FF] text-lg font-medium">{file.name}</h3>
+                      <p className="dark:text-gray-400 text-[#AEC3FF]/80">
                         {file.extension} | {file.size}
                       </p>
                     </div>
@@ -154,23 +158,24 @@ export default function DataUpload() {
                   <div className="flex space-x-4">
                     <button
                       disabled
-                      className="p-3 bg-[#2a3441] rounded-full opacity-50 border border-gray-600"
+                      className="p-3 dark:bg-[#2a3441] bg-[#AEC3FF]/20 rounded-full opacity-50 border dark:border-gray-600 border-[#AEC3FF]/50 bg-opacity-10"
                     >
-                      <Download className="w-5 h-5 text-white" />
+                      <Download className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
                     </button>
                     <button
-                      className="p-3 bg-[#2a3441] rounded-full border border-gray-600"
+                      className="p-3 dark:bg-[#2a3441] bg-[#AEC3FF]/20 border-[#AEC3FF]/50 bg-opacity-10 rounded-full border dark:border-gray-600"
                       onClick={() => handleRemoveFile(file.id)}
                     >
-                      <Trash2 className="w-5 h-5 text-white" />
+                      <Trash2 className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
                     </button>
+                    
                   </div>
                 </div>
               ))}
               <div className="flex justify-center mb-6 font-mulish">
                 <button
                   disabled
-                  className="bg-[#1d2328] text-white font-medium py-4 px-32 border border-gray-700 rounded-lg opacity-50 transition-colors text-lg"
+                  className="dark:bg-[#1d2328] dark:text-white font-medium py-4 px-32 border dark:border-gray-700 rounded-lg opacity-50 transition-colors text-lg"
                 >
                   Add
                 </button>

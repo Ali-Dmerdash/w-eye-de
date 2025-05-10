@@ -93,7 +93,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#15191c]">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#15191c] transition-all duration-300">
       <Header />
       <Sidebar />
 

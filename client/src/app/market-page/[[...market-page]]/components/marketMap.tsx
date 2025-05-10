@@ -80,7 +80,7 @@ export default function MarketMap() {
 
   if (loading) {
     return (
-      <div className="bg-[#1d2328] rounded-xl h-[40vh] flex items-center justify-center text-white">
+      <div className="bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-[40vh] flex items-center justify-center text-white dark:text-white">
         <LoadingSpinner />
       </div>
     );
@@ -88,14 +88,14 @@ export default function MarketMap() {
 
   if (error) {
     return (
-      <div className="bg-[#1d2328] rounded-xl h-[40vh] flex items-center justify-center text-red-400">
+      <div className="bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-[40vh] flex items-center justify-center text-red-100 dark:text-red-400">
         Error: {error}
       </div>
     );
   }
 
   return (
-    <div className="bg-[#1d2328] rounded-xl h-[40vh] relative overflow-hidden hidden md:block shadow-inner-custom2">
+    <div className="bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-[40vh] relative overflow-hidden hidden md:block shadow-inner-custom2">
       <Image src={Map} alt="Map" fill className="object-cover opacity-15 z-0" />
 
       {locations.length > 0 ? (
@@ -107,7 +107,7 @@ export default function MarketMap() {
             style={{ top: loc.top, left: loc.left }}
           >
             <LocationPin />
-            <span className="text-xs bg-white/20 text-white font-mulish px-2 py-0.5 rounded">
+            <span className="text-xs bg-white/20 dark:bg-white/20 text-white font-mulish px-2 py-0.5 rounded">
               {loc.name.charAt(0) + loc.name.slice(1).toLowerCase()}
             </span>
           </div>
@@ -120,23 +120,23 @@ export default function MarketMap() {
 
       {selectedLocation && selectedData && (
         <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/30 dark:bg-black/80 flex items-center justify-center z-50"
           onClick={() => setSelectedLocation(null)}
         >
           <div
-            className="bg-[#1d2328] rounded-lg p-6 w-96 relative"
+            className="bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg p-6 w-96 relative"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-2 right-2 text-gray-400 hover:text-white"
+              className="absolute top-2 right-2 text-gray-200 hover:text-white dark:hover:text-white"
               onClick={() => setSelectedLocation(null)}
             >
               ✕
             </button>
-            <h2 className="text-lg font-semibold mb-4 text-white">
+            <h2 className="text-lg font-semibold mb-4 text-white dark:text-white">
               {selectedLocation.charAt(0) + selectedLocation.slice(1).toLowerCase()} Details
             </h2>
-            <div className="text-sm text-gray-300 space-y-2 font-mulish">
+            <div className="text-sm text-white dark:text-gray-300 space-y-2 font-mulish">
               <p>
                 <strong>Price:</strong> ${selectedData.price.match(/\d+/)?.[0] ?? "N/A"}
               </p>

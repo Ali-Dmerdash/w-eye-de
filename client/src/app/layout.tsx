@@ -4,6 +4,7 @@ import Page from "@/app/sign-in/[[...sign-in]]/page";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { SidebarProvider } from "@/context/SidebarContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,9 @@ export default function RootLayout({
             </SignedOut>
             <SignedIn>
               <ThemeProvider>
-                <main>{children}</main>
+                <SidebarProvider>
+                  <main>{children}</main>
+                </SidebarProvider>
               </ThemeProvider>
             </SignedIn>
         </body>

@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Sidebar from "@/components/ui/Sidebar";
 import Header from "@/components/ui/Header";
+import Stats from "@/assets/stats.png"
+import Image from "next/image"
+
+
 
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -30,16 +34,16 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#15191c]">
+    <div className="min-h-screen transition-colors duration-300 dark:bg-[#15191c] bg-[#FAFAFA]">
       <Header />
       <Sidebar />
 
       <main
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
-          isCollapsed ? "sm:ml-16" : "sm:ml-64"
-        }`}
+        className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
+          }`}
       >
-        <h1 className="text-white">STATISTICS PAGE</h1>
+        <div className="flex items-center justify-center">        <Image src={Stats} className="w-96 h-full object-cover" alt="Stats" />
+        </div>
       </main>
     </div>
   );
