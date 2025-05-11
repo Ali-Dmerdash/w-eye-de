@@ -54,7 +54,9 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/market-data");
+        const response = await fetch(
+          "http://localhost:3001/api/market/results"
+        ); // ✅ Use Express backend
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -98,17 +100,20 @@ export default function Page() {
       <Sidebar />
 
       <main
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
-          }`}
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
+          isCollapsed ? "sm:ml-16" : "sm:ml-64"
+        }`}
       >
-        {loading && <>
-          <div className="flex flex-col items-center justify-center h-screen space-y-3">
-            <LoadingSpinner />
-            <div className="text-white text-2xl font-mulish text-center">Loading market data...</div>
-
-          </div>
-        </>
-        }
+        {loading && (
+          <>
+            <div className="flex flex-col items-center justify-center h-screen space-y-3">
+              <LoadingSpinner />
+              <div className="text-white text-2xl font-mulish text-center">
+                Loading market data...
+              </div>
+            </div>
+          </>
+        )}
         {!loading && (
           <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
             {/* Top Row */}
