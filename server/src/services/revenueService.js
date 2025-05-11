@@ -15,11 +15,11 @@ exports.compareRevenue = async (revenueData) => {
 
 exports.getRevenueResults = async () => {
   try {
-    const revenueResults = await RevenueSchema.find().sort({
-      date: -1,
+    const revenueResults = await revenueSchema.find().sort({
+      detectedAt: -1,
     });
     return revenueResults;
   } catch (err) {
-    throw new Error("Error retrieving Revenue: " + err.message);
+    throw new Error("Error retrieving Revenue Results: " + err.message);
   }
 };

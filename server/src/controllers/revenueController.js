@@ -9,9 +9,9 @@ exports.predictRevenue = async (req, res) => {
   }
 };
 
-exports.getRevenueTrends = async (req, res) => {
+exports.getRevenueResults = async (req, res) => {
   try {
-    const trends = await revenueService.getRevenueTrends();
+    const trends = await revenueService.getRevenueResults();
     res.status(200).json({ success: true, trends });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
