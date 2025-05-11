@@ -64,14 +64,25 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   );
 };
 
-type RevenueData = {
+type Trend = {
+  _id: string;
   revenue_forecast: string;
   confidence_level: string;
+  key_factors: Record<string, string>;
+  analysis: {
+    insights: string;
+    recommendation: string;
+  };
+};
+
+type ApiResponse = {
+  success: boolean;
+  trends: Trend[];
 };
 
 const RevenueChart: React.FC = () => {
   const [circleSize, setCircleSize] = useState<number>(300);
-  const [revenueData, setRevenueData] = useState<RevenueData | null>(null);
+  const [trendData, setTrendData] = useState<Trend | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -89,10 +100,15 @@ const RevenueChart: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch("/api/revenue-data");
+        const res = await fetch("http://localhost:3001/api/revenue/results");
         if (!res.ok) throw new Error("Failed to fetch data");
-        const data: RevenueData = await res.json();
-        setRevenueData(data);
+        const data: ApiResponse = await res.json();
+
+        if (!data.success || !data.trends.length) {
+          throw new Error("No trend data available");
+        }
+
+        setTrendData(data.trends[0]); // get the first trend
       } catch (err: any) {
         setError(err.message || "Failed to load data");
       } finally {
@@ -106,8 +122,7 @@ const RevenueChart: React.FC = () => {
     return (
       <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col items-center justify-center space-y-6">
         <div className="space-y-6">
-        <LoadingSpinner width="8rem" height="8rem" />
-
+          <LoadingSpinner width="8rem" height="8rem" />
           <div className="h-6 bg-gray-700 rounded w-56 mx-auto mb-4 pulse" />
           <div className="space-y-2">
             <div className="h-4 bg-gray-700 rounded w-28 mx-auto pulse" />
@@ -124,7 +139,7 @@ const RevenueChart: React.FC = () => {
       </div>
     );
 
-  if (!revenueData)
+  if (!trendData)
     return (
       <div className="text-white p-6 bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
         No data available.
@@ -132,13 +147,18 @@ const RevenueChart: React.FC = () => {
     );
 
   const confidenceColor =
-    revenueData.confidence_level === "High"
+    trendData.confidence_level === "High"
       ? "#E31A1A"
-      : revenueData.confidence_level === "Medium"
+      : trendData.confidence_level === "Medium"
       ? "#F97316"
       : "#01B574";
 
-  const displayPercentage = 70; // Still static unless you have logic to convert confidence level to %
+  const displayPercentage =
+    trendData.confidence_level === "High"
+      ? 90
+      : trendData.confidence_level === "Medium"
+      ? 70
+      : 40;
 
   return (
     <div className="bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
@@ -147,10 +167,10 @@ const RevenueChart: React.FC = () => {
           percentage={displayPercentage}
           color={confidenceColor}
           size={circleSize}
-          label={revenueData.confidence_level}
+          label={trendData.confidence_level}
         />
         <div className="py-4 flex flex-col">
-          <span className="text-5xl">{revenueData.revenue_forecast}</span>
+          <span className="text-5xl">{trendData.revenue_forecast}</span>
           <span className="text-base text-gray-400 font-mulish">
             Revenue Forecast
           </span>
