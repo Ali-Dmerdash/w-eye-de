@@ -1,17 +1,25 @@
-exports.predictRevenue = async (data) => {
-    return {
-        revenue: Math.random() * 10000,
-        details: "Revenue prediction generated.",
-    };
+const revenueSchema = require("../models/Revenue");
+
+exports.compareRevenue = async (revenueData) => {
+  try {
+    const revenue = new revenueSchema({
+      ...revenueData,
+    });
+
+    const savedRevenue = await revenue.save();
+    return savedRevenue;
+  } catch (err) {
+    throw new Error("Error saving Revenue data: " + err.message);
+  }
 };
 
-exports.getRevenueTrends = async () => {
-    return [
-        { month: "January", revenue: 5000 },
-        { month: "February", revenue: 7000 },
-    ];
-};
-
-exports.updateRevenue = async (data) => {
-    return { success: true, updated: data };
+exports.getRevenueResults = async () => {
+  try {
+    const revenueResults = await RevenueSchema.find().sort({
+      date: -1,
+    });
+    return revenueResults;
+  } catch (err) {
+    throw new Error("Error retrieving Revenue: " + err.message);
+  }
 };

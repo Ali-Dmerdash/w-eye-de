@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 
-const RevenueSchema = new mongoose.Schema({
-    date: { type: Date, default: Date.now },
-    revenue: { type: Number, required: true },
-    details: { type: String, required: true },
-});
+const revenueSchema = new mongoose.Schema({}, { strict: false });
 
-module.exports = mongoose.model("Revenue", RevenueSchema);
+// The third parameter here explicitly sets the collection name
+const Revenue = mongoose.model("Revenue", revenueSchema, "Revenue_LLM_Output");
+
+module.exports = Revenue;

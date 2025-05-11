@@ -3,7 +3,6 @@ const revenueRouter = express.Router();
 const revenueController = require("../controllers/revenueController");
 
 revenueRouter.post("/predict", revenueController.predictRevenue);
-revenueRouter.get("/trends", revenueController.getRevenueTrends);
-revenueRouter.patch("/update", revenueController.updateRevenue);
+revenueRouter.get("/results", revenueController.getRevenueTrends);
 
 module.exports = revenueRouter;
