@@ -14,6 +14,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Initialize with the correct theme immediately
   const [theme, setThemeState] = useState<Theme>(() => {
     // For SSR, default to light
@@ -25,6 +26,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
   
+=======
+  const [theme, setThemeState] = useState<Theme>("light");
+>>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
 =======
   const [theme, setThemeState] = useState<Theme>("light");
 >>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
@@ -81,6 +85,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <>
       <ThemeScript />
       <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
@@ -92,6 +97,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </ThemeContext.Provider>
 >>>>>>> parent of f2df84d (fixed bugs)
+=======
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
+      {isLoading ? <LoadingOverlay /> : children}
+    </ThemeContext.Provider>
+>>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
 =======
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
       {isLoading ? <LoadingOverlay /> : children}
