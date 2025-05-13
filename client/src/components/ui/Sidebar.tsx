@@ -16,6 +16,21 @@ export default function Sidebar() {
   const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar();
   const { theme } = useTheme()
   
+  // Sync with localStorage on mount
+  useEffect(() => {
+    try {
+      const savedState = localStorage.getItem('sidebar-collapsed');
+      if (savedState !== null) {
+        // Only update if different from current state to avoid unnecessary renders
+        if ((savedState === 'true') !== isCollapsed) {
+          setIsCollapsed(savedState === 'true');
+        }
+      }
+    } catch (e) {
+      console.error("Error syncing with localStorage:", e);
+    }
+  }, [pathname, isCollapsed, setIsCollapsed]);
+  
   const handleSignOut = () => {
     // Simple sign out function - can be expanded later
     console.log("Sign out clicked")
@@ -28,8 +43,10 @@ export default function Sidebar() {
       setIsMobileOpen((prev) => !prev);
     } else {
       setIsCollapsed((prev) => {
-        document.documentElement.setAttribute("data-sidebar-collapsed", String(!prev));
-        return !prev;
+        const newValue = !prev;
+        document.documentElement.setAttribute("data-sidebar-collapsed", String(newValue));
+        localStorage.setItem('sidebar-collapsed', String(newValue));
+        return newValue;
       });
     }
   }
