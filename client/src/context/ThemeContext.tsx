@@ -11,32 +11,8 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Script to be inserted in the document head to prevent theme flashing
-const ThemeScript = () => {
-  const codeToRunOnClient = `
-    (function() {
-      try {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else if (savedTheme === 'light') {
-          document.documentElement.classList.remove('dark');
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          document.documentElement.classList.add('dark');
-        }
-      } catch (e) {}
-    })();
-  `;
-
-  return (
-    <script
-      dangerouslySetInnerHTML={{ __html: codeToRunOnClient }}
-      suppressHydrationWarning
-    />
-  );
-};
-
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
   // Initialize with the correct theme immediately
   const [theme, setThemeState] = useState<Theme>(() => {
@@ -49,23 +25,31 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
   
+=======
+  const [theme, setThemeState] = useState<Theme>("light");
+>>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
   const [isLoading, setIsLoading] = useState(true);
 
   // Load theme from localStorage on initial render
   useEffect(() => {
+    // Get theme from localStorage
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
       setThemeState(savedTheme);
     } else {
       // Check for system preference if no saved theme
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setThemeState(prefersDark ? 'dark' : 'light');
+      const initialTheme = prefersDark ? 'dark' : 'light';
+      setThemeState(initialTheme);
+      localStorage.setItem('theme', initialTheme);
     }
     
-    // Add a small delay to ensure smooth transition
-    setTimeout(() => {
+    // Finish loading after a brief delay
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 300);
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   // Apply theme class to document and save to localStorage whenever it changes
@@ -77,8 +61,12 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 >>>>>>> parent of f2df84d (fixed bugs)
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
+      document.documentElement.style.backgroundColor = '#15191c';
+      document.body.style.backgroundColor = '#15191c';
     } else {
       document.documentElement.classList.remove("dark");
+      document.documentElement.style.backgroundColor = '#FAFAFA';
+      document.body.style.backgroundColor = '#FAFAFA';
     }
   }, [theme]);
 
@@ -92,6 +80,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <>
       <ThemeScript />
       <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
@@ -103,6 +92,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </ThemeContext.Provider>
 >>>>>>> parent of f2df84d (fixed bugs)
+=======
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
+      {isLoading ? <LoadingOverlay /> : children}
+    </ThemeContext.Provider>
+>>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
   );
 };
 

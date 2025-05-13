@@ -3,35 +3,49 @@
 import React, { useEffect, useState } from 'react';
 
 export default function LoadingOverlay() {
-  // Initialize with system preference or stored theme to prevent flash
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check if we're in the browser
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        return savedTheme === 'dark';
-      }
-      // Fall back to system preference
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    return false; // Default for SSR
-  });
-
+  // Initialize with the current theme from localStorage or document class
+  const [currentTheme, setCurrentTheme] = useState<string>('light');
+  
   useEffect(() => {
-    // This ensures we're using the correct theme after hydration
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    } else {
-      setIsDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
-    }
+    // Check if document has dark class or localStorage has theme
+    const isDark = 
+      document.documentElement.classList.contains('dark') || 
+      localStorage.getItem('theme') === 'dark';
+    
+    setCurrentTheme(isDark ? 'dark' : 'light');
   }, []);
-
+  
+  // Use inline styles to ensure theme consistency during transitions
+  const styles = {
+    overlay: {
+      position: 'fixed',
+      inset: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: currentTheme === 'dark' ? '#15191c' : '#FAFAFA',
+      zIndex: 50,
+    },
+    spinner: {
+      height: '3rem',
+      width: '3rem',
+      borderRadius: '9999px',
+      borderTop: '2px solid #4B65AB',
+      borderBottom: '2px solid #4B65AB',
+      animation: 'spin 1s linear infinite',
+      marginBottom: '1rem',
+    },
+    text: {
+      color: currentTheme === 'dark' ? '#ffffff' : '#4B65AB',
+      fontFamily: 'var(--font-mulish), sans-serif',
+    }
+  };
+  
   return (
-    <div className={`fixed inset-0 flex items-center justify-center z-50 ${isDarkMode ? 'bg-[#15191c]' : 'bg-[#FAFAFA]'}`}>
-      <div className="flex flex-col items-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4B65AB] mb-4"></div>
-        <div className={`${isDarkMode ? 'text-white' : 'text-[#4B65AB]'} font-mulish`}>Loading...</div>
+    <div style={styles.overlay as React.CSSProperties}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={styles.spinner as React.CSSProperties} className="animate-spin" />
+        <div style={styles.text}>Loading...</div>
       </div>
     </div>
   );

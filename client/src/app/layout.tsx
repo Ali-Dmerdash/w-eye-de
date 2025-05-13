@@ -28,8 +28,29 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  try {
+                    const theme = localStorage.getItem('theme');
+                    if (theme === 'dark') {
+                      document.documentElement.classList.add('dark');
+                      document.documentElement.style.backgroundColor = '#15191c';
+                      document.body.style.backgroundColor = '#15191c';
+                    } else {
+                      document.documentElement.classList.remove('dark');
+                      document.documentElement.style.backgroundColor = '#FAFAFA';
+                      document.body.style.backgroundColor = '#FAFAFA';
+                    }
+                  } catch (e) {}
+                })();
+              `,
+            }}
+          />
+        </head>
         <body className="bg-black">
             <SignedOut>
               <Page />
