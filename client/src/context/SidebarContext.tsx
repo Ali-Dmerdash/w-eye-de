@@ -13,6 +13,7 @@ interface SidebarContextType {
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
+// Script to be inserted in the document head to prevent sidebar state flashing
 const SidebarScript = () => {
   const codeToRunOnClient = `
     (function() {
@@ -36,7 +37,9 @@ const SidebarScript = () => {
 };
 
 export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Initialize with the correct sidebar state immediately
   const [isCollapsed, setIsCollapsed] = useState(() => {
+    // For SSR, default to not collapsed
     if (typeof window === 'undefined') return false;
     
     const savedCollapsedState = localStorage.getItem('sidebarCollapsed');
@@ -46,18 +49,22 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Load sidebar state from localStorage on initial render
   useEffect(() => {
     const savedCollapsedState = localStorage.getItem('sidebarCollapsed');
     if (savedCollapsedState !== null) {
       setIsCollapsed(savedCollapsedState === 'true');
     }
+    // Mark loading as complete after state is loaded
     setTimeout(() => {
       setIsLoading(false);
     }, 300);
   }, []);
 
+  // Save sidebar state to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('sidebarCollapsed', isCollapsed.toString());
+    // Also update the data attribute on document for consistency
     document.documentElement.setAttribute('data-sidebar-collapsed', isCollapsed.toString());
   }, [isCollapsed]);
 
