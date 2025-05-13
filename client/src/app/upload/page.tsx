@@ -133,6 +133,7 @@ export default function DataUpload() {
               className="hidden"
               onChange={handleFileInputChange}
               multiple={false}
+              accept=".pdf,.csv,.xls,.xlsx"
             />
           </div>
 
