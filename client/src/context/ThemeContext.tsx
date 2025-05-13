@@ -1,5 +1,5 @@
 "use client"
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 export type Theme = "light" | "dark";
 
@@ -7,14 +7,19 @@ interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
+  isLoading?: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+// Loading overlay component
+const LoadingOverlay = () => (
+  <div className="fixed inset-0 bg-white dark:bg-[#15191c] z-50 flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
+
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   // Initialize with the correct theme immediately
   const [theme, setThemeState] = useState<Theme>(() => {
     // For SSR, default to light
@@ -26,43 +31,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
   
-=======
-  const [theme, setThemeState] = useState<Theme>("light");
->>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
-=======
-  const [theme, setThemeState] = useState<Theme>("light");
->>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
   const [isLoading, setIsLoading] = useState(true);
-
-  // Load theme from localStorage on initial render
-  useEffect(() => {
-    // Get theme from localStorage
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-    } else {
-      // Check for system preference if no saved theme
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initialTheme = prefersDark ? 'dark' : 'light';
-      setThemeState(initialTheme);
-      localStorage.setItem('theme', initialTheme);
-    }
-    
-    // Finish loading after a brief delay
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, []);
 
   // Apply theme class to document and save to localStorage whenever it changes
   useEffect(() => {
-=======
-  const [theme, setThemeState] = useState<Theme>("light");
-
-  React.useEffect(() => {
->>>>>>> parent of f2df84d (fixed bugs)
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
       document.documentElement.style.backgroundColor = '#15191c';
@@ -72,6 +44,16 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       document.documentElement.style.backgroundColor = '#FAFAFA';
       document.body.style.backgroundColor = '#FAFAFA';
     }
+    
+    // Save theme to localStorage
+    localStorage.setItem('theme', theme);
+    
+    // Finish loading after a brief delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -83,30 +65,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <>
-      <ThemeScript />
-      <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
-        {isLoading ? <LoadingOverlay /> : children}
-      </ThemeContext.Provider>
-    </>
-=======
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
->>>>>>> parent of f2df84d (fixed bugs)
-=======
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
       {isLoading ? <LoadingOverlay /> : children}
     </ThemeContext.Provider>
->>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
-=======
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
-      {isLoading ? <LoadingOverlay /> : children}
-    </ThemeContext.Provider>
->>>>>>> parent of d6074d6 (Updated sidebar and theme storing while navigating)
   );
 };
 

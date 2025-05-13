@@ -8,18 +8,20 @@ import LogoDark from "@/assets/Logo.png"
 import eye from "@/assets/eye.png"
 import eyeLight from "@/assets/eyeLight.png"
 import stars from "@/assets/nav-stars-bg.png"
-import { UserButton, useClerk, useUser } from "@clerk/nextjs"
 import { useTheme } from "@/context/ThemeContext"
 import { useSidebar } from "@/context/SidebarContext"
 
 export default function Sidebar() {
   const pathname = usePathname()
   const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar();
-  const { signOut } = useClerk()
-  const { user, isLoaded } = useUser()
-  const [email] = user?.primaryEmailAddress?.emailAddress.split("@") || [""]
   const { theme } = useTheme()
   
+  const handleSignOut = () => {
+    // Simple sign out function - can be expanded later
+    console.log("Sign out clicked")
+    // Redirect to home page
+    window.location.href = "/"
+  }
 
   const toggleSidebar = () => {
     if (window.innerWidth < 640) {
@@ -40,10 +42,6 @@ export default function Sidebar() {
     { icon: Globe, label: "Global market agent", href: "/market-page" },
     { icon: Upload, label: "Data upload", href: "/upload" },
   ]
-
-  const handleSignOut = () => {
-    signOut()
-  }
 
   return (
     <div
@@ -73,26 +71,24 @@ export default function Sidebar() {
           className={`flex items-center ${isCollapsed ? "justify-center px-2" : "px-6"} py-4 space-x-3 border-b border-gray-300 dark:border-gray-800`}
         >
           <div className="relative">
-            <UserButton appearance={{
-              elements: {
-                userButtonPopoverCard: "z-100"
-              }
-            }} />
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1d2328] rounded-full" />
+            <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+              <span className="text-gray-600 dark:text-gray-300 font-medium">U</span>
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1d2328] rounded-full" />
+            </div>
           </div>
           {!isCollapsed && (
             <div className="flex items-center justify-between flex-1">
               <div>
                 <div className="flex flex-row items-center space-x-0.5">
                   <h3 className="text-sm font-medium text-[#9394A5] dark:text-white">
-                    {isLoaded ? user?.username : "Loading..."}
+                    User
                   </h3>
                   <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">
                     CEO
                   </p>
                 </div>
                 <p className="text-[0.5rem] text-gray-400 dark:text-gray-400">
-                  {isLoaded ? email : "Loading..."}
+                  user@example.com
                 </p>
               </div>
               <Image
