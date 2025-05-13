@@ -1,6 +1,5 @@
 "use client"
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export type Theme = "light" | "dark";
 
@@ -8,7 +7,6 @@ interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
-  isLoading: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -39,6 +37,7 @@ const ThemeScript = () => {
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+<<<<<<< HEAD
   // Initialize with the correct theme immediately
   const [theme, setThemeState] = useState<Theme>(() => {
     // For SSR, default to light
@@ -71,14 +70,16 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   // Apply theme class to document and save to localStorage whenever it changes
   useEffect(() => {
+=======
+  const [theme, setThemeState] = useState<Theme>("light");
+
+  React.useEffect(() => {
+>>>>>>> parent of f2df84d (fixed bugs)
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-    
-    // Save to localStorage
-    localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -90,12 +91,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
+<<<<<<< HEAD
     <>
       <ThemeScript />
       <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, isLoading }}>
         {isLoading ? <LoadingOverlay /> : children}
       </ThemeContext.Provider>
     </>
+=======
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+>>>>>>> parent of f2df84d (fixed bugs)
   );
 };
 
