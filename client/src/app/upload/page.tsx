@@ -1,99 +1,106 @@
-"use client"
-import { useState, useRef, useEffect } from "react"
-import type React from "react"
-import { Plus, Download, Trash2, Info } from "lucide-react"
-import Sidebar from "@/components/ui/Sidebar"
-import Header from "@/components/ui/Header"
+"use client";
+import { useState, useRef, useEffect } from "react";
+import type React from "react";
+import { Plus, Download, Trash2, Info } from "lucide-react";
+import Sidebar from "@/components/ui/Sidebar";
+import Header from "@/components/ui/Header";
 
 interface UploadedFile {
-  id: string
-  name: string
-  extension: string
-  size: string
+  id: string;
+  name: string;
+  extension: string;
+  size: string;
 }
 
 export default function DataUpload() {
-  const [files, setFiles] = useState<UploadedFile[]>([])
-  const [isDragging, setIsDragging] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [files, setFiles] = useState<UploadedFile[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const updateSidebarState = () => {
       const isCollapsed =
-        document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
-      setIsCollapsed(isCollapsed)
-    }
+        document.documentElement.getAttribute("data-sidebar-collapsed") ===
+        "true";
+      setIsCollapsed(isCollapsed);
+    };
 
-    updateSidebarState()
-    const observer = new MutationObserver(updateSidebarState)
+    updateSidebarState();
+    const observer = new MutationObserver(updateSidebarState);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-sidebar-collapsed"],
-    })
+    });
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    if (files.length === 0) setIsDragging(true)
-  }
+    e.preventDefault();
+    if (files.length === 0) setIsDragging(true);
+  };
 
   const handleDragLeave = () => {
-    setIsDragging(false)
-  }
+    setIsDragging(false);
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-    if (files.length > 0) return
+    e.preventDefault();
+    setIsDragging(false);
+    if (files.length > 0) return;
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFiles(e.dataTransfer.files)
+      handleFiles(e.dataTransfer.files);
     }
-  }
+  };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      handleFiles(e.target.files)
+      handleFiles(e.target.files);
     }
-  }
+  };
 
   const handleFiles = (fileList: FileList) => {
-    if (files.length > 0) return
-    const file = fileList[0]
+    if (files.length > 0) return;
+    const file = fileList[0];
     const newFile = {
       id: Math.random().toString(36).substring(2, 9),
       name: file.name.split(".")[0],
       extension: file.name.split(".").pop() || "",
       size: formatFileSize(file.size),
-    }
-    setFiles([newFile])
-  }
+    };
+    setFiles([newFile]);
+  };
 
   const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return "0 Bytes"
-    const k = 1024
-    const sizes = ["Bytes", "KB", "MB", "GB"]
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-  }
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (
+      Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+    );
+  };
 
   const handleClickUpload = () => {
     if (files.length === 0) {
-      fileInputRef.current?.click()
+      fileInputRef.current?.click();
     }
-  }
+  };
 
   const handleRemoveFile = (id: string) => {
-    setFiles((prev) => prev.filter((file) => file.id !== id))
-  }
+    setFiles((prev) => prev.filter((file) => file.id !== id));
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#15191c] transition-all duration-300">
       <Sidebar />
       <Header />
-      <div className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
+      <div
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
+          isCollapsed ? "sm:ml-16" : "sm:ml-64"
+        }`}
+      >
         <div className="flex items-center mb-4">
           <p className="text-gray-400 text-sm">Pages / Data Upload</p>
         </div>
@@ -115,17 +122,22 @@ export default function DataUpload() {
               <Plus className="w-10 h-10 dark:text-gray-400 text-[#AEC3FF]" />
             </div>
 
-            <div className={`${files.length > 0 ? "opacity-50" : ""} flex flex-col items-center`}>
-              <p className="dark:text-gray-400 text-[#AEC3FF] text-lg mb-2">Drag & drop or click to choose files</p>
+            <div
+              className={`${
+                files.length > 0 ? "opacity-50" : ""
+              } flex flex-col items-center`}
+            >
+              <p className="dark:text-gray-400 text-[#AEC3FF] text-lg mb-2">
+                Drag & drop or click to choose files
+              </p>
               <div className="flex flex-col dark:text-gray-500 text-[#AEC3FF]/60 items-center">
-                <p>Accepted files: .xls, .xlsx,</p>
+                <p>Accepted files: .xls, .xlsx,.csv</p>
 
                 <div className="flex items-center">
                   <Info className="w-5 h-5 mr-2" />
                   <p>Max file size : ***** MB</p>
                 </div>
               </div>
-
             </div>
 
             <input
@@ -134,10 +146,9 @@ export default function DataUpload() {
               className="hidden"
               onChange={handleFileInputChange}
               multiple={false}
-              accept=".xls, .xlsx"
+              accept=".xls, .xlsx ,.csv"
             />
           </div>
-
 
           {files.length > 0 && (
             <div className="space-y-4 mb-6 overflow-y-auto max-h-[40vh] pr-2 custom-scrollbar">
@@ -151,7 +162,9 @@ export default function DataUpload() {
                       <FileIcon className="w-12 h-12" />
                     </div>
                     <div>
-                      <h3 className="dark:text-white text-[#AEC3FF] text-lg font-medium">{file.name}</h3>
+                      <h3 className="dark:text-white text-[#AEC3FF] text-lg font-medium">
+                        {file.name}
+                      </h3>
                       <p className="dark:text-gray-400 text-[#AEC3FF]/80">
                         {file.extension} | {file.size}
                       </p>
@@ -170,7 +183,6 @@ export default function DataUpload() {
                     >
                       <Trash2 className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
                     </button>
-
                   </div>
                 </div>
               ))}
@@ -187,7 +199,7 @@ export default function DataUpload() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function FileIcon({ className }: { className?: string }) {
@@ -202,12 +214,35 @@ function FileIcon({ className }: { className?: string }) {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path d="M14 2V8H20" stroke="#2E7D32" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M16 13H8" stroke="#E8F5E9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M16 17H8" stroke="#E8F5E9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M10 9H9H8" stroke="#E8F5E9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M14 2V8H20"
+          stroke="#2E7D32"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M16 13H8"
+          stroke="#E8F5E9"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M16 17H8"
+          stroke="#E8F5E9"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M10 9H9H8"
+          stroke="#E8F5E9"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     </div>
-  )
+  );
 }
-
