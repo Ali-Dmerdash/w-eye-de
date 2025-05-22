@@ -140,7 +140,7 @@ const RevenueChart: React.FC = () => {
       </div>
     );
 
-  if (!revenueData)
+  if (!trendData)
     return (
       <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
         No data available.
@@ -148,14 +148,18 @@ const RevenueChart: React.FC = () => {
     );
 
   const confidenceColor =
-    revenueData.confidence_level === "High"
+    trendData.confidence_level === "High"
       ? "#E31A1A"
-      : revenueData.confidence_level === "Medium"
+      : trendData.confidence_level === "Medium"
       ? "#F97316"
       : "#01B574";
 
-  const displayPercentage = 70; // Still static unless you have logic to convert confidence level to %
-
+      const displayPercentage =
+      trendData.confidence_level === "High"
+        ? 90
+        : trendData.confidence_level === "Medium"
+        ? 70
+        : 40;
   return (
     <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
       <div className="flex flex-col items-center justify-center h-full">
@@ -163,10 +167,10 @@ const RevenueChart: React.FC = () => {
           percentage={displayPercentage}
           color={confidenceColor}
           size={circleSize}
-          label={revenueData.confidence_level}
+          label={trendData.confidence_level}
         />
         <div className="py-4 flex flex-col">
-          <span className="text-5xl">{revenueData.revenue_forecast}</span>
+          <span className="text-5xl">{trendData.revenue_forecast}</span>
           <span className="text-base text-[#AEC3FF] dark:text-gray-400 font-mulish">
             Revenue Forecast
           </span>
