@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Page from "@/app/sign-in/[[...sign-in]]/page";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { SidebarProvider } from "@/context/SidebarContext";
-import AppContent from "@/components/AppContent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,36 +27,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const theme = localStorage.getItem('theme');
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                    document.documentElement.style.backgroundColor = '#15191c';
-                    document.body.style.backgroundColor = '#15191c';
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                    document.documentElement.style.backgroundColor = '#FAFAFA';
-                    document.body.style.backgroundColor = '#FAFAFA';
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body className="bg-white dark:bg-[#15191c] transition-colors duration-300">
-        <ThemeProvider>
-          <SidebarProvider>
-            <AppContent>{children}</AppContent>
-          </SidebarProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        
+        <body className="bg-blue-500">
+            <SignedOut>
+              <Page />
+            </SignedOut>
+            <SignedIn>            
+              <ThemeProvider>
+                <SidebarProvider>
+                  <main>{children}</main>
+                </SidebarProvider>
+              </ThemeProvider>
+            </SignedIn>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
