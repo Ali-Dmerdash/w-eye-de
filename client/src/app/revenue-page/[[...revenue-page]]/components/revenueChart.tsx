@@ -64,9 +64,20 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   );
 };
 
-type RevenueData = {
+type Trend = {
+  _id: string;
   revenue_forecast: string;
   confidence_level: string;
+  key_factors: Record<string, string>;
+  analysis: {
+    insights: string;
+    recommendation: string;
+  };
+};
+
+type ApiResponse = {
+  success: boolean;
+  trends: Trend[];
 };
 
 const RevenueChart: React.FC = () => {
