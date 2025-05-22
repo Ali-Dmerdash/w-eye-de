@@ -30,7 +30,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         
-        <body className="bg-black">
+        <body className="bg-transparent">
             <SignedOut>
               <Page />
             </SignedOut>

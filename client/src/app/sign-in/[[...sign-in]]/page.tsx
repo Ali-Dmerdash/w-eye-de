@@ -16,10 +16,14 @@ export default function AuthenticationPage() {
   return (
     <>
       <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 p-2">
+        
         <div className="relative hidden h-full flex-col  BGL rounded-xl  lg:flex">
           <Image src={logo} alt="logo" className="absolute bottom-0 left-0" />
           <Spline scene="https://prod.spline.design/PFx5G2qyftQjNcww/scene.splinecode"/>
         </div>
+
+
+
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center items-center sm:w-[350px]">
             <Image src={logo} alt="logo" height={70} />
