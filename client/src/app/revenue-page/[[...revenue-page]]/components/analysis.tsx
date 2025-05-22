@@ -1,25 +1,16 @@
-import React from "react"; // Import React
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useState, useEffect } from "react";
 
-// Define an interface for the expected data structure
 interface Analysis {
   insights: string;
   recommendation: string;
 }
 
-interface RevenueData {
-  analysis: Analysis;
-  // Add other top-level fields if needed
-}
-
 export default function AnalysisComponent() {
-  // Renamed component assuming original name
   const [analysisState, setAnalysisState] = useState<Analysis | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // Add React.FC type
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Add type for state
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +19,8 @@ export default function AnalysisComponent() {
       try {
         const response = await fetch(
           "http://localhost:3001/api/revenue/results"
-        );        if (!response.ok) {
+        );
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
@@ -45,6 +37,7 @@ export default function AnalysisComponent() {
 
     fetchData();
   }, []);
+  
   if (isLoading)
     return (
       <div className="flex items-start justify-center flex-wrap">
