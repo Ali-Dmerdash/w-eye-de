@@ -26,12 +26,15 @@ export default function AnalysisComponent() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch("/api/revenue-data"); // Fetch from the new API route
-        if (!response.ok) {
+        const response = await fetch(
+          "http://localhost:3001/api/revenue/results"
+        );        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: RevenueData = await response.json();
-        setAnalysisState(data.analysis);
+        const data = await response.json();
+        const analysis = data?.trends?.[0]?.analysis;
+        if (!analysis) throw new Error("Analysis data not found.");
+        setAnalysisState(analysis);
       } catch (e: any) {
         console.error("Failed to fetch analysis data:", e);
         setError(e.message || "Failed to load data");
