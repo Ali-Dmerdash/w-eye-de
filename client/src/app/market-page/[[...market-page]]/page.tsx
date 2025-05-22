@@ -54,7 +54,9 @@ export default function Page() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/market-data");
+        const response = await fetch(
+          "http://localhost:3001/api/market/results"
+        ); // ✅ Use Express backend
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -104,7 +106,7 @@ export default function Page() {
         {loading && <>
           <div className="flex flex-col items-center justify-center h-screen space-y-3">
             <LoadingSpinner />
-            <div className="text-white text-2xl font-mulish text-center">Loading market data...</div>
+            <div className="dark:text-white text-[#15191c] text-2xl font-mulish text-center">Loading market data...</div>
 
           </div>
         </>
