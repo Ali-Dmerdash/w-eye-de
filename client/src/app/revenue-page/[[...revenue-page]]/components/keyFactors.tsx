@@ -5,10 +5,6 @@ interface KeyFactors {
   [key: string]: string; // e.g., "Seasonal Demand": "0.3/High"
 }
 
-interface RevenueData {
-  key_factors: KeyFactors;
-}
-
 const KeyFactorsCard: React.FC = () => {
   const [keyFactorsState, setKeyFactorsState] = useState<KeyFactors | null>(
     null
@@ -27,11 +23,15 @@ const KeyFactorsCard: React.FC = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch("/api/revenue-data");
+        const response = await fetch(
+          "http://localhost:3001/api/revenue/results"
+        );
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
-        const data: RevenueData = await response.json();
-        setKeyFactorsState(data.key_factors);
+        const data = await response.json();
+        const keyFactors = data?.trends?.[0]?.key_factors;
+        if (!keyFactors) throw new Error("Key factors not found in the data.");
+        setKeyFactorsState(keyFactors);
       } catch (e: any) {
         console.error("Failed to fetch key factors data:", e);
         setError(e.message || "Failed to load data");
