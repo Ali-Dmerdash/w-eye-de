@@ -82,7 +82,7 @@ type ApiResponse = {
 
 const RevenueChart: React.FC = () => {
   const [circleSize, setCircleSize] = useState<number>(300);
-  const [revenueData, setRevenueData] = useState<RevenueData | null>(null);
+  const [trendData, setTrendData] = useState<Trend | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -100,10 +100,15 @@ const RevenueChart: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch("/api/revenue-data");
+        const res = await fetch("http://localhost:3001/api/revenue/results");
         if (!res.ok) throw new Error("Failed to fetch data");
-        const data: RevenueData = await res.json();
-        setRevenueData(data);
+        const data: ApiResponse = await res.json();
+
+        if (!data.success || !data.trends.length) {
+          throw new Error("No trend data available");
+        }
+
+        setTrendData(data.trends[0]); // get the first trend
       } catch (err: any) {
         setError(err.message || "Failed to load data");
       } finally {
