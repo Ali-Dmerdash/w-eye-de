@@ -23,8 +23,16 @@ export default function FraudInc() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch("/api/fraud-data");
-        if (!response.ok) {
+        const response = await fetch(
+          "http://localhost:3001/api/fraud/results",
+          {
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+                if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: FraudData = await response.json();
