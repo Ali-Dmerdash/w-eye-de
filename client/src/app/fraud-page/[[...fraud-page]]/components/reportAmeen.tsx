@@ -28,12 +28,25 @@ const ReportAmeen = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch("/api/fraud-data");
+        const response = await fetch(
+          "http://localhost:3001/api/fraud/results",
+          {
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: FraudData = await response.json();
-        setAnalysisData(data.analysis);
+        const json: FraudData[] = await response.json();
+
+        if (!Array.isArray(json) || json.length === 0) {
+          throw new Error("No analysis data available.");
+        }
+
+        setAnalysisData(json[0].analysis);
       } catch (e: any) {
         console.error("Failed to fetch analysis data:", e);
         setError(e.message || "Failed to load data");
@@ -63,7 +76,7 @@ const ReportAmeen = () => {
         </div>
       </div>
     );
-  
+
   if (error)
     return (
       <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
