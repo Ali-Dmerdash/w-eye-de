@@ -11,11 +11,11 @@ export default function PricingComparison() {
   useEffect(() => {
     const fetchMarketData = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results");
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
         const data = await res.json();
 
-        const pc = data?.pricing_comparison;
+        const pc = data?.[0]?.pricing_comparison;
         if (pc?.competitors && typeof pc.competitors === "object") {
           setCompetitors(pc.competitors);
         }
