@@ -39,12 +39,25 @@ export default function ProjectsTable() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch("/api/fraud-data");
+        const response = await fetch(
+          "http://localhost:3001/api/fraud/results",
+          {
+            credentials: "include", // If you're using cookies for auth
+            headers: {
+              "Content-Type": "application/json",
+              // "Authorization": `Bearer ${yourToken}` // if you're using Bearer tokens
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: FraudData = await response.json();
-        setTransactions(data.transactions || []); // Use fetched transactions
+        const json: FraudData[] = await response.json();
+
+        if (!Array.isArray(json) || json.length === 0) {
+          throw new Error("No analysis data available.");
+        }
+        setTransactions(json[0].transactions);
       } catch (e: any) {
         console.error("Failed to fetch transaction data:", e);
         setError(e.message || "Failed to load data");
