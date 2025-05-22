@@ -28,11 +28,8 @@ export default function UserAuthForm() {
                 <Card className="w-full sm:w-96 bg-transparent text-white border-none">
                   <CardContent className="grid gap-y-4">
                     <Clerk.Field name="identifier" className="space-y-2">
-                      {/* <Clerk.Label asChild>
-                      </Clerk.Label>
-                      <Clerk.Input type="email" required asChild>
-                        <Input />
-                      </Clerk.Input> */}
+                    
+              
                       <div className="relative z-0">
                         <Clerk.Input
                           type="email"

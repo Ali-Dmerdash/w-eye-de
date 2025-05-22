@@ -6,6 +6,11 @@ import LoadingSpinner from "@/components/ui/loadingSpinner";
 
 export default function WelcomeCard() {
   const { user, isLoaded } = useUser();
+  console.log(user?.lastSignInAt);
+  console.log(
+    user?.unsafeMetadata.btnStatus
+  );
+
 
   return (
     <>
@@ -20,7 +25,7 @@ export default function WelcomeCard() {
               priority
             />
           </div>
-          <div>
+          <div className="z-10">
             <p className="font-bold text-sm text-[#AEC3FF] dark:text-gray-400">Welcome back,</p>
             <h2 className="text-3xl font-bold text-white mt-1 capitalize">
               {user?.username}
@@ -31,7 +36,9 @@ export default function WelcomeCard() {
               Ask me anything.
             </p>
           </div>
+          
         </div>
+        
       ) : (
         <LoadingSpinner />
       )}

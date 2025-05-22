@@ -50,7 +50,7 @@ export default function Home() {
         <h1 className="dark:text-white text-gray-700 text-xl font-medium mb-6">Dashboard</h1>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
           <DashboardCard
             title="Today's Money"
             value="$53,000"
@@ -86,15 +86,15 @@ export default function Home() {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+          <div className="col-span-4 lg:col-span-2 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <WelcomeCard />
               <ReferralCard score={9.3} />
             </div>
             <ChartCard />
           </div>
-          <div className="hidden lg:block lg:col-span-1 h-full">
+          <div className="hidden lg:block lg:col-span-2 h-full">
             <SphereVisualization />
           </div>
         </div>

@@ -16,13 +16,13 @@ export default function ReferralCard({ score }: ReferralCardProps) {
         <h3 className="text-lg font-medium text-white">Referral Tracking</h3>
       </div>
       <div className="grid grid-cols-2 gap-4 mb-8">
-        <div className="rounded-lg p-4 shadow-lg bg-[#484B6A] dark:bg-[#243461]">
-          <p className="text-[#E4E5F1] dark:text-gray-400 text-sm mb-1">Invited</p>
-          <p className="text-white font-medium">145 people</p>
+        <div className="rounded-lg flex flex-col items-center justify-center p-4 shadow-lg bg-[#484B6A] dark:bg-[#243461]">
+          <p className="text-[#E4E5F1] dark:text-gray-400 text-xs mb-1">Invited</p>
+          <p className="text-white font-medium text-xs lg:text-sm">145 people</p>
         </div>
-        <div className="rounded-lg p-4 shadow-lg bg-[#484B6A] dark:bg-[#243461]">
-          <p className="text-[#E4E5F1] dark:text-gray-400 text-sm mb-1">Invited</p>
-          <p className="text-[#E4E5F1] dark:text-white font-medium">1,465</p>
+        <div className="rounded-lg flex flex-col items-center justify-center p-4 shadow-lg bg-[#484B6A] dark:bg-[#243461]">
+          <p className="text-[#E4E5F1] dark:text-gray-400 text-xs mb-1">Invited</p>
+          <p className="text-[#E4E5F1] dark:text-white font-medium text-xs md:text-sm">1,465</p>
         </div>
       </div>
       <div className="flex flex-col items-center">

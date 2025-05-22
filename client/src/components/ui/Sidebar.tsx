@@ -108,8 +108,8 @@ export default function Sidebar() {
                   <h3 className="text-sm font-medium text-[#9394A5] dark:text-white">
                     {user.username}
                   </h3>
-                  <p className="text-[0.6rem] bg-red-700 border border-red-400 px-1 rounded-sm font-bayon text-red-900 ">
-                    CEO
+                  <p className={`text-[0.6rem] ${user.publicMetadata.role === "CEO" ? "bg-red-700 text-red-900 border-red-400" : user.publicMetadata.role === "CTO" ? "bg-blue-700 text-blue-900 border-blue-400" : user.publicMetadata.role === "CFO" ? "bg-green-700 text-green-900 border-green-400" : user.publicMetadata.role === "CMO" ? "bg-yellow-700 text-yellow-900 border-yellow-400" : "bg-gray-700 text-gray-900 border-gray-400"} border px-1 rounded-sm font-bayon`}>
+                    {user.publicMetadata.role as string || "N/A"}
                   </p>
                 </div>
                 <p className="text-[0.5rem] text-gray-400 dark:text-gray-400">
