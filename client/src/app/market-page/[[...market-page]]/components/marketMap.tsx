@@ -53,10 +53,7 @@ export default function MarketMap() {
   }, []);
 
   const competitors = [
-    ...new Set([
-      ...Object.keys(pricing || {}),
-      ...Object.keys(scores || {}),
-    ]),
+    ...new Set([...Object.keys(pricing || {}), ...Object.keys(scores || {})]),
   ];
 
   const locations = competitors
@@ -70,15 +67,15 @@ export default function MarketMap() {
   const selectedData =
     selectedLocation && (pricing || scores)
       ? {
-          price:
-            pricing[selectedLocation] ||
-            pricing[selectedLocation.toLowerCase()] ||
-            "N/A",
-          scores:
-            scores[selectedLocation] ||
-            scores[selectedLocation.toLowerCase()] ||
-            [],
-        }
+        price:
+          pricing[selectedLocation] ||
+          pricing[selectedLocation.toLowerCase()] ||
+          "N/A",
+        scores:
+          scores[selectedLocation] ||
+          scores[selectedLocation.toLowerCase()] ||
+          [],
+      }
       : null;
 
   if (loading) {
@@ -137,11 +134,13 @@ export default function MarketMap() {
               ✕
             </button>
             <h2 className="text-lg font-semibold mb-4 text-white dark:text-white">
-              {selectedLocation.charAt(0) + selectedLocation.slice(1).toLowerCase()} Details
-            </h2>
+              {selectedLocation.charAt(0) +
+                selectedLocation.slice(1).toLowerCase()}{" "}
+              Details            </h2>
             <div className="text-sm text-white dark:text-gray-300 space-y-2 font-mulish">
               <p>
-                <strong>Price:</strong> ${selectedData.price.match(/\d+/)?.[0] ?? "N/A"}
+                <strong>Price:</strong> $
+                {selectedData.price.match(/\d+/)?.[0] ?? "N/A"}
               </p>
               {selectedData.scores.length > 1 && (
                 <p>
