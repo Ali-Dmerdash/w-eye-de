@@ -1,8 +1,7 @@
-// This file is kept for compatibility but no longer uses Clerk
-export const config = {
-  matcher: [],
-};
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export default function middleware() {
-  return;
-}
+export default clerkMiddleware();
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+};
