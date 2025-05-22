@@ -118,7 +118,7 @@ export default function DataUpload() {
             <div className={`${files.length > 0 ? "opacity-50" : ""} flex flex-col items-center`}>
               <p className="dark:text-gray-400 text-[#AEC3FF] text-lg mb-2">Drag & drop or click to choose files</p>
               <div className="flex flex-col dark:text-gray-500 text-[#AEC3FF]/60 items-center">
-                <p>Accepted files: .xls, .xlsx,</p>
+                <p>Accepted files: .csv , .json , .pdf</p>
 
                 <div className="flex items-center">
                   <Info className="w-5 h-5 mr-2" />
@@ -134,7 +134,7 @@ export default function DataUpload() {
               className="hidden"
               onChange={handleFileInputChange}
               multiple={false}
-              accept=".xls, .xlsx"
+              accept=".csv , .json , .pdf"
             />
           </div>
 
