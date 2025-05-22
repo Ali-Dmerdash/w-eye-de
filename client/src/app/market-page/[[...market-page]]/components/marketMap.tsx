@@ -32,12 +32,15 @@ export default function MarketMap() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results");
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
 
         const result = await res.json();
-        setPricing(result.pricing_comparison?.competitors || {});
-        setScores(result.competitive_positioning?.scores || {});
+        const pc = result?.[0]?.pricing_comparison;
+        const cp = result?.[0]?.competitive_positioning;
+
+        setPricing(pc?.competitors || {});
+        setScores(cp?.scores || {});
         setError(null);
       } catch (err: any) {
         setError(err.message || "Unknown error");
