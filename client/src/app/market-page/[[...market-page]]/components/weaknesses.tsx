@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import LoadingSpinner from './../../../../components/ui/loadingSpinner';
+import LoadingSpinner from "./../../../../components/ui/loadingSpinner";
 
 export default function Weaknesses() {
   const [weaknesses, setWeaknesses] = useState<string[]>([]);
@@ -11,11 +11,11 @@ export default function Weaknesses() {
   useEffect(() => {
     const fetchWeaknesses = async () => {
       try {
-        const res = await fetch("/api/market-data");
+        const res = await fetch("http://localhost:3001/api/market/results");
         if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
         const data = await res.json();
 
-        const swot = data?.swot_analysis;
+        const swot = data?.[0]?.swot_analysis;
         if (Array.isArray(swot?.weaknesses)) {
           setWeaknesses(swot.weaknesses);
         }
@@ -32,8 +32,11 @@ export default function Weaknesses() {
   }, []);
 
   const hasWeaknesses = weaknesses.length > 0;
-  const weaknessText = hasWeaknesses ? weaknesses[0] : "No weaknesses data available.";
-  const weaknessSource = hasWeaknesses && weaknesses.length > 1 ? weaknesses[1] : null;
+  const weaknessText = hasWeaknesses
+    ? weaknesses[0]
+    : "No weaknesses data available.";
+  const weaknessSource =
+    hasWeaknesses && weaknesses.length > 1 ? weaknesses[1] : null;
 
   return (
     <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
