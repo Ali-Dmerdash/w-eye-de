@@ -32,11 +32,16 @@ export default function FraudInc() {
             },
           }
         );
-                if (!response.ok) {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: FraudData = await response.json();
-        setFraudDataState(data);
+        const json = await response.json();
+
+        if (!Array.isArray(json) || json.length === 0) {
+          throw new Error("No fraud data available.");
+        }
+
+        const data: FraudData = json[0]; setFraudDataState(data);
       } catch (e: any) {
         console.error("Failed to fetch fraud data:", e);
         setError(e.message || "Failed to load data");
@@ -57,9 +62,9 @@ export default function FraudInc() {
             <div className="h-4 w-32 mx-auto bg-red-800 rounded pulse" />
           </div>
         </div>
-  
+
         <div className="w-full border-t border-gray-700 mb-6"></div>
-  
+
         <div className="flex-grow">
           <div className="h-6 w-60 dark:bg-gray-700/50 bg-gray-300/50 rounded mb-6 pulse" />
           <ul className="space-y-4">
@@ -76,7 +81,7 @@ export default function FraudInc() {
         </div>
       </div>
     );
-  
+
   if (error)
     return (
       <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
