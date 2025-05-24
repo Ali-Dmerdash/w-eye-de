@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useEffect, useMemo } from "react"
-import { ArrowLeft, ArrowRight, Bell, Dot } from "lucide-react"
+import { ArrowLeft, ArrowRight, Bell, Dot, MessageSquare } from "lucide-react"
 import Image from "next/image"
 import eye from "@/assets/eye.png"
 import eyeLight from "@/assets/eyeLight.png"
@@ -16,10 +16,9 @@ export default function Header() {
   const notificationRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
-  const { openChat } = useChat();
+  const { openChat, setShowHelpModal } = useChat();
   const router = useRouter();
 
-  // Close notifications when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
@@ -50,6 +49,15 @@ export default function Header() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputRef.current?.value) {
       const query = inputRef.current.value;
+      
+      if (query.trim().toLowerCase() === '/help') {
+        setShowHelpModal(true);
+        openChat();
+        inputRef.current.value = '';
+        setIsEditing(false);
+        return;
+      }
+      
       openChat(query);
       inputRef.current.value = '';
       setIsEditing(false);
@@ -155,6 +163,14 @@ export default function Header() {
         </div>
       </div>
       <div className="flex items-center md:space-x-4 space-x-2 ms-1">
+        {/* Chat icon for small screens */}
+        <div 
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 hover:bg-gray-100 dark:hover:bg-gray-800/30 transition-colors cursor-pointer"
+          onClick={() => openChat()}
+        >
+          <MessageSquare className="w-5 h-5 text-[#15191c] dark:text-gray-200" />
+        </div>
+        
         {toggleButton}
         <div 
           ref={notificationRef} 

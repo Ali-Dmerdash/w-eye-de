@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { ChatProvider } from "@/context/ChatContext";
 import ChatModal from "@/components/ui/ChatModal";
+import GlobalHelpModal from "@/components/ui/GlobalHelpModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
                   <ChatProvider>
                     <main>{children}</main>
                     <ChatModal />
+                    <GlobalHelpModal />
                   </ChatProvider>
                 </SidebarProvider>
               </ThemeProvider>
