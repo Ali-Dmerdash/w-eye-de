@@ -33,10 +33,8 @@ export default function Weaknesses() {
 
   const hasWeaknesses = weaknesses.length > 0;
   const weaknessText = hasWeaknesses
-    ? weaknesses[0]
+    ? weaknesses[0].split(" (Source:")[0].trim()
     : "No weaknesses data available.";
-  const weaknessSource =
-    hasWeaknesses && weaknesses.length > 1 ? weaknesses[1] : null;
 
   return (
     <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
@@ -47,16 +45,9 @@ export default function Weaknesses() {
       ) : error ? (
         <span className="text-xs font-mulish text-red-400">{error}</span>
       ) : hasWeaknesses ? (
-        <>
-          <div className="break-words leading-tight max-w-full">
-            <span className="text-xs font-mulish">{weaknessText}</span>
-          </div>
-          {weaknessSource && (
-            <span className="text-[0.50rem] font-mulish text-gray-400 mt-1">
-              {weaknessSource}
-            </span>
-          )}
-        </>
+        <div className="break-words leading-tight max-w-full">
+          <span className="text-xs font-mulish">{weaknessText}</span>
+        </div>
       ) : (
         <span className="text-xs font-mulish text-gray-400">{weaknessText}</span>
       )}

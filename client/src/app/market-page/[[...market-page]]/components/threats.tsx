@@ -32,8 +32,9 @@ export default function Threats() {
   }, []);
 
   const hasThreats = threats.length > 0;
-  const threatText = hasThreats ? threats[0] : "No threats data available.";
-  const threatSource = hasThreats && threats.length > 1 ? threats[1] : null;
+  const threatText = hasThreats 
+    ? threats[0].split(" (Source:")[0].trim() 
+    : "No threats data available.";
 
   return (
     <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center justify-center items-center shadow-inner-custom2">
@@ -44,16 +45,9 @@ export default function Threats() {
       </> : error ? (
         <span className="text-xs font-mulish text-red-400">{error}</span>
       ) : hasThreats ? (
-        <>
-          <div className="break-words leading-tight max-w-full">
-            <span className="text-xs font-mulish">{threatText}</span>
-          </div>
-          {threatSource && (
-            <span className="text-[0.50rem] font-mulish text-gray-400 mt-1">
-              {threatSource}
-            </span>
-          )}
-        </>
+        <div className="break-words leading-tight max-w-full">
+          <span className="text-xs font-mulish">{threatText}</span>
+        </div>
       ) : (
         <span className="text-xs font-mulish text-gray-400">{threatText}</span>
       )}

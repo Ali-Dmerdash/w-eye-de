@@ -62,12 +62,12 @@ export default function Sidebar() {
   const handleSignOut = () => {
     // Show loading overlay
     setIsLoggingOut(true);
-    
+
     // Clear localStorage items before signing out
     localStorage.removeItem("chatMessages");
     localStorage.removeItem("theme");
     localStorage.removeItem("sidebar-collapsed");
-    
+
     // Add a small delay to ensure loading overlay appears
     setTimeout(() => {
       signOut();
@@ -105,7 +105,7 @@ export default function Sidebar() {
           </div>
 
           {/* User Profile */}
-          <div className={`flex items-center ${isCollapsed ? "justify-center px-2" : "px-6"} py-4 space-x-3 border-b border-gray-300 dark:border-gray-800`}>
+          <div className={`flex items-center ${isCollapsed ? "justify-center px-2 gap-2 flex-col" : "px-6 space-x-3"} py-4  border-b border-gray-300 dark:border-gray-800`}>
             <div className="relative">
               <UserButton
                 appearance={{
@@ -143,25 +143,15 @@ export default function Sidebar() {
                 />
               </div>
             )}
+            {isCollapsed ? <p className={`text-[0.6rem] ${user?.publicMetadata.role === "CEO" ? "bg-red-700 text-red-900 border-red-400" :
+              user?.publicMetadata.role === "CTO" ? "bg-blue-700 text-blue-900 border-blue-400" :
+                user?.publicMetadata.role === "CFO" ? "bg-green-700 text-green-900 border-green-400"
+                  : user?.publicMetadata.role === "CMO" ? "bg-yellow-700 text-yellow-900 border-yellow-400"
+                    : "bg-gray-700 text-gray-900 border-gray-400"} border px-1.5 rounded-sm font-bayon`}>
+              {user?.publicMetadata.role as string || "N/A"}
+            </p> : ""}
           </div>
 
-          {/* Search (hidden for now) */}
-          <div className={`${isCollapsed ? "px-2" : "px-4"} hidden py-4`}>
-            {isCollapsed ? (
-              <button className="w-full flex justify-center p-2 text-gray-400 hover:text-white rounded-lg hover:bg-[#15191c] transition-colors">
-                <Search className="w-5 h-5" />
-              </button>
-            ) : (
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search anything..."
-                  className="w-full px-4 py-2 bg-[#15191c] dark:bg-[#15191c] text-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <Search className="absolute w-4 h-4 text-gray-400 right-3 top-3" />
-              </div>
-            )}
-          </div>
 
           {/* Navigation */}
           <nav className={`flex-1 pt-5 ${isCollapsed ? "px-2" : "px-4"} space-y-4 overflow-y-auto`}>
