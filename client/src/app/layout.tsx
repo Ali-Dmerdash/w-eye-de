@@ -5,6 +5,8 @@ import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { SidebarProvider } from "@/context/SidebarContext";
+import { ChatProvider } from "@/context/ChatContext";
+import ChatModal from "@/components/ui/ChatModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,14 +32,17 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         
-        <body className="bg-transparent">
+        <body className="bg-[#0E1111]">
             <SignedOut>
               <Page />
             </SignedOut>
             <SignedIn>            
               <ThemeProvider>
                 <SidebarProvider>
-                  <main>{children}</main>
+                  <ChatProvider>
+                    <main>{children}</main>
+                    <ChatModal />
+                  </ChatProvider>
                 </SidebarProvider>
               </ThemeProvider>
             </SignedIn>

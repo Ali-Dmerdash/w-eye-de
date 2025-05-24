@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import type React from "react";
-import { Plus, Download, Trash2, Info, Ellipsis } from "lucide-react";
+import { Plus, Download, Trash2, Info, Ellipsis, X } from "lucide-react";
 import Sidebar from "@/components/ui/Sidebar";
 import Header from "@/components/ui/Header";
 
@@ -18,7 +18,9 @@ export default function DataUpload() {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [currentFileId, setCurrentFileId] = useState<string | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateSidebarState = () => {
@@ -40,8 +42,8 @@ export default function DataUpload() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (openDropdownId && !(event.target as Element).closest('.dropdown-container')) {
-        setOpenDropdownId(null);
+      if (showModal && modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setShowModal(false);
       }
     };
 
@@ -49,7 +51,7 @@ export default function DataUpload() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [openDropdownId]);
+  }, [showModal]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -108,20 +110,22 @@ export default function DataUpload() {
     setFiles((prev) => prev.filter((file) => file.id !== id));
   };
 
-  const toggleDropdown = (id: string) => {
-    setOpenDropdownId(openDropdownId === id ? null : id);
+  const openAgentModal = (id: string) => {
+    setCurrentFileId(id);
+    setShowModal(true);
   };
 
-  const handleAgentSelection = (agentType: string, fileId: string) => {
-    console.log(`Selected ${agentType} for file ${fileId}`);
-    setOpenDropdownId(null);
-    setFiles(prevFiles => 
-      prevFiles.map(file => 
-        file.id === fileId 
-          ? { ...file, agent: agentType } 
-          : file
-      )
-    );
+  const handleAgentSelection = (agentType: string) => {
+    if (currentFileId) {
+      setFiles(prevFiles =>
+        prevFiles.map(file =>
+          file.id === currentFileId
+            ? { ...file, agent: agentType }
+            : file
+        )
+      );
+      setShowModal(false);
+    }
   };
 
   // Check if all files have agents selected
@@ -132,9 +136,8 @@ export default function DataUpload() {
       <Sidebar />
       <Header />
       <div
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
-          isCollapsed ? "sm:ml-16" : "sm:ml-64"
-        }`}
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
+          }`}
       >
         <div className="flex items-center mb-4">
           <p className="text-gray-400 text-sm">Pages / Data Upload</p>
@@ -145,8 +148,8 @@ export default function DataUpload() {
           {/* Upload Area */}
           <div
             className={`border-2 border-dashed dark:border-gray-600 border-[#AEC3FF]/50 rounded-lg mb-6 py-16 flex flex-col items-center justify-center cursor-pointer transition-all duration-300
-    ${isDragging ? "bg-[#1d2328] border-blue-500" : "bg-transparent"}
-    ${files.length > 0 ? "pointer-events-none" : ""}
+                      ${isDragging ? "bg-[#1d2328] border-blue-500" : "bg-transparent"}
+                      ${files.length > 0 ? "pointer-events-none" : ""}
   `}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -158,9 +161,8 @@ export default function DataUpload() {
             </div>
 
             <div
-              className={`${
-                files.length > 0 ? "opacity-50" : ""
-              } flex flex-col items-center`}
+              className={`${files.length > 0 ? "opacity-50" : ""
+                } flex flex-col items-center`}
             >
               <p className="dark:text-gray-400 text-[#AEC3FF] text-lg mb-2">
                 Drag & drop or click to choose files
@@ -190,74 +192,53 @@ export default function DataUpload() {
               {files.map((file) => (
                 <div
                   key={file.id}
-                  className="dark:bg-[#1d2328] bg-[#AEC3FF]/10 rounded-lg p-4 flex items-center justify-between shadow-sm"
+                  className="dark:bg-[#1d2328] bg-[#AEC3FF]/10 rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4"
                 >
                   <div className="flex items-center">
-                    <div className="mr-4">
-                      <FileIcon className="w-12 h-12" />
+                    <div className="mr-3 sm:mr-4">
+                      <FileIcon className="w-10 h-10 sm:w-12 sm:h-12" />
                     </div>
-                    <div>
-                      <h3 className="dark:text-white text-[#AEC3FF] text-lg font-medium">
+                    <div className="flex flex-col flex-1 overflow-hidden">
+                      <h3 className="dark:text-white text-[#AEC3FF] text-base sm:text-lg md:text-xl font-medium truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] lg:max-w-full">
                         {file.name}
                       </h3>
-                      <p className="dark:text-gray-400 text-[#AEC3FF]/80">
-                        {file.extension} | {file.size} | {file.agent ? 
-                          file.agent : 
-                          <span className="font-bold underline dark:text-gray-400 text-[#AEC3FF]/100">Agent Not Selected</span>}
+                      <p className="dark:text-gray-400 text-[#AEC3FF]/80 text-xs sm:text-sm md:text-base">
+                        {file.extension} | {file.size} | {file.agent ?
+                          file.agent :
+                          <span className="font-bold underline dark:text-gray-400 text-[#AEC3FF]/80 ">Agent Not Selected</span>}
                       </p>
                     </div>
                   </div>
-                  <div className="flex space-x-4">
-                    <div className="dropdown-container relative">
-                      <button
-                        className={`p-3 dark:bg-[#2a3441] bg-[#AEC3FF]/20 border-[#AEC3FF]/50 bg-opacity-10 rounded-full border dark:border-gray-600 hover:bg-[#AEC3FF]/40 transition-colors duration-150 ${
-                          !file.agent ? "animate-pulse-attention" : ""
-                        }`}
-                        onClick={() => toggleDropdown(file.id)}
-                      >
-                        <Ellipsis className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
-                      </button>
-                      {openDropdownId === file.id && (
-                        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-[#1d2328] border dark:border-gray-700 border-gray-200 z-10">
-                          <div className="py-1">
-                            <button
-                              onClick={() => handleAgentSelection('Fraud Agent', file.id)}
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                              Fraud Agent
-                            </button>
-                            <button
-                              onClick={() => handleAgentSelection('Revenue Agent', file.id)}
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                              Revenue Agent
-                            </button>
-                            <button
-                              onClick={() => handleAgentSelection('Market Comp. Agent', file.id)}
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                              Market Comp. Agent
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                  <div className="flex flex-col lg:flex-row sm:justify-normal justify-center gap-3 sm:gap-4 mt-4 sm:mt-0">
                     <button
-                      className="p-3 dark:bg-[#2a3441] bg-[#AEC3FF]/20 border-[#AEC3FF]/50 bg-opacity-10 rounded-full border dark:border-gray-600 hover:bg-[#AEC3FF]/40 transition-colors duration-150"
+                      className={`flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 dark:bg-[#2a3441] bg-[#AEC3FF] border-[#AEC3FF]/50 bg-opacity-10 rounded-2xl md:rounded-full border dark:border-gray-600 hover:bg-[#AEC3FF]/40 transition-colors duration-150 ${!file.agent ? "animate-pulse-attention" : ""
+                        }`}
+                      onClick={() => openAgentModal(file.id)}
+                      aria-label="Select agent"
+                      title="Select agent"
+                    >
+                      <Ellipsis className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
+                      <p className="text-xs ps-2 md:hidden dark:text-white text-[#AEC3FF]">Select Agent</p>
+                    </button>
+                    <button
+                      className="flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 dark:bg-[#2a3441] bg-[#AEC3FF] border-[#AEC3FF]/50 bg-opacity-10 rounded-2xl md:rounded-full border dark:border-gray-600 hover:bg-[#AEC3FF]/40 transition-colors duration-150 "
                       onClick={() => handleRemoveFile(file.id)}
+                      aria-label="Remove file"
+                      title="Remove file"
                     >
                       <Trash2 className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
+                      <p className="text-xs ps-2 md:hidden dark:text-white text-[#AEC3FF]">Remove File</p>
+
                     </button>
                   </div>
                 </div>
               ))}
               <div className="flex justify-center font-mulish">
                 <button
-                  className={`dark:bg-[#1d2328] bg-[#AEC3FF]/10 dark:text-white text-[#AEC3FF] font-medium py-4 px-32 border dark:border-gray-700 border-[#AEC3FF]/50 rounded-lg transition-colors text-lg ${
-                    allFilesHaveAgents 
-                      ? "hover:bg-[#AEC3FF]/20 cursor-pointer dark:hover:bg-[#2A3441]/40 " 
-                      : "opacity-50 cursor-not-allowed"
-                  }`}
+                  className={`dark:bg-[#1d2328] bg-[#AEC3FF]/10 dark:text-white text-[#AEC3FF] font-medium py-4 px-32 border dark:border-gray-700 border-[#AEC3FF]/50 rounded-lg transition-colors text-lg ${allFilesHaveAgents
+                    ? "hover:bg-[#AEC3FF]/20 cursor-pointer dark:hover:bg-[#2A3441]/40 "
+                    : "opacity-50 cursor-not-allowed"
+                    }`}
                   disabled={!allFilesHaveAgents}
                 >
                   Add
@@ -267,6 +248,52 @@ export default function DataUpload() {
           )}
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div 
+            ref={modalRef}
+            className="bg-white dark:bg-[#1d2328] rounded-lg shadow-xl w-full max-w-sm sm:max-w-md animate-fadeIn"
+          >
+            <div className="flex justify-between items-center p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-base sm:text-lg font-bold dark:text-white text-[#4B65AB]">
+                Select Agent
+              </h2>
+              <button 
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-3 sm:p-4">
+              <div className="space-y-2 sm:space-y-3">
+                                  <button
+                    onClick={() => handleAgentSelection('Fraud Agent')}
+                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
+                  >
+                    <span className="font-medium">Fraud Agent</span>
+                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">Detection of fraudulent activities</p>
+                  </button>
+                  <button
+                    onClick={() => handleAgentSelection('Revenue Agent')}
+                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
+                  >
+                    <span className="font-medium">Revenue Agent</span>
+                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">Analysis of revenue patterns</p>
+                  </button>
+                  <button
+                    onClick={() => handleAgentSelection('Market Comp. Agent')}
+                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
+                  >
+                    <span className="font-medium">Market Comp. Agent</span>
+                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">Competitive market intelligence</p>
+                  </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

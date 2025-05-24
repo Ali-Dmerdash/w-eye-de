@@ -16,3 +16,12 @@
   font-size: 20px;
 
 }
+
+.BGT2 {
+  background: linear-gradient(360deg,rgba(230, 230, 230, 1) 0%, rgb(176, 176, 176) 0%, rgba(230, 230, 230, 1) 100%);
+  background-clip: text;
+  color: transparent;
+  font-size: 18px;
+}
+
+/* These rules collectively target Chrome, Safari, and Firefox autofill styling */

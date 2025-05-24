@@ -6,10 +6,9 @@ import LoadingSpinner from "@/components/ui/loadingSpinner";
 
 export default function WelcomeCard() {
   const { user, isLoaded } = useUser();
-  console.log(user?.lastSignInAt);
-  console.log(
-    user?.unsafeMetadata.btnStatus
-  );
+  // console.log(
+  //   user?.unsafeMetadata.btnStatus
+  // );
 
 
   return (
