@@ -135,11 +135,15 @@ export default function Header() {
       <div className="flex items-center">
         <div className="hidden md:flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-48" onClick={handleClick}>
           <svg
-            className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200"
+            className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200 cursor-pointer"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent triggering handleClick
+              openChat();
+            }}
           >
             <path
               strokeLinecap="round"
