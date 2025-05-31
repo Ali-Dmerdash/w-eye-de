@@ -1,5 +1,4 @@
 "use client";
-import TableSkeleton from "@/components/ui/TableSkeleton";
 import { useState, useEffect } from "react";
 
 // Define an interface for the expected data structure (optional but recommended)
@@ -41,7 +40,8 @@ export default function FraudInc() {
           throw new Error("No fraud data available.");
         }
 
-        const data: FraudData = json[0]; setFraudDataState(data);
+        const data: FraudData = json[0];
+        setFraudDataState(data);
       } catch (e: any) {
         console.error("Failed to fetch fraud data:", e);
         setError(e.message || "Failed to load data");
@@ -69,10 +69,7 @@ export default function FraudInc() {
           <div className="h-6 w-60 dark:bg-gray-700/50 bg-gray-300/50 rounded mb-6 pulse" />
           <ul className="space-y-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <li
-                key={i}
-                className="flex items-center gap-4"
-              >
+              <li key={i} className="flex items-center gap-4">
                 <div className="h-4 w-16 dark:bg-gray-700/50 bg-gray-400/50 rounded pulse" />
                 <div className="h-4 w-56 dark:bg-gray-700/50 bg-gray-300/50 rounded pulse" />
               </li>
@@ -123,7 +120,9 @@ export default function FraudInc() {
             ([pattern, percentage], index) => (
               <li key={index} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl dark:text-white text-[#AEC3FF]">{percentage}</span>
+                  <span className="text-xl dark:text-white text-[#AEC3FF]">
+                    {percentage}
+                  </span>
                   <span className="dark:text-gray-400 text-[#AEC3FF]/70 uppercase text-sm font-mulish">
                     {pattern.endsWith(".") ? pattern.slice(0, -1) : pattern}
                   </span>
