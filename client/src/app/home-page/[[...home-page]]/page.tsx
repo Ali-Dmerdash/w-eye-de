@@ -41,7 +41,7 @@ export default function Home() {
       <Sidebar />
       <Header />
       <div
-        className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 
+        className={`p-4 md:p-6 pt-8 transition-all duration-300 
         ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}
       >
         <div className="flex items-center mb-4">
@@ -88,7 +88,7 @@ export default function Home() {
         {/* Main Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
           <div className="col-span-4 lg:col-span-2 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <WelcomeCard />
               <ReferralCard score={9.3} />
             </div>

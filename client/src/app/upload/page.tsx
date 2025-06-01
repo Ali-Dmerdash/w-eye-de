@@ -4,6 +4,9 @@ import type React from "react";
 import { Plus, Download, Trash2, Info, Ellipsis, X } from "lucide-react";
 import Sidebar from "@/components/ui/Sidebar";
 import Header from "@/components/ui/Header";
+import { useDispatch } from 'react-redux';
+import { addNotification } from '@/app/redux/notificationSlice';
+import { AppDispatch } from '@/app/redux';
 
 interface UploadedFile {
   id: string;
@@ -30,6 +33,7 @@ export default function DataUpload() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string>("");
   const successModalRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const updateSidebarState = () => {
@@ -184,6 +188,11 @@ export default function DataUpload() {
         setShowSuccessModal(true);
         setUploadedFileName(fileToUpload.name);
         // Clear files when success modal is shown
+        dispatch(addNotification({
+          title: "Upload Successful",
+          message: `File "${fileToUpload.name}" has been uploaded and is ready for processing.`,
+          type: "success",
+        }));
       } else {
         const errorText = await response.text();
         throw new Error(

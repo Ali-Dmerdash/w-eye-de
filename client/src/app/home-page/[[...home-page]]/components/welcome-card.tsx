@@ -14,7 +14,7 @@ export default function WelcomeCard() {
   return (
     <>
       {isLoaded ? (
-        <div className="flex font-mulish rounded-lg p-6 items-center relative overflow-hidden bg-gradient-to-r from-[#4B65AB] to-[#9394A5] dark:bg-gradient-to-r dark:from-[#1D2328] dark:to-[#243461]">
+        <div className="flex font-mulish rounded-lg p-6 items-center relative overflow-hidden bg-gradient-to-r from-[#4B65AB] to-[#9394A5] dark:bg-gradient-to-r dark:from-[#1D2328] dark:to-[#243461] min-h-[300px]">
           <div className="absolute inset-0 z-0 opacity-50 blur-sm w-[200%] -left-20">
             <Image
               src={Sphere || "/placeholder.svg"}
