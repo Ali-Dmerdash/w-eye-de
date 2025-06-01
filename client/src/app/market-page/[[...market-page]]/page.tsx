@@ -45,37 +45,7 @@ interface MarketData {
 
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [marketData, setMarketData] = useState<MarketData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch market data from the API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          "http://localhost:3001/api/market/results"
-        ); // ✅ Use Express backend
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: MarketData = await response.json();
-        setMarketData(data);
-        setError(null);
-      } catch (err: any) {
-        setError(err.message || "Failed to fetch market data");
-        setMarketData(null);
-        console.error("Error fetching market data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Listen for changes to the sidebar state
   useEffect(() => {
     const updateSidebarState = () => {
       const isCollapsed =
@@ -85,6 +55,7 @@ export default function Page() {
     };
 
     updateSidebarState();
+
     const observer = new MutationObserver(updateSidebarState);
     observer.observe(document.documentElement, {
       attributes: true,
@@ -100,45 +71,36 @@ export default function Page() {
       <Sidebar />
 
       <main
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
-          }`}
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
+          isCollapsed ? "sm:ml-16" : "sm:ml-64"
+        }`}
       >
-        {loading && <>
-          <div className="flex flex-col items-center justify-center h-screen space-y-3">
-            <LoadingSpinner />
-            <div className="dark:text-white text-[#15191c] text-2xl font-mulish text-center">Loading market data...</div>
-
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
+          {/* Top Row */}
+          <div className="lg:min-h-[40vh] lg:col-span-2">
+            <PricingComparison />
           </div>
-        </>
-        }
-        {!loading && (
-          <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6">
-            {/* Top Row */}
-            <div className="lg:min-h-[40vh] lg:col-span-2">
-              <PricingComparison />
-            </div>
 
-            <div className="min-h-[400px] lg:min-h-[40vh] grid grid-cols-2 gap-2 lg:col-span-2 ">
-              <Strengths />
-              <Weaknesses />
-              <Opportunities />
-              <Threats />
-            </div>
-
-            <div className="lg:min-h-[40vh] lg:col-span-2">
-              <CompetitivePositioning />
-            </div>
-
-            {/* Bottom Row */}
-            <div className="lg:min-h-[40vh] lg:col-span-3 hidden md:block">
-              <MarketMap />
-            </div>
-
-            <div className="lg:min-h-[40vh] lg:col-span-3 w-full">
-              <Analysis />
-            </div>
+          <div className="min-h-[400px] lg:min-h-[40vh] grid grid-cols-2 gap-2 lg:col-span-2 ">
+            <Strengths />
+            <Weaknesses />
+            <Opportunities />
+            <Threats />
           </div>
-        )}
+
+          <div className="lg:min-h-[40vh] lg:col-span-2">
+            <CompetitivePositioning />
+          </div>
+
+          {/* Bottom Row */}
+          <div className="lg:min-h-[40vh] lg:col-span-3 hidden md:block">
+            <MarketMap />
+          </div>
+
+          <div className="lg:min-h-[40vh] lg:col-span-3 w-full">
+            <Analysis />
+          </div>
+        </div>
       </main>
     </div>
   );
