@@ -27,6 +27,9 @@ export default function DataUpload() {
     success?: boolean;
     message?: string;
   } | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState<string>("");
+  const successModalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateSidebarState = () => {
@@ -55,13 +58,21 @@ export default function DataUpload() {
       ) {
         setShowModal(false);
       }
+      if (
+        showSuccessModal &&
+        successModalRef.current &&
+        !successModalRef.current.contains(event.target as Node)
+      ) {
+        setShowSuccessModal(false);
+        setFiles([]);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showModal]);
+  }, [showModal, showSuccessModal]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -169,12 +180,10 @@ export default function DataUpload() {
       });
 
       if (response.ok) {
-        setUploadStatus({
-          success: true,
-          message: `File "${fileToUpload.name}" uploaded successfully!`,
-        });
-        // Optionally clear the file list after successful upload
-        // setFiles([]);
+        setUploadStatus(null);
+        setShowSuccessModal(true);
+        setUploadedFileName(fileToUpload.name);
+        // Clear files when success modal is shown
       } else {
         const errorText = await response.text();
         throw new Error(
@@ -314,15 +323,9 @@ export default function DataUpload() {
                 </div>
               ))}
 
-              {/* Upload Status Message */}
-              {uploadStatus && (
-                <div
-                  className={`p-4 rounded-lg ${
-                    uploadStatus.success
-                      ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200"
-                      : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200"
-                  }`}
-                >
+              {/* Upload Status Message - Only show errors */}
+              {uploadStatus && !uploadStatus.success && (
+                <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200">
                   {uploadStatus.message}
                 </div>
               )}
@@ -416,6 +419,62 @@ export default function DataUpload() {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div
+            ref={successModalRef}
+            className="bg-white dark:bg-[#1d2328] rounded-lg shadow-xl w-full max-w-sm sm:max-w-md animate-fadeIn"
+          >
+            <div className="flex justify-between items-center p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-base sm:text-lg font-bold dark:text-white text-[#4B65AB]">
+                Upload Successful!
+              </h2>
+              <button
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  setFiles([]);
+                }}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-4 sm:p-6 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                <svg 
+                  className="w-8 h-8 text-green-600 dark:text-green-400" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M5 13l4 4L19 7" 
+                  />
+                </svg>
+              </div>
+              <p className="text-lg font-medium dark:text-white text-gray-900 mb-2">
+                File Uploaded Successfully!
+              </p>
+              <p className="dark:text-gray-300 text-gray-600 mb-6">
+                "{uploadedFileName}" has been uploaded and is ready for processing.
+              </p>
+              <button
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  setFiles([]);
+                }}
+                className="w-full bg-[#4B65AB] hover:bg-[#3d5291] text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              >
+                Upload Another File
+              </button>
             </div>
           </div>
         </div>
