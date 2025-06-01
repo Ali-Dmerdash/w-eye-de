@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -7,100 +7,108 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useGetFraudDataQuery } from "@/state/api"; // Import the Redux hook
+import { Analysis } from "@/state/type"; // Import the specific type needed
 
-interface Analysis {
-  cause: string;
-  recommendation: string;
-}
-
-interface FraudData {
-  analysis: Analysis;
+// Helper function to get a safe error message string
+function getErrorMessage(error: unknown): string {
+  if (!error) {
+    return "An unknown error occurred";
+  }
+  if (typeof error === "object" && error !== null) {
+    if ("status" in error) {
+      // Handle RTK Query error structure
+      let details = "";
+      if (
+        "data" in error &&
+        typeof error.data === "object" &&
+        error.data !== null &&
+        "message" in error.data &&
+        typeof error.data.message === "string"
+      ) {
+        details = error.data.message;
+      } else if ("error" in error && typeof error.error === "string") {
+        details = error.error;
+      }
+      return `Error ${error.status}${details ? ": " + details : ""}`;
+    }
+    if ("message" in error && typeof error.message === "string") {
+      return error.message;
+    }
+  }
+  // Fallback for other types of errors or if message is not a string
+  try {
+    return String(error);
+  } catch {
+    return "An unknown error occurred";
+  }
 }
 
 const ReportAmeen = () => {
   const [expanded, setExpanded] = useState(false);
-  const [analysisData, setAnalysisData] = useState<Analysis | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: fraudDataArray, isLoading, error } = useGetFraudDataQuery();
+  const analysisData: Analysis | undefined | null =
+    fraudDataArray?.[0]?.analysis;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(
-          "http://localhost:3001/api/fraud/results",
-          {
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const json: FraudData[] = await response.json();
-
-        if (!Array.isArray(json) || json.length === 0) {
-          throw new Error("No analysis data available.");
-        }
-
-        setAnalysisData(json[0].analysis);
-      } catch (e: any) {
-        console.error("Failed to fetch analysis data:", e);
-        setError(e.message || "Failed to load data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  // --- Loading State ---
   if (isLoading)
     return (
-      <div className="flex items-start justify-center flex-wrap">
-        <div className="w-full max-w-md bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl p-6">
+      <div className="flex items-start justify-center flex-wrap h-full">
+        {/* Skeleton remains the same */}
+        <div className="w-full max-w-md bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl p-6 animate-pulse">
           <div className="text-center mb-4">
-            <div className="h-5 w-32 dark:bg-gray-700 bg-gray-300/50 rounded mx-auto pulse" />
+            <div className="h-5 w-32 dark:bg-gray-700/50 bg-gray-300/50 rounded mx-auto" />
+          </div>
+          <div className="space-y-3 mb-4">
+            <div className="h-4 dark:bg-gray-700/50 bg-gray-300/50 rounded w-full" />
+            <div className="h-4 dark:bg-gray-700/50 bg-gray-300/50 rounded w-11/12" />
+            <div className="h-4 dark:bg-gray-700/50 bg-gray-300/50 rounded w-10/12" />
           </div>
           <div className="space-y-3">
-            <div className="h-4 dark:bg-gray-700 bg-gray-300/50 rounded w-full pulse" />
-            <div className="h-4 dark:bg-gray-700 bg-gray-300/50 rounded w-11/12 pulse" />
-            <div className="h-4 dark:bg-gray-700 bg-gray-300/50 rounded w-10/12 pulse" />
+            <div className="h-4 dark:bg-gray-700/50 bg-gray-300/50 rounded w-full" />
+            <div className="h-4 dark:bg-gray-700/50 bg-gray-300/50 rounded w-11/12" />
           </div>
           <div className="mt-6 flex justify-center">
-            <div className="h-9 w-32 dark:bg-gray-600 bg-gray-300/50 rounded pulse" />
+            <div className="h-9 w-32 dark:bg-gray-600/50 bg-gray-400/50 rounded" />
           </div>
         </div>
       </div>
     );
 
-  if (error)
+  // --- Error State ---
+  if (error) {
+    const errorMessage = getErrorMessage(error); // Use the helper function
     return (
       <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
-        Error: {error}
+        Error: {errorMessage}
       </div>
     );
-  if (!analysisData)
+  }
+
+  // --- No Data State ---
+  if (!analysisData) {
     return (
       <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         No analysis data available.
       </div>
     );
+  }
 
-  // Short and full text based on the fetched analysis data
-  const shortText = `${analysisData.cause}`;
-  const fullText = `${analysisData.cause} <br /><br /> ${analysisData.recommendation}`;
+  // --- Success State ---
+  const causeText = analysisData.cause || "Cause information not available.";
+  const recommendationText =
+    analysisData.recommendation || "Recommendation not available.";
+  const shortText = causeText;
+  const fullText = `${causeText} <br /><br /> ${recommendationText}`;
 
   return (
-    <div className="flex items-start justify-center flex-wrap ">
-      <Card className="w-full max-w-md bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl">
+    <div className="flex items-start justify-center flex-wrap h-full">
+      {/* Card structure remains the same */}
+      <Card className="w-full max-w-md bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl flex flex-col h-full">
         <CardHeader className="text-center">
           <h2 className="text-lg font-semibold">Ameen Report</h2>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-grow">
           <p
             className="text-sm"
             dangerouslySetInnerHTML={{

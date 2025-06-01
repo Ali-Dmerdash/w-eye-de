@@ -3,11 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Page from "@/app/sign-in/[[...sign-in]]/page";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
-import { SidebarProvider } from "@/context/SidebarContext";
-import { ChatProvider } from "@/context/ChatContext";
-import ChatModal from "@/components/ui/ChatModal";
-import GlobalHelpModal from "@/components/ui/GlobalHelpModal";
+
+// Import the ClientProviders wrapper
+import { ClientProviders } from "./ClientProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,22 +30,17 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        
         <body className="bg-[#0E1111]">
-            <SignedOut>
-              <Page />
-            </SignedOut>
-            <SignedIn>            
-              <ThemeProvider>
-                <SidebarProvider>
-                  <ChatProvider>
-                    <main>{children}</main>
-                    <ChatModal />
-                    <GlobalHelpModal />
-                  </ChatProvider>
-                </SidebarProvider>
-              </ThemeProvider>
-            </SignedIn>
+          <SignedOut>
+            <Page />
+          </SignedOut>
+          <SignedIn>
+            {/* Use the ClientProviders wrapper here */}
+            <ClientProviders>
+              <main>{children}</main>
+              {/* Modals are now inside ClientProviders */}
+            </ClientProviders>
+          </SignedIn>
         </body>
       </html>
     </ClerkProvider>

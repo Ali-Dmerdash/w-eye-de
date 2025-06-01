@@ -1,77 +1,53 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useGetFraudDataQuery } from "@/state/api";
+import { FraudModelResponse } from "@/state/type"; // Import the shared type
 
-// Define an interface for the expected data structure (optional but recommended)
-interface FraudMetrics {
-  incident_rate: string;
-  common_patterns: { [key: string]: string };
-}
-
-interface FraudData {
-  fraud_metrics: FraudMetrics;
-  // Add other top-level fields from your data if needed
+// Helper function to get a safe error message string
+function getErrorMessage(error: unknown): string {
+  if (!error) {
+    return "An unknown error occurred";
+  }
+  if (typeof error === "object" && error !== null) {
+    if ("status" in error) {
+      return `Error: ${error.status}`;
+    }
+    if ("message" in error && typeof error.message === "string") {
+      return error.message;
+    }
+  }
+  // Fallback for other types of errors or if message is not a string
+  try {
+    return String(error);
+  } catch {
+    return "An unknown error occurred";
+  }
 }
 
 export default function FraudInc() {
-  const [fraudDataState, setFraudDataState] = useState<FraudData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: fraudDataArray, isLoading, error } = useGetFraudDataQuery();
+  const fraudDataState: FraudModelResponse | undefined = fraudDataArray?.[0];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(
-          "http://localhost:3001/api/fraud/results",
-          {
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const json = await response.json();
-
-        if (!Array.isArray(json) || json.length === 0) {
-          throw new Error("No fraud data available.");
-        }
-
-        const data: FraudData = json[0];
-        setFraudDataState(data);
-      } catch (e: any) {
-        console.error("Failed to fetch fraud data:", e);
-        setError(e.message || "Failed to load data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty dependency array means this runs once on mount
-
+  // --- Loading State ---
   if (isLoading)
     return (
       <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-xl h-full flex flex-col ">
+        {/* Skeleton remains the same */}
         <div className="shadow-lg">
           <div className="bg-[#AEC3FF]/50 dark:bg-[#243461] shadow-inner-custom p-6 rounded-xl text-center mb-6">
-            <div className="h-6 w-48 mx-auto dark:bg-slate-600/50 bg-gray-300/50 rounded mb-4 pulse" />
-            <div className="h-4 w-32 mx-auto bg-red-800 rounded pulse" />
+            <div className="h-6 w-48 mx-auto dark:bg-slate-600/50 bg-gray-300/50 rounded mb-4 animate-pulse" />
+            <div className="h-12 w-32 mx-auto dark:bg-red-800/50 bg-red-700/50 rounded animate-pulse" />
           </div>
         </div>
-
         <div className="w-full border-t border-gray-700 mb-6"></div>
-
         <div className="flex-grow">
-          <div className="h-6 w-60 dark:bg-gray-700/50 bg-gray-300/50 rounded mb-6 pulse" />
+          <div className="h-6 w-60 dark:bg-gray-700/50 bg-gray-300/50 rounded mb-6 animate-pulse" />
           <ul className="space-y-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <li key={i} className="flex items-center gap-4">
-                <div className="h-4 w-16 dark:bg-gray-700/50 bg-gray-400/50 rounded pulse" />
-                <div className="h-4 w-56 dark:bg-gray-700/50 bg-gray-300/50 rounded pulse" />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <li key={i} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-5 w-12 dark:bg-gray-700/50 bg-gray-400/50 rounded animate-pulse" />
+                  <div className="h-4 w-48 dark:bg-gray-700/50 bg-gray-300/50 rounded animate-pulse" />
+                </div>
               </li>
             ))}
           </ul>
@@ -79,22 +55,29 @@ export default function FraudInc() {
       </div>
     );
 
-  if (error)
+  // --- Error State ---
+  if (error) {
+    const errorMessage = getErrorMessage(error); // Use the helper function
     return (
       <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
-        Error: {error}
+        Error: {errorMessage}
       </div>
     );
-  if (!fraudDataState)
+  }
+
+  // --- No Data State ---
+  if (!fraudDataState) {
     return (
       <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
         No data available.
       </div>
     );
+  }
 
+  // --- Success State ---
   return (
     <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-xl h-full flex flex-col">
-      {/* Fraud Incidence Rate Box */}
+      {/* Content remains the same */}
       <div className="shadow-lg">
         <div className="bg-[#AEC3FF]/50 dark:bg-[#243461] shadow-inner-custom p-6 rounded-xl text-center mb-6">
           <h2 className="text-2xl tracking-wider text-white mb-2">
@@ -105,17 +88,12 @@ export default function FraudInc() {
           </p>
         </div>
       </div>
-
-      {/* Divider */}
       <div className="w-full border-t border-gray-700 mb-6"></div>
-
-      {/* Common Fraudulent Patterns */}
       <div className="flex-grow">
         <h3 className="text-lg font-bold mb-4 font-mulish">
           COMMON FRAUDULENT PATTERNS
         </h3>
         <ul className="space-y-4">
-          {/* Map over data from state */}
           {Object.entries(fraudDataState.fraud_metrics.common_patterns).map(
             ([pattern, percentage], index) => (
               <li key={index} className="flex items-center justify-between">

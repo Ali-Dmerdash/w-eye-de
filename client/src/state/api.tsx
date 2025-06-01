@@ -4,12 +4,13 @@ import { FraudModelResponse } from "@/state/type";
 export const Api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://w-eye-de-production.up.railway.app/api/",
+    baseUrl: "http://localhost:3001/api", // Corrected base URL
   }),
   tagTypes: ["FraudData"],
   endpoints: (builder) => ({
-    getFraudData: builder.query<FraudModelResponse, void>({
-      query: () => "/fraud/detect",
+    // The type here should likely be FraudModelResponse[] based on the JSON sample
+    getFraudData: builder.query<FraudModelResponse[], void>({
+      query: () => "/fraud/results",
       providesTags: ["FraudData"],
     }),
   }),
