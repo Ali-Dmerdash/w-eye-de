@@ -1,44 +1,27 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+// Removed Redux hook import
+import { RevenueAnalysis } from "@/state/type"; // Keep type import
+// Removed LoadingSpinner import as parent handles loading
 
-interface Analysis {
-  insights: string;
-  recommendation: string;
+// Define props for AnalysisComponent
+interface AnalysisComponentProps {
+  analysisData: RevenueAnalysis | undefined | null;
 }
 
-export default function AnalysisComponent() {
-  const [analysisState, setAnalysisState] = useState<Analysis | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default function AnalysisComponent({
+  analysisData,
+}: AnalysisComponentProps) {
+  // Removed Redux hook call
+  // Removed local useState for analysisState, isLoading, error
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(
-          "http://localhost:3001/api/revenue/results"
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const analysis = data?.trends?.[0]?.analysis;
-        if (!analysis) throw new Error("Analysis data not found.");
-        setAnalysisState(analysis);
-      } catch (e: any) {
-        console.error("Failed to fetch analysis data:", e);
-        setError(e.message || "Failed to load data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Loading and error handling will now be done in the parent component (page.tsx)
 
-    fetchData();
-  }, []);
-  
-  if (isLoading)
+  if (!analysisData) {
+    // Render a minimal state or rely on parent's handling.
     return (
       <div className="flex items-start justify-center flex-wrap">
         <div className="w-full bg-[#4B65AB] dark:bg-[#1d2328] text-white border-none rounded-xl p-8 shadow-md">
@@ -56,19 +39,7 @@ export default function AnalysisComponent() {
         </div>
       </div>
     );
-  
-  if (error)
-    return (
-      <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
-        Error: {error}
-      </div>
-    );
-  if (!analysisState)
-    return (
-      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl h-full flex items-center justify-center">
-        No analysis data available.
-      </div>
-    );
+  }
 
   return (
     <div className="flex items-start justify-center flex-wrap">
@@ -77,7 +48,7 @@ export default function AnalysisComponent() {
           <h2 className="text-4xl font-bayon text-white">Revenue Analysis</h2>
         </div>
         <div className="flex flex-col items-center font-mulish text-gray-300">
-          <p className="text-sm">{analysisState.insights}</p>
+          <p className="text-sm">{analysisData.insights}</p>
           <div className="pt-4">
             <button
               onClick={() => setIsModalOpen(true)}
@@ -88,9 +59,11 @@ export default function AnalysisComponent() {
             {isModalOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="bg-[#4B65AB] dark:bg-[#1d2328] border border-slate-500 dark:border-slate-800 rounded-xl p-6 max-w-md w-full shadow-lg">
-                  <h3 className="text-lg font-bayon text-white">Model Recommendation</h3>
+                  <h3 className="text-lg font-bayon text-white">
+                    Model Recommendation
+                  </h3>
                   <p className="mt-2 text-sm text-gray-300">
-                    {analysisState.recommendation}
+                    {analysisData.recommendation}
                   </p>
                   <div className="flex justify-end mt-4">
                     <button

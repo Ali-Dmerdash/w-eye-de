@@ -109,4 +109,26 @@ export interface MarketModelResponse {
   recommendations: Recommendations;
 }
 
-// Note: The API endpoint /market/results returns an array: MarketModelResponse[]
+// --- Revenue Service Types ---
+
+export interface RevenueKeyFactors {
+  [key: string]: string; // e.g., "Seasonal Demand": "0.3/Medium"
+}
+
+export interface RevenueAnalysis {
+  insights: string;
+  recommendation: string;
+}
+
+export interface RevenueTrend {
+  _id: string;
+  revenue_forecast: string; // e.g., "$1,234,563"
+  confidence_level: string; // e.g., "High"
+  key_factors: RevenueKeyFactors;
+  analysis: RevenueAnalysis;
+}
+
+export interface RawRevenueApiResponse {
+  success: boolean;
+  trends: RevenueTrend[];
+}

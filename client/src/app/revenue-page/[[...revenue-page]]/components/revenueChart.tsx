@@ -1,6 +1,8 @@
 "use client";
 import LoadingSpinner from "@/components/ui/loadingSpinner";
 import React, { useState, useEffect } from "react";
+// Removed Redux hook import
+import { RevenueTrend } from "@/state/type"; // Keep type import
 
 // Define props type for CircularProgress
 type CircularProgressProps = {
@@ -64,27 +66,16 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   );
 };
 
-type Trend = {
-  _id: string;
-  revenue_forecast: string;
-  confidence_level: string;
-  key_factors: Record<string, string>;
-  analysis: {
-    insights: string;
-    recommendation: string;
-  };
-};
+// Define props for RevenueChart
+interface RevenueChartProps {
+  trendData: RevenueTrend | undefined | null;
+  // Pass isLoading and error states if needed for component-specific loading/error UI,
+  // but the parent (page.tsx) will likely handle the main loading/error states.
+}
 
-type ApiResponse = {
-  success: boolean;
-  trends: Trend[];
-};
-
-const RevenueChart: React.FC = () => {
+const RevenueChart: React.FC<RevenueChartProps> = ({ trendData }) => {
   const [circleSize, setCircleSize] = useState<number>(300);
-  const [trendData, setTrendData] = useState<Trend | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Removed Redux hook call
 
   useEffect(() => {
     const handleResize = () => {
@@ -96,56 +87,21 @@ const RevenueChart: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch("http://localhost:3001/api/revenue/results");
-        if (!res.ok) throw new Error("Failed to fetch data");
-        const data: ApiResponse = await res.json();
+  // Loading and error handling will now be done in the parent component (page.tsx)
+  // We assume trendData is valid if the component is rendered without loading/error state from parent
 
-        if (!data.success || !data.trends.length) {
-          throw new Error("No trend data available");
-        }
-
-        setTrendData(data.trends[0]); // get the first trend
-      } catch (err: any) {
-        setError(err.message || "Failed to load data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (isLoading)
+  if (!trendData) {
+    // This might indicate data is still loading in parent or an error occurred there.
+    // Or simply no data was returned from the API.
+    // Render a minimal state or rely on parent's handling.
     return (
       <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col items-center justify-center space-y-6">
-        <div className="space-y-6">
-        <LoadingSpinner width="8rem" height="8rem" />
-
-          <div className="h-6 bg-[#AEC3FF]/50 rounded w-56 mx-auto mb-4 pulse" />
-          <div className="space-y-2">
-            <div className="h-4 bg-[#AEC3FF]/50 rounded w-28 mx-auto pulse" />
-            <div className="h-4 bg-[#AEC3FF]/50 rounded w-20 mx-auto pulse" />
-          </div>
+        <div className="text-white p-6 rounded-lg h-full flex items-center justify-center">
+          No data available or still loading...
         </div>
       </div>
     );
-
-  if (error)
-    return (
-      <div className="text-red-500 p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        Error: {error}
-      </div>
-    );
-
-  if (!trendData)
-    return (
-      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        No data available.
-      </div>
-    );
+  }
 
   const confidenceColor =
     trendData.confidence_level === "High"
@@ -154,12 +110,13 @@ const RevenueChart: React.FC = () => {
       ? "#F97316"
       : "#01B574";
 
-      const displayPercentage =
-      trendData.confidence_level === "High"
-        ? 90
-        : trendData.confidence_level === "Medium"
-        ? 70
-        : 40;
+  const displayPercentage =
+    trendData.confidence_level === "High"
+      ? 90
+      : trendData.confidence_level === "Medium"
+      ? 70
+      : 40;
+
   return (
     <div className="bg-[#4B65AB] dark:bg-[#1d2328] text-white font-bayon p-6 rounded-lg h-full flex flex-col text-center">
       <div className="flex flex-col items-center justify-center h-full">

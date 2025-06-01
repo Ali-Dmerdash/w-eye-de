@@ -1,16 +1,17 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
+// Removed Redux hook import
+import { RevenueKeyFactors } from "@/state/type"; // Keep type import
+// Removed LoadingSpinner import as parent handles loading
 
-interface KeyFactors {
-  [key: string]: string; // e.g., "Seasonal Demand": "0.3/High"
+// Define props for KeyFactorsCard
+interface KeyFactorsCardProps {
+  keyFactorsData: RevenueKeyFactors | undefined | null;
 }
 
-const KeyFactorsCard: React.FC = () => {
-  const [keyFactorsState, setKeyFactorsState] = useState<KeyFactors | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
+  // Removed Redux hook call
+  // Removed local useState for keyFactorsState, isLoading, error
 
   const formatLabel = (label: string): string => {
     let result = label.replace(/([A-Z])/g, " $1");
@@ -18,32 +19,10 @@ const KeyFactorsCard: React.FC = () => {
     return result.toUpperCase();
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(
-          "http://localhost:3001/api/revenue/results"
-        );
-        if (!response.ok)
-          throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
-        const keyFactors = data?.trends?.[0]?.key_factors;
-        if (!keyFactors) throw new Error("Key factors not found in the data.");
-        setKeyFactorsState(keyFactors);
-      } catch (e: any) {
-        console.error("Failed to fetch key factors data:", e);
-        setError(e.message || "Failed to load data");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Loading and error handling will now be done in the parent component (page.tsx)
 
-    fetchData();
-  }, []);
-
-  if (isLoading)
+  if (!keyFactorsData) {
+    // Render a minimal state or rely on parent's handling.
     return (
       <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
         <h2 className="text-4xl font-bayon text-white text-center mb-6">
@@ -62,23 +41,12 @@ const KeyFactorsCard: React.FC = () => {
         </div>
       </div>
     );
-  if (error)
-    return (
-      <div className="text-red-500 p-6  bg-[#4B65AB] dark:bg-[#1d2328]  rounded-lg h-full flex items-center justify-center">
-        Error: {error}
-      </div>
-    );
-  if (!keyFactorsState)
-    return (
-      <div className="text-white p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-lg h-full flex items-center justify-center">
-        No key factors data available.
-      </div>
-    );
+  }
 
-  const entries = Object.entries(keyFactorsState);
+  const entries = Object.entries(keyFactorsData);
 
   return (
-    <div className="p-8  bg-[#4B65AB] dark:bg-[#1d2328]  rounded-xl w-full  mx-auto shadow-md">
+    <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full mx-auto shadow-md">
       <h2 className="text-4xl font-bayon text-white text-center mb-6">
         Key Factors
       </h2>
@@ -97,18 +65,20 @@ const KeyFactorsCard: React.FC = () => {
             >
               <h3 className="text-white text-sm">{formattedKey}</h3>
               <p
-                className={`${level === "High"
+                className={`${
+                  level === "High"
                     ? "dark:text-red-500 text-red-700"
                     : level === "Medium"
-                      ? "text-orange-300"
-                      : "text-gray-300"
-                  } text-sm`}
+                    ? "text-orange-300"
+                    : "text-gray-300"
+                } text-sm`}
               >
                 {score} / {level}
               </p>
             </div>
           );
 
+          // Handle odd number of entries - make last one full width
           if (entries.length % 2 !== 0 && index === entries.length - 1) {
             return (
               <div className="col-span-2" key={key}>
