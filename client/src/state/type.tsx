@@ -60,3 +60,53 @@ export interface ApiColumnDefinition {
 }
 
 // Note: The API endpoint /fraud/results returns an array: FraudModelResponse[]
+
+// --- Market Service Types ---
+
+export interface SwotAnalysis {
+  strengths: string[];
+  weaknesses: string[];
+  opportunities: string[];
+  threats: string[];
+}
+
+export interface PricingComparison {
+  competitors: Record<string, string>; // e.g., { Xiaomi: "232 (Source...)" }
+  discount_strategies: string[];
+}
+
+export interface CompetitivePositioning {
+  metrics: string[];
+  // Use Record<string, (string | number)[]> to allow mixed types in scores array
+  scores: Record<string, (string | number)[]>;
+  visualization_note: string;
+}
+
+export interface MarketTrend {
+  name: string;
+  growth: string;
+  impact: string; // e.g., "high", "medium"
+}
+
+export interface MarketAnalysis {
+  trends: MarketTrend[];
+  market_share: Record<string, string>; // e.g., { Xiaomi: "12% (Source...)" }
+}
+
+export interface Recommendations {
+  immediate_actions: string[];
+  strategic_initiatives: string[];
+  urgent_alerts: string[];
+}
+
+export interface MarketModelResponse {
+  _id: string;
+  id: number;
+  swot_analysis: SwotAnalysis;
+  pricing_comparison: PricingComparison;
+  competitive_positioning: CompetitivePositioning;
+  market_analysis: MarketAnalysis;
+  recommendations: Recommendations;
+}
+
+// Note: The API endpoint /market/results returns an array: MarketModelResponse[]

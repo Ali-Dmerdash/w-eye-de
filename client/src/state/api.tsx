@@ -1,19 +1,27 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { FraudModelResponse } from "@/state/type";
+// Import both response types
+import { FraudModelResponse, MarketModelResponse } from "@/state/type";
 
 export const Api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/api", // Corrected base URL
+    baseUrl: "http://localhost:3001/api", // Base URL for all API endpoints
   }),
-  tagTypes: ["FraudData"],
+  // Add tag types for both data sets
+  tagTypes: ["FraudData", "MarketData"],
   endpoints: (builder) => ({
-    // The type here should likely be FraudModelResponse[] based on the JSON sample
+    // Fraud data endpoint (existing)
     getFraudData: builder.query<FraudModelResponse[], void>({
       query: () => "/fraud/results",
       providesTags: ["FraudData"],
     }),
+    // Market data endpoint (new)
+    getMarketData: builder.query<MarketModelResponse[], void>({
+      query: () => "/market/results", // Endpoint for market data
+      providesTags: ["MarketData"], // Tag for caching/invalidation
+    }),
   }),
 });
 
-export const { useGetFraudDataQuery } = Api;
+// Export hooks for both endpoints
+export const { useGetFraudDataQuery, useGetMarketDataQuery } = Api;

@@ -1,52 +1,58 @@
 "use client";
 
 import TableSkeleton from "@/components/ui/tableSkeleton";
-import React, { useEffect, useState } from "react";
+import React from "react"; // Removed useEffect, useState
+import { useGetMarketDataQuery } from "@/state/api"; // Import the Redux hook
+import { MarketAnalysis, MarketModelResponse } from "@/state/type"; // Import shared types
 
-interface MarketAnalysis {
-  trends: { name: string; growth: string; impact: string }[];
-  market_share: { [key: string]: string };
+// Helper function to get a safe error message string
+function getErrorMessage(error: unknown): string {
+  if (!error) {
+    return "An unknown error occurred";
+  }
+  if (typeof error === "object" && error !== null) {
+    if ("status" in error) {
+      // Handle RTK Query error structure
+      let details = "";
+      if (
+        "data" in error &&
+        typeof error.data === "object" &&
+        error.data !== null &&
+        "message" in error.data &&
+        typeof error.data.message === "string"
+      ) {
+        details = error.data.message;
+      } else if ("error" in error && typeof error.error === "string") {
+        details = error.error;
+      }
+      return `Error ${error.status}${details ? ": " + details : ""}`;
+    }
+    if ("message" in error && typeof error.message === "string") {
+      return error.message;
+    }
+  }
+  // Fallback for other types of errors or if message is not a string
+  try {
+    return String(error);
+  } catch {
+    return "An unknown error occurred";
+  }
 }
 
 export default function Analysis() {
-  const [data, setData] = useState<MarketAnalysis | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Replace useState/useEffect with Redux hook
+  const {
+    data: marketDataArray,
+    isLoading,
+    error: queryError,
+  } = useGetMarketDataQuery();
 
-  useEffect(() => {
-    const fetchMarketAnalysis = async () => {
-      try {
-        const res = await fetch("http://localhost:3001/api/market/results", {
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!res.ok) throw new Error(`${res.statusText} ${res.status}`);
+  // Extract data
+  const marketAnalysisData: MarketAnalysis | undefined | null =
+    marketDataArray?.[0]?.market_analysis;
 
-        const json = await res.json();
-        if (!Array.isArray(json) || json.length === 0) {
-          throw new Error("No market analysis data available.");
-        }
-
-        const result = json[0]?.market_analysis;
-        if (!result) throw new Error("Market analysis data missing.");
-
-        setData(result);
-        setError(null);
-      } catch (err: any) {
-        console.error("Fetch error:", err);
-        setError(err.message || "Unknown error occurred");
-        setData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMarketAnalysis();
-  }, []);
-
-  if (loading) {
+  // Original loading state structure
+  if (isLoading) {
     return (
       <div className="p-4 md:p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
         <h2 className="text-white dark:text-white text-xl md:text-2xl text-center font-bayon mb-5">
@@ -69,17 +75,21 @@ export default function Analysis() {
       </div>
     );
   }
-  
 
-  if (error || !data) {
+  // Original error/no-data state structure
+  if (queryError || !marketAnalysisData) {
+    const displayError = queryError
+      ? getErrorMessage(queryError)
+      : "Market analysis data unavailable";
     return (
       <div className="p-4 md:p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full h-[40vh] flex items-center justify-center text-red-100 dark:text-red-400 shadow-inner-custom2">
-        Error: {error ?? "Market analysis data unavailable"}
+        Error: {displayError}
       </div>
     );
   }
 
-  const { trends, market_share } = data;
+  // Original success state structure
+  const { trends, market_share } = marketAnalysisData;
 
   return (
     <div className="p-4 md:p-6 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full h-[40vh] overflow-y-auto custom-scrollbar shadow-inner-custom2">
@@ -112,7 +122,7 @@ export default function Analysis() {
                     >
                       <td className="py-5">{trend.name}</td>
                       <td className="py-5 text-center">
-                        {trend.growth?.match(/\d+/)?.[0] ?? "N/A"}%
+                        {trend.growth?.match(/\d+(\.\d+)?/)?.[0] ?? "N/A"}%
                       </td>
                       <td className="py-5 text-center capitalize">
                         {trend.impact}
@@ -151,7 +161,7 @@ export default function Analysis() {
                       >
                         <td className="py-3.5">{name}</td>
                         <td className="py-3.5 pe-2 text-end">
-                          {percentage?.match(/\d+/)?.[0] ?? "N/A"}%
+                          {percentage?.match(/\d+(\.\d+)?/)?.[0] ?? "N/A"}%
                         </td>
                       </tr>
                     )
