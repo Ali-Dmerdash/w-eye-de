@@ -267,28 +267,46 @@ export default function DataUpload() {
               </button>
             </div>
             <div className="p-3 sm:p-4">
-              <div className="space-y-2 sm:space-y-3">
-                                  <button
+              {/* Public Agent Section */}
+              <div className="mb-4">
+                <h3 className="text-sm font-semibold mb-2 dark:text-gray-300 text-gray-600">Public Agent</h3>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => handleAgentSelection('Public Agent')}
+                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
+                  >
+                    <span className="font-medium">Public</span>
+                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">General purpose agent for public data</p>
+                  </button>
+                </div>
+              </div>
+              
+              {/* Specific Agent Section */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2 dark:text-gray-300 text-gray-600">Specific Agent</h3>
+                <div className="space-y-2 sm:space-y-3">
+                  <button
                     onClick={() => handleAgentSelection('Fraud Agent')}
                     className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
                   >
-                    <span className="font-medium">Fraud Agent</span>
+                    <span className="font-medium">Fraud</span>
                     <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">Detection of fraudulent activities</p>
+                  </button>
+                  <button
+                    onClick={() => handleAgentSelection('Market Agent')}
+                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
+                  >
+                    <span className="font-medium">Market</span>
+                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">Competitive market intelligence</p>
                   </button>
                   <button
                     onClick={() => handleAgentSelection('Revenue Agent')}
                     className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
                   >
-                    <span className="font-medium">Revenue Agent</span>
+                    <span className="font-medium">Revenue</span>
                     <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">Analysis of revenue patterns</p>
                   </button>
-                  <button
-                    onClick={() => handleAgentSelection('Market Comp. Agent')}
-                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
-                  >
-                    <span className="font-medium">Market Comp. Agent</span>
-                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">Competitive market intelligence</p>
-                  </button>
+                </div>
               </div>
             </div>
           </div>
