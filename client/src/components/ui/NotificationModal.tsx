@@ -1,8 +1,9 @@
 "use client"
 import type React from "react"
 import { useRef, useEffect } from "react"
-import { X, AlertCircle, CheckCircle, Info, AlertTriangle, Clock, Calendar } from "lucide-react"
-import type { Notification } from "@/app/redux/notificationSlice"
+import { X, AlertCircle, CheckCircle, Info, AlertTriangle, Clock, Calendar, Trash2 } from "lucide-react"
+import type { Notification } from "@/context/NotificationContext"
+import { useNotifications } from "@/context/NotificationContext"
 
 interface NotificationModalProps {
   notification: Notification | null
@@ -12,6 +13,7 @@ interface NotificationModalProps {
 
 const NotificationModal: React.FC<NotificationModalProps> = ({ notification, isOpen, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null)
+  const { deleteNotification } = useNotifications()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,6 +47,13 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ notification, isO
       document.removeEventListener("keydown", handleKeyDown)
     }
   }, [isOpen])
+
+  const handleDelete = async () => {
+    if (notification) {
+      await deleteNotification(notification.id)
+      onClose()
+    }
+  }
 
   const formatTimestamp = (timestamp: number) => {
     const date = new Date(timestamp)
@@ -209,10 +218,11 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ notification, isO
                 Dismiss
               </button>
               <button
-                  onClick={onClose}
-                  className={`px-6 py-2 text-white font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 shadow-lg hover:shadow-xl transform hover:scale-105 ${getButtonStyle(notification.type)}`}
+                  onClick={handleDelete}
+                  className="px-6 py-2 bg-red-600 hover:bg-red-700 focus:ring-red-500 text-white font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
               >
-                Mark as Read
+                <Trash2 className="w-4 h-4" />
+                Delete
               </button>
             </div>
           </div>

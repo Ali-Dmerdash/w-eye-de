@@ -8,9 +8,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useSidebar } from "@/context/SidebarContext";
 import { useRouter } from "next/navigation";
 import { useChat } from "@/context/ChatContext";
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '@/app/redux';
-import { selectNotifications, selectNewNotificationsCount, markAllAsRead, Notification } from '@/app/redux/notificationSlice';
+import { useNotifications, type Notification } from '@/context/NotificationContext';
 import NotificationModal from "./NotificationModal";
 
 export default function Header() {
@@ -23,9 +21,8 @@ export default function Header() {
   const inputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
   const { openChat, setShowHelpModal } = useChat();
-  const notifications = useSelector(selectNotifications);
-  const newNotificationsCount = useSelector(selectNewNotificationsCount);
-  const dispatch = useDispatch<AppDispatch>();
+  const { notifications, getNewNotificationsCount, markAllAsRead } = useNotifications();
+  const newNotificationsCount = getNewNotificationsCount();
   const router = useRouter();
 
   useEffect(() => {
@@ -44,7 +41,7 @@ export default function Header() {
     setNotificationsOpen(!notificationsOpen);
     if (!notificationsOpen) {
       // Mark notifications as read when opening the dropdown
-      setTimeout(() => dispatch(markAllAsRead()), 1000);
+      setTimeout(() => markAllAsRead(), 1000);
     }
   };
 
@@ -288,7 +285,7 @@ export default function Header() {
                     </span>
                   )}
                 </div>
-                <div className="max-h-80 overflow-y-auto no-scrollbar">
+                <div className="max-h-80 overflow-y-auto overflow-x-hidden dark:custom-scrollbar">
                   {notifications.length > 0 ? (
                     notifications.map((notification) => (
                       <div 

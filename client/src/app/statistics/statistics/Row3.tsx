@@ -26,7 +26,7 @@ type Props = {
   section: "g" | "h" | "i" | "j";
 };
 
-const COLORS = ["#4B65AB", "#ef672d", "#4ED7F1", "#f57c00"];
+const COLORS = ["#7c3aed", "#ef672d", "#a855f7", "#f57c00"];
 
 const pieData = [
   { name: "Operational", value: 30 },
@@ -59,28 +59,28 @@ const Row3: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader
-          icon={<ListOrdered size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<ListOrdered size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Recent Transactions"
           sideText={`${filteredTransactions?.length} latest`}
         />
-        <div className="h-[calc(100%-80px)] p-2 overflow-y-auto custom-scrollbar">
+        <div className="h-[calc(100%-100px)] p-4 overflow-y-auto custom-scrollbar">
           {filteredTransactions && filteredTransactions.map((transaction) => (
             <div
               key={transaction._id}
-              className="p-3 my-1.5 flex items-center justify-between bg-[#4B65AB]/10 dark:bg-[#15191c] border border-[#4B65AB]/20 dark:border-gray-700/20 rounded-lg transition-colors hover:bg-[#4B65AB]/15 dark:hover:bg-[#15191c]/80"
+              className="p-3 my-2 flex items-center justify-between bg-purple-50 dark:bg-gray-700/50 border border-purple-100 dark:border-gray-600 rounded-xl transition-all duration-200 hover:bg-purple-100 dark:hover:bg-gray-600/50 hover:shadow-md"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#4B65AB]/30 dark:bg-[#1d2328]">
-                  <CircleDollarSign size={16} className="text-[#4B65AB] dark:text-white" />
+                <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/30 shadow-sm">
+                  <CircleDollarSign size={18} className="text-purple-600 dark:text-purple-400" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm font-medium text-[#15191c] dark:text-white">{transaction.buyer}</span>
-                  <span className="text-xs text-[#4B65AB] dark:text-gray-400">
+                  <span className="text-sm font-semibold text-gray-900 dark:text-white">{transaction.buyer}</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
                     {transaction.productIds.length} {transaction.productIds.length === 1 ? 'item' : 'items'}
                   </span>
                 </div>
               </div>
-              <span className="text-sm font-bold text-[#4B65AB] dark:text-blue-400">
+              <span className="text-sm font-bold text-purple-600 dark:text-purple-400">
                 {transaction.cost}
               </span>
             </div>
@@ -94,12 +94,12 @@ const Row3: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader
-          icon={<BarChart3 size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<BarChart3 size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Monthly Revenue & Expenses"
           subtitle="Revenue and expenses per month"
           sideText="+4%"
         />
-        <div className="h-[calc(100%-80px)] p-2 overflow-hidden">
+        <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
             <RechartsBarChart
               data={monthlyData}
@@ -115,12 +115,12 @@ const Row3: React.FC<Props> = ({ section }) => {
                 <linearGradient id="colorRevenue2" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#4B65AB"
+                    stopColor="#7c3aed"
                     stopOpacity={0.8}
                   />
                   <stop
                     offset="95%"
-                    stopColor="#4B65AB"
+                    stopColor="#7c3aed"
                     stopOpacity={0.2}
                   />
                 </linearGradient>
@@ -140,13 +140,13 @@ const Row3: React.FC<Props> = ({ section }) => {
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
-                stroke="rgba(74, 101, 171, 0.1)"
+                stroke="rgba(124, 58, 237, 0.1)"
               />
               <XAxis
                 dataKey="name"
                 axisLine={false}
                 tickLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 tick={{ dx: 0 }}
                 tickCount={6}
                 padding={{ left: 10, right: 10 }}
@@ -154,16 +154,17 @@ const Row3: React.FC<Props> = ({ section }) => {
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#4B65AB",
+                  backgroundColor: "#7c3aed",
                   border: "none",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   color: "#fff",
                   fontSize: "12px",
                   padding: "8px 12px",
+                  boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
                 formatter={(value) => [`$${value}`, ""]}
               />
@@ -173,7 +174,7 @@ const Row3: React.FC<Props> = ({ section }) => {
                 wrapperStyle={{
                   paddingTop: "10px",
                   fontSize: "10px",
-                  color: "#4B65AB",
+                  color: "#7c3aed",
                 }}
               />
               <Bar
@@ -181,14 +182,14 @@ const Row3: React.FC<Props> = ({ section }) => {
                 fill="url(#colorRevenue2)"
                 name="Revenue"
                 radius={[4, 4, 0, 0]}
-                barSize={6}
+                barSize={8}
               />
               <Bar
                 dataKey="expenses"
                 fill="url(#colorExpenses2)"
                 name="Expenses"
                 radius={[4, 4, 0, 0]}
-                barSize={6}
+                barSize={8}
               />
             </RechartsBarChart>
           </ResponsiveContainer>
@@ -201,7 +202,7 @@ const Row3: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader
-          icon={<PieChartIcon size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<PieChartIcon size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Expense Breakdown By Category"
           sideText="+4%"
         />
@@ -226,12 +227,13 @@ const Row3: React.FC<Props> = ({ section }) => {
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#4B65AB",
+                  backgroundColor: "#7c3aed",
                   border: "none",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   color: "#fff",
                   fontSize: "12px",
                   padding: "8px 12px",
+                  boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
               />
               <Legend 
@@ -242,7 +244,7 @@ const Row3: React.FC<Props> = ({ section }) => {
                 align="right"
                 wrapperStyle={{
                   fontSize: "12px",
-                  color: "#4B65AB",
+                  color: "#7c3aed",
                   paddingRight: "20px",
                 }}
               />
@@ -257,32 +259,32 @@ const Row3: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox className="h-full">
         <BoxHeader
-          icon={<TrendingUp size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<TrendingUp size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Performance Overview"
           sideText="Q1 2023"
         />
         
         <div className="h-[calc(100%-60px)] w-full overflow-hidden p-3">
           {/* Main Summary Card */}
-          <div className="bg-[#4B65AB]/10 dark:bg-[#15191c] rounded-xl p-4 mb-4">
+          <div className="bg-purple-50 dark:bg-gray-700/50 rounded-xl p-4 mb-4">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-base font-bold text-[#15191c] dark:text-white">Business Performance</h3>
-              <div className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-[#4B65AB]/20 dark:bg-[#1d2328] text-[#4B65AB] dark:text-blue-400">
+              <h3 className="text-base font-bold text-gray-900 dark:text-white">Business Performance</h3>
+              <div className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
                 <ChevronUp size={12} /> +15%
               </div>
             </div>
             
-            <p className="text-xs text-[#4B65AB] dark:text-gray-300 mb-3">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
               Revenue growth is up by 15% compared to last quarter.
             </p>
             
             <div className="mb-1">
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-[#4B65AB] dark:text-gray-400">Q1 Goal Progress</span>
-                <span className="text-[#15191c] dark:text-white font-medium">40%</span>
+                <span className="text-gray-500 dark:text-gray-400">Q1 Goal Progress</span>
+                <span className="text-gray-900 dark:text-white font-medium">40%</span>
               </div>
-              <div className="h-2 bg-[#f8fafc] dark:bg-[#1B2131] rounded-full w-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#4B65AB] to-[#AEC3FF] rounded-full" style={{ width: '40%' }}></div>
+              <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-purple-600 to-purple-400 rounded-full" style={{ width: '40%' }}></div>
               </div>
             </div>
           </div>
@@ -290,64 +292,64 @@ const Row3: React.FC<Props> = ({ section }) => {
           {/* Stats Grid - Top Row */}
           <div className="grid grid-cols-3 gap-3 mb-3">
             {/* Revenue */}
-            <div className="bg-[#4B65AB]/5 dark:bg-[#15191c] rounded-lg p-3">
+            <div className="bg-purple-50 dark:bg-gray-700/50 rounded-lg p-3">
               <div className="flex items-center justify-between">
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#4B65AB]/20 dark:bg-[#1d2328]">
-                  <Coins size={14} className="text-[#4B65AB] dark:text-[#AEC3FF]" />
+                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/20 shadow-sm">
+                  <Coins size={14} className="text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-[#4B65AB] dark:text-[#AEC3FF]">
+                <div className="flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400">
                   <ChevronUp size={12} /> 12%
                 </div>
               </div>
               <div className="mt-2">
-                <h4 className="text-xs text-[#4B65AB] dark:text-gray-400">Revenue</h4>
-                <p className="text-lg font-bold text-[#15191c] dark:text-white">$83K</p>
+                <h4 className="text-xs text-gray-500 dark:text-gray-400">Revenue</h4>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">$83K</p>
               </div>
               <div className="mt-2">
-                <div className="h-1.5 bg-[#f8fafc] dark:bg-[#1B2131] rounded-full w-full overflow-hidden">
-                  <div className="h-full bg-[#4B65AB] rounded-full" style={{ width: '68%' }}></div>
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">
+                  <div className="h-full bg-purple-600 rounded-full" style={{ width: '68%' }}></div>
                 </div>
               </div>
             </div>
             
             {/* Products */}
-            <div className="bg-[#4B65AB]/5 dark:bg-[#15191c] rounded-lg p-3">
+            <div className="bg-purple-50 dark:bg-gray-700/50 rounded-lg p-3">
               <div className="flex items-center justify-between">
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#4B65AB]/20 dark:bg-[#1d2328]">
-                  <ShoppingBag size={14} className="text-[#4B65AB] dark:text-[#AEC3FF]" />
+                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/20 shadow-sm">
+                  <ShoppingBag size={14} className="text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-[#4B65AB] dark:text-[#AEC3FF]">
+                <div className="flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400">
                   <ChevronUp size={12} /> 8%
                 </div>
               </div>
               <div className="mt-2">
-                <h4 className="text-xs text-[#4B65AB] dark:text-gray-400">Products</h4>
-                <p className="text-lg font-bold text-[#15191c] dark:text-white">8</p>
+                <h4 className="text-xs text-gray-500 dark:text-gray-400">Products</h4>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">8</p>
               </div>
               <div className="mt-2">
-                <div className="h-1.5 bg-[#f8fafc] dark:bg-[#1B2131] rounded-full w-full overflow-hidden">
-                  <div className="h-full bg-[#4B65AB] rounded-full" style={{ width: '45%' }}></div>
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">
+                  <div className="h-full bg-purple-600 rounded-full" style={{ width: '45%' }}></div>
                 </div>
               </div>
             </div>
             
             {/* Customers */}
-            <div className="bg-[#4B65AB]/5 dark:bg-[#15191c] rounded-lg p-3">
+            <div className="bg-purple-50 dark:bg-gray-700/50 rounded-lg p-3">
               <div className="flex items-center justify-between">
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#4B65AB]/20 dark:bg-[#1d2328]">
-                  <Users size={14} className="text-[#4B65AB] dark:text-[#AEC3FF]" />
+                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/20 shadow-sm">
+                  <Users size={14} className="text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-[#4B65AB] dark:text-[#AEC3FF]">
+                <div className="flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400">
                   <ChevronUp size={12} /> 5%
                 </div>
               </div>
               <div className="mt-2">
-                <h4 className="text-xs text-[#4B65AB] dark:text-gray-400">Customers</h4>
-                <p className="text-lg font-bold text-[#15191c] dark:text-white">2.3K</p>
+                <h4 className="text-xs text-gray-500 dark:text-gray-400">Customers</h4>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">2.3K</p>
               </div>
               <div className="mt-2">
-                <div className="h-1.5 bg-[#f8fafc] dark:bg-[#1B2131] rounded-full w-full overflow-hidden">
-                  <div className="h-full bg-[#4B65AB] rounded-full" style={{ width: '52%' }}></div>
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">
+                  <div className="h-full bg-purple-600 rounded-full" style={{ width: '52%' }}></div>
                 </div>
               </div>
             </div>
@@ -356,64 +358,64 @@ const Row3: React.FC<Props> = ({ section }) => {
           {/* Stats Grid - Bottom Row */}
           <div className="grid grid-cols-3 gap-3">
             {/* Marketing */}
-            <div className="bg-[#4B65AB]/5 dark:bg-[#15191c] rounded-lg p-3">
+            <div className="bg-purple-50 dark:bg-gray-700/50 rounded-lg p-3">
               <div className="flex items-center justify-between">
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#4B65AB]/20 dark:bg-[#1d2328]">
-                  <BarChart size={14} className="text-[#4B65AB] dark:text-[#AEC3FF]" />
+                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/20 shadow-sm">
+                  <BarChart size={14} className="text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-[#4B65AB] dark:text-[#AEC3FF]">
+                <div className="flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400">
                   <ChevronUp size={12} /> 4%
                 </div>
               </div>
               <div className="mt-2">
-                <h4 className="text-xs text-[#4B65AB] dark:text-gray-400">Marketing</h4>
-                <p className="text-lg font-bold text-[#15191c] dark:text-white">$12K</p>
+                <h4 className="text-xs text-gray-500 dark:text-gray-400">Marketing</h4>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">$12K</p>
               </div>
               <div className="mt-2">
-                <div className="h-1.5 bg-[#f8fafc] dark:bg-[#1B2131] rounded-full w-full overflow-hidden">
-                  <div className="h-full bg-[#4B65AB] rounded-full" style={{ width: '38%' }}></div>
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">
+                  <div className="h-full bg-purple-600 rounded-full" style={{ width: '38%' }}></div>
                 </div>
               </div>
             </div>
             
             {/* Expenses */}
-            <div className="bg-[#ef672d]/5 dark:bg-[#15191c] rounded-lg p-3">
+            <div className="bg-purple-50 dark:bg-gray-700/50 rounded-lg p-3">
               <div className="flex items-center justify-between">
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#ef672d]/20 dark:bg-[#1d2328]">
-                  <PieChart size={14} className="text-[#ef672d] dark:text-[#ef672d]" />
+                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/20 shadow-sm">
+                  <PieChart size={14} className="text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-[#ef672d]">
+                <div className="flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400">
                   <ChevronUp size={12} /> 7%
                 </div>
               </div>
               <div className="mt-2">
-                <h4 className="text-xs text-[#ef672d]">Expenses</h4>
-                <p className="text-lg font-bold text-[#15191c] dark:text-white">$32K</p>
+                <h4 className="text-xs text-purple-600 dark:text-purple-400">Expenses</h4>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">$32K</p>
               </div>
               <div className="mt-2">
-                <div className="h-1.5 bg-[#f8fafc] dark:bg-[#1B2131] rounded-full w-full overflow-hidden">
-                  <div className="h-full bg-[#ef672d] rounded-full" style={{ width: '58%' }}></div>
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">
+                  <div className="h-full bg-purple-600 rounded-full" style={{ width: '58%' }}></div>
                 </div>
               </div>
             </div>
             
             {/* Profit */}
-            <div className="bg-[#4B65AB]/5 dark:bg-[#15191c] rounded-lg p-3">
+            <div className="bg-purple-50 dark:bg-gray-700/50 rounded-lg p-3">
               <div className="flex items-center justify-between">
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#4B65AB]/20 dark:bg-[#1d2328]">
-                  <TrendingUp size={14} className="text-[#4B65AB] dark:text-[#AEC3FF]" />
+                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/20 shadow-sm">
+                  <TrendingUp size={14} className="text-purple-600 dark:text-purple-400" />
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-[#4B65AB] dark:text-[#AEC3FF]">
+                <div className="flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400">
                   <ChevronUp size={12} /> 2.5%
                 </div>
               </div>
               <div className="mt-2">
-                <h4 className="text-xs text-[#4B65AB] dark:text-gray-400">Profit</h4>
-                <p className="text-lg font-bold text-[#15191c] dark:text-white">24%</p>
+                <h4 className="text-xs text-purple-600 dark:text-purple-400">Profit</h4>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">24%</p>
               </div>
               <div className="mt-2">
-                <div className="h-1.5 bg-[#f8fafc] dark:bg-[#1B2131] rounded-full w-full overflow-hidden">
-                  <div className="h-full bg-[#4B65AB] rounded-full" style={{ width: '75%' }}></div>
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">
+                  <div className="h-full bg-purple-600 rounded-full" style={{ width: '75%' }}></div>
                 </div>
               </div>
             </div>

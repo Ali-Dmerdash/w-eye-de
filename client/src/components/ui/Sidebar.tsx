@@ -164,8 +164,8 @@ export default function Sidebar() {
                   className={`group flex items-center ${isCollapsed ? "justify-center" : ""
                     } px-4 py-2.5 rounded-lg relative overflow-hidden transition-all duration-300
                   ${isActive
-                      ? "text-[#E4E5F1] shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#4B65AB] via-[46%] to-[#4B65AB] dark:from-[#243461] dark:via-[#15191c] dark:via-[46%] dark:to-[#15191C]"
-                      : "text-[#686868] hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB] dark:hover:from-[#243461] dark:hover:via-[#15191c] dark:hover:via-[46%] dark:hover:to-[#15191C]"
+                      ? "text-[#E4E5F1] shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#7c3aed] via-[46%] to-[#7c3aed] dark:from-[#4c1d95] dark:via-[#15191c] dark:via-[46%] dark:to-[#15191C]"
+                      : "text-[#686868] hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] dark:outline-none hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#7c3aed] hover:via-[46%] hover:to-[#7c3aed] dark:hover:from-[#4c1d95] dark:hover:via-[#15191c] dark:hover:via-[46%] dark:hover:to-[#15191C]"
                     }`}
                 >
                   <item.icon
@@ -191,16 +191,16 @@ export default function Sidebar() {
             <button
               onClick={handleSignOut}
               className={`flex items-center ${isCollapsed ? "justify-center" : ""
-                } w-full px-4 py-3 rounded-lg 
-                text-[#686868] dark:text-gray-300 transition-colors duration-300
-                ${!isCollapsed ? "hover:text-[#E4E5F1] hover:shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] hover:outline hover:outline-2 hover:-outline-offset-2 hover:outline-[#D2D3DB]/20 hover:bg-gradient-to-r hover:from-[#9394A5] hover:via-[#4B65AB] hover:via-[46%] hover:to-[#4B65AB] dark:hover:from-[#243461] dark:hover:via-[#15191c] dark:hover:via-[46%] dark:hover:to-[#15191C]" : ""}`}
+                } w-full px-4 py-3 rounded-2xl border border-transparent
+                text-[#686868] dark:text-gray-300 transition-all duration-200 ease-out
+                ${!isCollapsed ? "hover:text-purple-600 dark:hover:text-purple-400 hover:border-purple-200 dark:hover:border-purple-800/50 hover:bg-purple-50 dark:hover:bg-purple-900/10 hover:shadow-md hover:shadow-purple-100 dark:hover:shadow-purple-900/20" : "hover:bg-purple-50 dark:hover:bg-purple-900/10"}`}
             >
               <div
                 className={`p-3 rounded-full ${isCollapsed ? "" : "mr-3"
-                  } shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#4B65AB] via-[46%] to-[#4B65AB] dark:from-[#243461] dark:to-[#15191C]
-                ${!isCollapsed ? "group-hover:bg-none group-hover:outline-none group-hover:shadow-none" : ""} transition-all duration-300`}
+                  } shadow-[inset_0_1px_4px_rgba(255,255,255,0.2)] outline outline-2 -outline-offset-2 outline-[#D2D3DB]/20 bg-gradient-to-r from-[#9394A5] via-[#7c3aed] via-[46%] to-[#7c3aed] dark:from-[#4c1d95] dark:to-[#15191C]
+                ${!isCollapsed ? "group-hover:bg-none group-hover:outline-none group-hover:shadow-none" : ""} transition-all duration-150`}
               >
-                <LogOut className="rotate-180 w-4 h-4 text-[#E4E5F1]" />
+                <LogOut className="rotate-180 w-4 h-4 text-[#E4E5F1] group-hover:text-purple-900 dark:text-[#E4E5F1] dark:group-hover:text-[#E4E5F1] transition-colors duration-150" />
               </div>
               {!isCollapsed && <span>Sign out</span>}
             </button>

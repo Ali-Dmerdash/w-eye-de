@@ -88,7 +88,7 @@ export default function Home() {
         {/* Main Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
           <div className="col-span-4 lg:col-span-2 space-y-6">
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
               <WelcomeCard />
               <ReferralCard score={9.3} />
             </div>

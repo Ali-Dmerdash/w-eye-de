@@ -4,9 +4,7 @@ import type React from "react";
 import { Plus, Download, Trash2, Info, Ellipsis, X, Upload, FileText, CheckCircle } from "lucide-react";
 import Sidebar from "@/components/ui/Sidebar";
 import Header from "@/components/ui/Header";
-import { useDispatch } from 'react-redux';
-import { addNotification } from '@/app/redux/notificationSlice';
-import { AppDispatch } from '@/app/redux';
+import { useNotifications } from '@/context/NotificationContext';
 
 interface UploadedFile {
   id: string;
@@ -33,7 +31,7 @@ export default function DataUpload() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string>("");
   const successModalRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch<AppDispatch>();
+  const { addNotification } = useNotifications();
 
   useEffect(() => {
     const updateSidebarState = () => {
@@ -182,11 +180,11 @@ export default function DataUpload() {
         setUploadStatus(null);
         setShowSuccessModal(true);
         setUploadedFileName(fileToUpload.name);
-        dispatch(addNotification({
+        addNotification({
           title: "Upload Successful",
           message: `File "${fileToUpload.name}" has been uploaded and is ready for processing.`,
           type: "success",
-        }));
+        });
       } else {
         const errorText = await response.text();
         throw new Error(
@@ -322,7 +320,7 @@ export default function DataUpload() {
                       <div className="flex flex-col lg:flex-row sm:justify-normal justify-center gap-3 sm:gap-4 mt-4 sm:mt-0">
                         <button
                           className={`flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 bg-white dark:bg-gray-700 border border-purple-200 dark:border-gray-600 rounded-2xl md:rounded-full hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors duration-150 ${
-                            !file.agent ? "animate-pulse ring-2 ring-purple-300 dark:ring-purple-600" : ""
+                            !file.agent ? "animate-pulse-attention ring-2 ring-purple-300 dark:ring-purple-600" : ""
                           }`}
                           onClick={() => openAgentModal(file.id)}
                           aria-label="Select agent"

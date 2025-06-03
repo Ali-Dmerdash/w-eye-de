@@ -26,7 +26,7 @@ const pieData = [
   { name: "Expenses", value: 400 },
 ];
 
-const COLORS = ["#4B65AB", "#ef672d", "#4ED7F1", "#f57c00"];
+const COLORS = ["#7c3aed", "#ef672d", "#a855f7", "#f57c00"];
 
 type Props = {
   section: "d" | "e" | "f";
@@ -68,11 +68,11 @@ const Row2: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader
-          icon={<Activity size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<Activity size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Operational vs Non-Operational Expenses"
           sideText="+4%"
         />
-        <div className="h-[calc(100%-80px)] p-2 overflow-hidden">
+        <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={operationalExpenses}
@@ -86,13 +86,13 @@ const Row2: React.FC<Props> = ({ section }) => {
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
-                stroke="rgba(74, 101, 171, 0.1)"
+                stroke="rgba(124, 58, 237, 0.1)"
               />
               <XAxis
                 dataKey="name"
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 padding={{ left: 10, right: 10 }}
                 interval={0}
                 angle={-45}
@@ -104,23 +104,24 @@ const Row2: React.FC<Props> = ({ section }) => {
                 orientation="left"
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
               />
               <YAxis
                 yAxisId="right"
                 orientation="right"
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#4B65AB",
+                  backgroundColor: "#7c3aed",
                   border: "none",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   color: "#fff",
                   fontSize: "12px",
                   padding: "8px 12px",
+                  boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
                 formatter={(value) => [`$${value}`, ""]}
               />
@@ -131,15 +132,15 @@ const Row2: React.FC<Props> = ({ section }) => {
                 wrapperStyle={{
                   paddingTop: "10px",
                   fontSize: "10px",
-                  color: "#4B65AB",
+                  color: "#7c3aed",
                 }}
               />
               <Line
                 yAxisId="left"
                 type="monotone"
                 dataKey="Non Operational Expenses"
-                stroke="#4ED7F1"
-                dot={{ fill: "#4ED7F1", r: 3 }}
+                stroke="#a855f7"
+                dot={{ fill: "#a855f7", r: 3 }}
                 activeDot={{ r: 5 }}
                 strokeWidth={2}
               />
@@ -163,23 +164,23 @@ const Row2: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader 
-          icon={<PieChartIcon size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<PieChartIcon size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Campaigns and Targets" 
           sideText="+4%" 
         />
-        <div className="h-[calc(100%-80px)] p-2">
-          <div className="flex justify-between items-center mb-2 px-2">
+        <div className="h-[calc(100%-100px)] p-4">
+          <div className="flex justify-between items-center mb-4 px-2">
             <div className="flex flex-col">
-              <span className="text-base font-bold text-[#15191c] dark:text-white">Target Sales</span>
-              <span className="text-xs text-[#4B65AB] dark:text-gray-400">
+              <span className="text-base font-bold text-gray-900 dark:text-white">Target Sales</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
                 Revenue optimization
               </span>
             </div>
-            <div className="bg-[#4B65AB]/20 dark:bg-[#15191c] px-2.5 py-1.5 rounded-lg">
-              <span className="text-lg text-[#4B65AB] dark:text-blue-400 font-bold">$83K</span>
+            <div className="bg-purple-100 dark:bg-purple-900/30 px-3 py-2 rounded-lg border border-purple-200 dark:border-purple-800/30">
+              <span className="text-lg text-purple-600 dark:text-purple-400 font-bold">$83K</span>
             </div>
           </div>
-          <div className="h-[calc(100%-40px)]">
+          <div className="h-[calc(100%-60px)]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -200,26 +201,15 @@ const Row2: React.FC<Props> = ({ section }) => {
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#4B65AB",
+                    backgroundColor: "#7c3aed",
                     border: "none",
-                    borderRadius: "8px",
+                    borderRadius: "12px",
                     color: "#fff",
                     fontSize: "12px",
                     padding: "8px 12px",
+                    boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                   }}
-                  formatter={(value) => [`$${value}K`, "Amount"]}
-                />
-                <Legend 
-                  iconType="circle"
-                  iconSize={8}
-                  layout="horizontal" 
-                  verticalAlign="bottom"
-                  align="center"
-                  wrapperStyle={{
-                    fontSize: "12px",
-                    color: "#4B65AB",
-                    paddingTop: "10px",
-                  }}
+                  formatter={(value) => [`$${value}`, ""]}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -233,7 +223,7 @@ const Row2: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader 
-          icon={<TrendingUp size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<TrendingUp size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Product Prices vs Expenses" 
           sideText="+4%" 
         />
@@ -250,7 +240,7 @@ const Row2: React.FC<Props> = ({ section }) => {
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
-                stroke="rgba(74, 101, 171, 0.1)"
+                stroke="rgba(124, 58, 237, 0.1)"
               />
               <XAxis
                 type="number"
@@ -258,7 +248,7 @@ const Row2: React.FC<Props> = ({ section }) => {
                 name="price"
                 axisLine={false}
                 tickLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 tickFormatter={(v) => `$${v}`}
                 padding={{ left: 10, right: 10 }}
               />
@@ -268,13 +258,13 @@ const Row2: React.FC<Props> = ({ section }) => {
                 name="expense"
                 axisLine={false}
                 tickLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 tickFormatter={(v) => `$${v}`}
               />
               <ZAxis type="number" range={[50, 500]} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#4B65AB",
+                  backgroundColor: "#7c3aed",
                   border: "none",
                   borderRadius: "8px",
                   color: "#fff",
@@ -286,7 +276,7 @@ const Row2: React.FC<Props> = ({ section }) => {
               <Scatter
                 name="Product Expense Ratio"
                 data={productExpenseData}
-                fill="#4B65AB"
+                fill="#7c3aed"
                 shape="circle"
               />
             </ScatterChart>

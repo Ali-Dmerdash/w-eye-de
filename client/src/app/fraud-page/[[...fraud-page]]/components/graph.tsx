@@ -83,7 +83,7 @@ export default function FraudAnalyticsOverview() {
   React.useEffect(() => {
     const handleResize = () => {
       const vh = window.innerHeight
-      setCircleSize(vh < 800 ? 90 : 100)
+      setCircleSize(vh < 768 ? 100 : 140)
     }
 
     handleResize()

@@ -48,25 +48,41 @@ export default function Strengths() {
   // Loading State
   if (isLoading) {
     return (
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-lg border border-green-200 dark:border-green-800/30 p-6 h-full flex flex-col">
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl shadow-lg border border-green-200 dark:border-green-800/30 p-6 h-full flex flex-col relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute top-0 right-0 w-20 h-20 opacity-10">
+            <div className="w-full h-full bg-green-300 rounded-full transform translate-x-6 -translate-y-6"></div>
+          </div>
+
           <div className="animate-pulse">
             {/* Header skeleton */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-green-200 dark:bg-green-800/50 rounded-xl"></div>
+            <div className="flex flex-col text-center items-center gap-3 mb-4 relative z-10">
+              <div className="p-2.5 bg-green-200 dark:bg-green-800/50 rounded-xl"></div>
               <div>
                 <div className="h-5 w-20 bg-green-200 dark:bg-green-800/50 rounded mb-2"></div>
-                <div className="h-3 w-16 bg-green-100 dark:bg-green-900/30 rounded"></div>
+                <div className="flex items-center gap-1 justify-center">
+                  <div className="w-3 h-3 bg-green-100 dark:bg-green-900/30 rounded-full"></div>
+                  <div className="h-3 w-32 bg-green-100 dark:bg-green-900/30 rounded"></div>
+                </div>
               </div>
             </div>
 
             {/* Content skeleton */}
-            <div className="flex-grow flex items-center justify-center">
-              <div className="text-center space-y-3">
-                <div className="w-12 h-12 bg-green-200 dark:bg-green-800/50 rounded-full mx-auto"></div>
+            <div className="flex-grow flex items-center justify-center relative z-10">
+              <div className="text-center space-y-4">
                 <div className="space-y-2">
-                  <div className="h-3 w-32 bg-green-100 dark:bg-green-900/30 rounded mx-auto"></div>
-                  <div className="h-3 w-28 bg-green-100 dark:bg-green-900/30 rounded mx-auto"></div>
+                  <div className="h-4 w-44 bg-green-100 dark:bg-green-900/30 rounded mx-auto"></div>
+                  <div className="h-4 w-38 bg-green-100 dark:bg-green-900/30 rounded mx-auto"></div>
+                  <div className="h-4 w-32 bg-green-100 dark:bg-green-900/30 rounded mx-auto"></div>
                 </div>
+              </div>
+            </div>
+
+            {/* Footer skeleton */}
+            <div className="mt-4 pt-3 border-t border-green-200 dark:border-green-800/30 relative z-10">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-2 h-2 bg-green-200 dark:bg-green-800/50 rounded-full"></div>
+                <div className="h-3 w-24 bg-green-100 dark:bg-green-900/30 rounded"></div>
               </div>
             </div>
           </div>

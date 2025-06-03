@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketModelResponse, PricingComparison as PCType, CompetitivePositioning as CPType } from "@/state/type"
 import { Globe, Building2, X, ExternalLink, BarChart3, Maximize2, MapPin } from "lucide-react"
+import worldMap from "@/assets/world-map-spherical-curved-world-map-world-map-globe-isolated-illustration-vector.jpg"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -160,10 +161,10 @@ export default function MarketMap() {
 
         {/* Map Container */}
         <div className="flex-grow relative overflow-hidden">
-          {/* Your World Map Image - Replace the src with your actual image */}
+          
           <div className="absolute inset-0">
             <img
-                src="/placeholder.svg?height=500&width=1000"
+                src={worldMap}
                 alt="World Map"
                 className="w-full h-full object-cover"
                 style={{
@@ -344,57 +345,61 @@ export default function MarketMap() {
           )}
 
           {/* Regional Statistics */}
-          <div className="absolute top-4 right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              Regional Distribution
-            </h3>
-            <div className="space-y-3 text-xs">
-              {["North America", "Europe", "Asia Pacific"].map((region) => {
-                const count = locations.filter((loc) => loc.region === region).length
-                const percentage = Math.round((count / locations.length) * 100)
-                return (
-                    <div key={region} className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">{region}:</span>
-                        <span className="font-medium text-gray-900 dark:text-white">
-                      {count} ({percentage}%)
-                    </span>
+          {isFullscreen && (
+            <div className="absolute top-4 right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-gray-200 dark:border-gray-700">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Regional Distribution
+              </h3>
+              <div className="space-y-3 text-xs">
+                {["North America", "Europe", "Asia Pacific"].map((region) => {
+                  const count = locations.filter((loc) => loc.region === region).length
+                  const percentage = Math.round((count / locations.length) * 100)
+                  return (
+                      <div key={region} className="space-y-1">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600 dark:text-gray-300">{region}:</span>
+                          <span className="font-medium text-gray-900 dark:text-white">
+                        {count} ({percentage}%)
+                      </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                          <div
+                              className="bg-gradient-to-r from-purple-500 to-purple-600 h-1.5 rounded-full transition-all duration-700"
+                              style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
-                        <div
-                            className="bg-gradient-to-r from-purple-500 to-purple-600 h-1.5 rounded-full transition-all duration-700"
-                            style={{ width: `${percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Legend */}
-          <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Legend</h3>
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-600 rounded-full border border-white"></div>
-                <span className="text-gray-600 dark:text-gray-300">Competitor Location</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full ring-1 ring-purple-300"></div>
-                <span className="text-gray-600 dark:text-gray-300">Hovered</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full ring-1 ring-yellow-300"></div>
-                <span className="text-gray-600 dark:text-gray-300">Selected</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-0.5 bg-purple-400 opacity-50" style={{ borderStyle: "dashed" }}></div>
-                <span className="text-gray-600 dark:text-gray-300">Regional Connections</span>
+          {isFullscreen && (
+            <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-gray-200 dark:border-gray-700">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Legend</h3>
+              <div className="space-y-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-purple-600 rounded-full border border-white"></div>
+                  <span className="text-gray-600 dark:text-gray-300">Competitor Location</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full ring-1 ring-purple-300"></div>
+                  <span className="text-gray-600 dark:text-gray-300">Hovered</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full ring-1 ring-yellow-300"></div>
+                  <span className="text-gray-600 dark:text-gray-300">Selected</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-0.5 bg-purple-400 opacity-50" style={{ borderStyle: "dashed" }}></div>
+                  <span className="text-gray-600 dark:text-gray-300">Regional Connections</span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Professional Modal for Detailed Analysis */}

@@ -19,6 +19,7 @@ import {
     Clock,
 } from "lucide-react"
 import { useChat, type Message, type FileAttachment } from "@/context/ChatContext"
+import { useNotifications } from "@/context/NotificationContext"
 
 export const HelpModal = ({ onClose }: { onClose: () => void }) => {
     const { setShowHelpModal, setDraftMessage } = useChat()
@@ -135,6 +136,7 @@ export default function ChatModal() {
         showHelpModal,
         setShowHelpModal,
     } = useChat()
+    const { addNotification } = useNotifications()
     const [input, setInput] = useState("")
     const messagesEndRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -420,16 +422,35 @@ export default function ChatModal() {
                             <button
                                 onClick={() => {
                                     if (messages.length > 0) {
-                                        const exportData = JSON.stringify(messages, null, 2)
-                                        const blob = new Blob([exportData], { type: "application/json" })
-                                        const url = URL.createObjectURL(blob)
-                                        const a = document.createElement("a")
-                                        a.href = url
-                                        a.download = `chat-history-${new Date().toISOString().split("T")[0]}.json`
-                                        document.body.appendChild(a)
-                                        a.click()
-                                        document.body.removeChild(a)
-                                        URL.revokeObjectURL(url)
+                                        try {
+                                            const exportData = JSON.stringify(messages, null, 2)
+                                            const blob = new Blob([exportData], { type: "application/json" })
+                                            const url = URL.createObjectURL(blob)
+                                            const a = document.createElement("a")
+                                            a.href = url
+                                            a.download = `chat-history-${new Date().toISOString().split("T")[0]}.json`
+                                            document.body.appendChild(a)
+                                            a.click()
+                                            document.body.removeChild(a)
+                                            URL.revokeObjectURL(url)
+                                            
+                                            // Send success notification
+                                            addNotification({
+                                                title: "Chat Exported",
+                                                message: "Your chat history has been exported successfully.",
+                                                type: "success",
+                                            })
+                                        } catch (error) {
+                                            // Send error notification if export fails
+                                            addNotification({
+                                                title: "Export Failed",
+                                                message: "Failed to export chat history. Please try again.",
+                                                type: "error",
+                                            })
+                                        }
+                                    } else {
+                                        // Show modal alert if no messages to export
+                                        alert("Your chat history is empty. Start a conversation first to export messages.")
                                     }
                                 }}
                                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"

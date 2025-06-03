@@ -6,15 +6,21 @@ import Row3 from "./Row3";
 const Dashboard = () => {
   return (
     <div className="w-full h-full font-mulish">
-      <div className="grid gap-4 w-full">
+      <div className="grid gap-6 w-full">
         
         {/* Summary Section - All screen sizes */}
-        <div className="bg-[#AEC3FF]/20 dark:bg-[#1d2328] rounded-xl p-3">
-          <Row3 section="j" />
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-4 relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
+            <div className="w-full h-full bg-purple-300 rounded-full transform translate-x-12 -translate-y-12"></div>
+          </div>
+          <div className="relative z-10">
+            <Row3 section="j" />
+          </div>
         </div>
         
         {/* Large screens layout */}
-        <div className="hidden xl:grid xl:grid-cols-3 xl:gap-4 xl:grid-flow-row">
+        <div className="hidden xl:grid xl:grid-cols-3 xl:gap-6 xl:grid-flow-row">
           <div className="h-[350px]">
             <Row1 section="a" />
           </div>
@@ -45,7 +51,7 @@ const Dashboard = () => {
         </div>
 
         {/* Medium screens layout */}
-        <div className="hidden md:grid md:grid-cols-2 xl:hidden md:gap-4">
+        <div className="hidden md:grid md:grid-cols-2 xl:hidden md:gap-6">
           <div className="h-[350px]">
             <Row1 section="a" />
           </div>
@@ -76,7 +82,7 @@ const Dashboard = () => {
         </div>
 
         {/* Small screens layout */}
-        <div className="md:hidden flex flex-col gap-4">
+        <div className="md:hidden flex flex-col gap-6">
           <div className="h-[350px]">
             <Row1 section="a" />
           </div>

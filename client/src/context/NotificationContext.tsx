@@ -1,45 +1,102 @@
 "use client";
-import React, { createContext, useContext, ReactNode } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '@/app/redux';
-import { 
-  addNotification as addNotificationAction, 
-  markAllAsRead as markAllAsReadAction,
-  selectNotifications,
-  selectNewNotificationsCount,
-  Notification
-} from '@/app/redux/notificationSlice';
+import React, { createContext, useContext, ReactNode, useCallback } from 'react';
+import { useUser } from '@clerk/nextjs';
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: number;
+  isNew: boolean;
+  type: 'success' | 'warning' | 'info' | 'error';
+}
 
 interface NotificationContextType {
   notifications: Notification[];
-  addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'isNew'>) => void;
-  markAllAsRead: () => void;
+  addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'isNew'>) => Promise<void>;
+  deleteNotification: (id: string) => Promise<void>;
+  markAllAsRead: () => Promise<void>;
   getNewNotificationsCount: () => number;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const notifications = useSelector(selectNotifications);
-  const newNotificationsCount = useSelector(selectNewNotificationsCount);
+  const { user } = useUser();
 
-  const addNotification = (notification: Omit<Notification, 'id' | 'timestamp' | 'isNew'>) => {
-    dispatch(addNotificationAction(notification));
-  };
+  // Get notifications from Clerk metadata
+  const notifications: Notification[] = (user?.unsafeMetadata?.notifications as Notification[]) || [];
 
-  const markAllAsRead = () => {
-    dispatch(markAllAsReadAction());
-  };
+  const addNotification = useCallback(async (notification: Omit<Notification, 'id' | 'timestamp' | 'isNew'>) => {
+    if (!user) return;
 
-  const getNewNotificationsCount = () => {
-    return newNotificationsCount;
-  };
+    const newNotification: Notification = {
+      ...notification,
+      id: `notif-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      timestamp: Date.now(),
+      isNew: true
+    };
+
+    const updatedNotifications = [newNotification, ...notifications];
+
+    try {
+      await user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata,
+          notifications: updatedNotifications
+        }
+      });
+    } catch (error) {
+      console.error('Failed to add notification:', error);
+    }
+  }, [user, notifications]);
+
+  const deleteNotification = useCallback(async (id: string) => {
+    if (!user) return;
+
+    const updatedNotifications = notifications.filter(n => n.id !== id);
+
+    try {
+      await user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata,
+          notifications: updatedNotifications
+        }
+      });
+    } catch (error) {
+      console.error('Failed to delete notification:', error);
+    }
+  }, [user, notifications]);
+
+  const markAllAsRead = useCallback(async () => {
+    if (!user) return;
+
+    const updatedNotifications = notifications.map(notification => ({
+      ...notification,
+      isNew: false
+    }));
+
+    try {
+      await user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata,
+          notifications: updatedNotifications
+        }
+      });
+    } catch (error) {
+      console.error('Failed to mark notifications as read:', error);
+    }
+  }, [user, notifications]);
+
+  const getNewNotificationsCount = useCallback(() => {
+    return notifications.filter(notification => notification.isNew).length;
+  }, [notifications]);
 
   return (
     <NotificationContext.Provider value={{
       notifications,
       addNotification,
+      deleteNotification,
       markAllAsRead,
       getNewNotificationsCount
     }}>

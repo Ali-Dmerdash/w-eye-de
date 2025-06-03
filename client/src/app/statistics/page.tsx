@@ -39,28 +39,33 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen transition-colors duration-300 dark:bg-[#15191c] bg-white">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#15191c] transition-all duration-300">
       <Header />
       <Sidebar />
 
       <main
-        className={`p-4 md:p-6 pt-8 transition-all duration-300 ${
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
           isCollapsed ? "sm:ml-16" : "sm:ml-64"
         }`}
       >
         {isLoading ? (
           <div className="flex items-center justify-center h-[80vh]">
             <div className="flex flex-col items-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4B65AB]"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
               <p className="mt-4 text-gray-500 dark:text-gray-400">Loading analytics data...</p>
             </div>
           </div>
         ) : (
-          <div className="bg-white dark:bg-[#15191c] rounded-xl shadow-sm dark:shadow-none p-4 md:p-6 pt-0 max-w-[1600px] mx-auto transition-colors duration-300">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-[#15191c] dark:text-white">Analytics Dashboard</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Monitor your business performance with real-time data</p>
+          <div className="max-w-[1600px] mx-auto">
+            {/* Header Section */}
+            <div className="mb-8 flex flex-row justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Analytics Dashboard</h1>
+                <p className="text-gray-500 dark:text-gray-400">Monitor your business performance with real-time data and insights</p>
+              </div>
             </div>
+
+            {/* Dashboard Content */}
             <Dashboard />
           </div>
         )}

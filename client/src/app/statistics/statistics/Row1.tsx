@@ -67,12 +67,12 @@ const Row1: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader
-          icon={<AreaChartIcon size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<AreaChartIcon size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Revenue and Expenses"
           subtitle="top line represents revenue, bottom line represents expenses"
           sideText="+4%"
         />
-        <div className="h-[calc(100%-80px)] p-2 overflow-hidden">
+        <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={revenueExpenses}
@@ -87,24 +87,24 @@ const Row1: React.FC<Props> = ({ section }) => {
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#4B65AB"
+                    stopColor="#7c3aed"
                     stopOpacity={0.6}
                   />
                   <stop
                     offset="95%"
-                    stopColor="#4B65AB"
+                    stopColor="#7c3aed"
                     stopOpacity={0}
                   />
                 </linearGradient>
                 <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#4ED7F1"
+                    stopColor="#a855f7"
                     stopOpacity={0.6}
                   />
                   <stop
                     offset="95%"
-                    stopColor="#4ED7F1"
+                    stopColor="#a855f7"
                     stopOpacity={0}
                   />
                 </linearGradient>
@@ -112,13 +112,13 @@ const Row1: React.FC<Props> = ({ section }) => {
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
-                stroke="rgba(74, 101, 171, 0.1)"
+                stroke="rgba(124, 58, 237, 0.1)"
               />
               <XAxis
                 dataKey="name"
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 padding={{ left: 10, right: 10 }}
                 interval={0}
                 angle={-45}
@@ -128,35 +128,36 @@ const Row1: React.FC<Props> = ({ section }) => {
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 domain={[8000, 23000]}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#4B65AB",
+                  backgroundColor: "#7c3aed",
                   border: "none",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   color: "#fff",
                   fontSize: "12px",
                   padding: "8px 12px",
+                  boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
                 formatter={(value) => [`$${value}`, ""]}
               />
               <Area
                 type="monotone"
                 dataKey="revenue"
-                dot={{ fill: "#4B65AB", r: 3 }}
+                dot={{ fill: "#7c3aed", r: 3 }}
                 activeDot={{ r: 5 }}
-                stroke="#4B65AB"
+                stroke="#7c3aed"
                 fillOpacity={1}
                 fill="url(#colorRevenue)"
               />
               <Area
                 type="monotone"
                 dataKey="expenses"
-                dot={{ fill: "#4ED7F1", r: 3 }}
+                dot={{ fill: "#a855f7", r: 3 }}
                 activeDot={{ r: 5 }}
-                stroke="#4ED7F1"
+                stroke="#a855f7"
                 fillOpacity={1}
                 fill="url(#colorExpenses)"
               />
@@ -171,12 +172,12 @@ const Row1: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader
-          icon={<LineChartIcon size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<LineChartIcon size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Profit and Revenue"
           subtitle="top line represents revenue, bottom line represents expenses"
           sideText="+4%"
         />
-        <div className="h-[calc(100%-80px)] p-2 overflow-hidden">
+        <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={revenueProfit}
@@ -190,13 +191,13 @@ const Row1: React.FC<Props> = ({ section }) => {
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
-                stroke="rgba(74, 101, 171, 0.1)"
+                stroke="rgba(124, 58, 237, 0.1)"
               />
               <XAxis
                 dataKey="name"
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 padding={{ left: 10, right: 10 }}
                 interval={0}
                 angle={-45}
@@ -207,23 +208,24 @@ const Row1: React.FC<Props> = ({ section }) => {
                 yAxisId="left"
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
               />
               <YAxis
                 yAxisId="right"
                 orientation="right"
                 tickLine={false}
                 axisLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#4B65AB",
+                  backgroundColor: "#7c3aed",
                   border: "none",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   color: "#fff",
                   fontSize: "12px",
                   padding: "8px 12px",
+                  boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
                 formatter={(value) => [`$${value}`, ""]}
               />
@@ -234,7 +236,7 @@ const Row1: React.FC<Props> = ({ section }) => {
                 wrapperStyle={{
                   paddingTop: "10px",
                   fontSize: "10px",
-                  color: "#4B65AB",
+                  color: "#7c3aed",
                 }}
               />
               <Line
@@ -250,8 +252,8 @@ const Row1: React.FC<Props> = ({ section }) => {
                 yAxisId="right"
                 type="monotone"
                 dataKey="revenue"
-                stroke="#4B65AB"
-                dot={{ fill: "#4B65AB", r: 3 }}
+                stroke="#7c3aed"
+                dot={{ fill: "#7c3aed", r: 3 }}
                 activeDot={{ r: 5 }}
                 strokeWidth={2}
               />
@@ -266,12 +268,12 @@ const Row1: React.FC<Props> = ({ section }) => {
     return (
       <DashboardBox>
         <BoxHeader
-          icon={<BarChart3 size={18} className="text-[#4B65AB] dark:text-[#AEC3FF]" />}
+          icon={<BarChart3 size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Revenue Month by Month"
           subtitle="graph representing the revenue month by month"
           sideText="+4%"
         />
-        <div className="h-[calc(100%-80px)] p-2 overflow-hidden">
+        <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={revenue}
@@ -286,12 +288,12 @@ const Row1: React.FC<Props> = ({ section }) => {
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#4B65AB"
+                    stopColor="#7c3aed"
                     stopOpacity={0.8}
                   />
                   <stop
                     offset="95%"
-                    stopColor="#4B65AB"
+                    stopColor="#7c3aed"
                     stopOpacity={0.2}
                   />
                 </linearGradient>
@@ -299,13 +301,13 @@ const Row1: React.FC<Props> = ({ section }) => {
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
-                stroke="rgba(74, 101, 171, 0.1)"
+                stroke="rgba(124, 58, 237, 0.1)"
               />
               <XAxis
                 dataKey="name"
                 axisLine={false}
                 tickLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
                 padding={{ left: 10, right: 10 }}
                 interval={0}
                 angle={-45}
@@ -315,16 +317,17 @@ const Row1: React.FC<Props> = ({ section }) => {
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                style={{ fontSize: "10px", fill: "var(--axis-color, #4B65AB)" }}
+                style={{ fontSize: "10px", fill: "var(--axis-color, #7c3aed)" }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#4B65AB",
+                  backgroundColor: "#7c3aed",
                   border: "none",
-                  borderRadius: "8px",
+                  borderRadius: "12px",
                   color: "#fff",
                   fontSize: "12px",
                   padding: "8px 12px",
+                  boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
                 formatter={(value) => [`$${value}`, ""]}
               />
