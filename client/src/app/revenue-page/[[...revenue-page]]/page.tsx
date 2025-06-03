@@ -1,132 +1,161 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import Sidebar from "@/components/ui/Sidebar";
-import Header from "@/components/ui/Header";
-import LoadingSpinner from "@/components/ui/loadingSpinner"; // Import loading spinner
+"use client"
+import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
+import Sidebar from "@/components/ui/Sidebar"
+import Header from "@/components/ui/Header"
+import { Button } from "@/components/ui/button"
+import { Download, TrendingUp } from "lucide-react"
 
 // Import updated components that accept props
-import RevenueChart from "./components/revenueChart";
-import KeyFactors from "./components/keyFactors";
-import Analysis from "./components/analysis";
+import RevenueChart from "./components/revenueChart"
+import KeyFactors from "./components/keyFactors"
+import Analysis from "./components/analysis"
 
 // Import Redux hook and types
-import { useGetRevenueDataQuery } from "@/state/api";
-import { RevenueTrend } from "@/state/type";
+import { useGetRevenueDataQuery } from "@/state/api"
+import type { RevenueTrend } from "@/state/type"
 
 // Keep the original Graph component import (uses static data)
-const Graph = dynamic(() => import("./components/graph"), { ssr: false });
+const Graph = dynamic(() => import("./components/graph"), { ssr: false })
 
 export default function Page() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false)
 
-  // Fetch data using the Redux hook
-  const { data: trends, isLoading, error } = useGetRevenueDataQuery();
+    // Fetch data using the Redux hook
+    const { data: trends, isLoading, error } = useGetRevenueDataQuery()
 
-  // Extract the first trend object (assuming the API always returns at least one if successful)
-  const trendData: RevenueTrend | undefined | null = trends?.[0];
+    // Extract the first trend object (assuming the API always returns at least one if successful)
+    const trendData: RevenueTrend | undefined | null = trends?.[0]
 
-  // Listen for changes to the sidebar state
-  useEffect(() => {
-    const updateSidebarState = () => {
-      const isCollapsed =
-        document.documentElement.getAttribute("data-sidebar-collapsed") ===
-        "true";
-      setIsCollapsed(isCollapsed);
-    };
+    // Listen for changes to the sidebar state
+    useEffect(() => {
+        const updateSidebarState = () => {
+            const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
+            setIsCollapsed(isCollapsed)
+        }
 
-    // Initial check
-    updateSidebarState();
+        // Initial check
+        updateSidebarState()
 
-    // Set up a mutation observer to watch for attribute changes
-    const observer = new MutationObserver(updateSidebarState);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-sidebar-collapsed"],
-    });
+        // Set up a mutation observer to watch for attribute changes
+        const observer = new MutationObserver(updateSidebarState)
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-sidebar-collapsed"],
+        })
 
-    return () => observer.disconnect();
-  }, []);
+        return () => observer.disconnect()
+    }, [])
 
-  // Handle loading state for the whole section
-  if (isLoading) {
-    return (
-      <div className="min-h-screen transition-colors duration-300 bg-[#FAFAFA] dark:bg-[#15191c]">
-        <Header />
-        <Sidebar />
-        <main
-          className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${
-            isCollapsed ? "sm:ml-16" : "sm:ml-64"
-          } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))-"`}
-        >
-          <LoadingSpinner width="10rem" height="10rem" />
-        </main>
-      </div>
-    );
-  }
-
-  // Handle error state for the whole section
-  if (error) {
-    let errorMessage = "Failed to load revenue data";
-    if ("status" in error) {
-      errorMessage =
-        "error" in error ? error.error : JSON.stringify(error.data);
-    } else if ("message" in error) {
-      errorMessage = error.message ?? errorMessage;
+    // Handle loading state for the whole section
+    if (isLoading) {
+        return (
+            <div className="min-h-screen transition-colors duration-300 bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+                <Header />
+                <Sidebar />
+                <main
+                    className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${
+                        isCollapsed ? "sm:ml-16" : "sm:ml-64"
+                    } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))]`}
+                >
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8">
+                        <div className="flex items-center gap-4">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                            <p className="text-gray-600 dark:text-gray-300">Loading revenue data...</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        )
     }
+
+    // Handle error state for the whole section
+    if (error) {
+        let errorMessage = "Failed to load revenue data"
+        if ("status" in error) {
+            errorMessage = "error" in error ? error.error : JSON.stringify(error.data)
+        } else if ("message" in error) {
+            errorMessage = error.message ?? errorMessage
+        }
+        return (
+            <div className="min-h-screen transition-colors duration-300 bg-white dark:bg-[#15191c]">
+                <Header />
+                <Sidebar />
+                <main
+                    className={`p-4 md:p-6 pt-8 transition-all duration-300 ${
+                        isCollapsed ? "sm:ml-16" : "sm:ml-64"
+                    } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))]`}
+                >
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-red-200 dark:border-red-800 p-8 text-center">
+                        <div className="text-red-500 mb-4">
+                            <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                                />
+                            </svg>
+                        </div>
+                        <p className="text-red-600 dark:text-red-400 font-medium">Error loading revenue data:</p>
+                        <p className="text-gray-600 dark:text-gray-400 mt-2">{errorMessage}</p>
+                    </div>
+                </main>
+            </div>
+        )
+    }
+
+    // Render the page with data passed as props
     return (
-      <div className="min-h-screen transition-colors duration-300 bg-[#FAFAFA] dark:bg-[#15191c]">
-        <Header />
-        <Sidebar />
-        <main
-          className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${
-            isCollapsed ? "sm:ml-16" : "sm:ml-64"
-          } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))-"`}
-        >
-          <div className="text-red-500 text-center p-6 bg-red-100 dark:bg-red-900/30 rounded-lg">
-            <p>Error loading revenue data:</p>
-            <p>{errorMessage}</p>
-          </div>
-        </main>
-      </div>
-    );
-  }
+        <div className="min-h-screen transition-colors duration-300 bg-[#fafafa] dark:bg-[#15191c]">
+            <Header />
+            <Sidebar />
 
-  // Render the page with data passed as props
-  return (
-    <div className="min-h-screen transition-colors duration-300 bg-[#FAFAFA] dark:bg-[#15191c]">
-      <Header />
-      <Sidebar />
+            <main className={`p-4 md:p-6 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
+                {/* Header Section */}
+                <div className="mb-8 flex flex-row justify-between items-center">
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Revenue Dashboard</h1>
+                        <div className="flex items-center gap-2">
+                            <TrendingUp className="w-5 h-5 text-green-500" />
+                            <p className="text-gray-600 dark:text-gray-300">
+                                Monitor and analyze revenue performance with real-time insights
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                            <Download className="w-4 h-4" />
+                            Download Report
+                        </Button>
+                    </div>
+                </div>
 
-      <main
-        className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${
-          isCollapsed ? "sm:ml-16" : "sm:ml-64"
-        }`}
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          {/* Top Row */}
-          <div className=" lg:min-h-[40vh]">
-            {/* Pass trendData to RevenueChart */}
-            <RevenueChart trendData={trendData} />
-          </div>
+                {/* Dashboard Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Top Row */}
+                    <div className="lg:min-h-[40vh]">
+                        {/* Pass trendData to RevenueChart */}
+                        <RevenueChart trendData={trendData} />
+                    </div>
 
-          <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
-            {/* Graph component remains unchanged (uses static data) */}
-            <Graph />
-          </div>
+                    <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
+                        {/* Graph component remains unchanged (uses static data) */}
+                        <Graph />
+                    </div>
 
-          {/* Bottom Row */}
-          <div className="lg:min-h-[40vh] w-full">
-            {/* Pass key_factors to KeyFactors */}
-            <KeyFactors keyFactorsData={trendData?.key_factors} />
-          </div>
+                    {/* Bottom Row */}
+                    <div className="lg:min-h-[40vh] w-full">
+                        {/* Pass key_factors to KeyFactors */}
+                        <KeyFactors keyFactorsData={trendData?.key_factors} />
+                    </div>
 
-          <div className="lg:min-h-[40vh] lg:col-span-2 w-full ">
-            {/* Pass analysis to Analysis */}
-            <Analysis analysisData={trendData?.analysis} />
-          </div>
+                    <div className="lg:min-h-[40vh] lg:col-span-2 w-full">
+                        {/* Pass analysis to Analysis */}
+                        <Analysis analysisData={trendData?.analysis} />
+                    </div>
+                </div>
+            </main>
         </div>
-      </main>
-    </div>
-  );
+    )
 }

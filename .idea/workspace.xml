@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d14348fc-2c3b-48dd-92ba-fcae0597a0d2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/FraudInc.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/FraudInc.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/graph.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/reportAmeen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/reportAmeen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/tableTransaction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/tableTransaction.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/analysis.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/competitivePositioning.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/marketMap.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/opportunities.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/pricingComparison.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/strengths.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/threats.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/weaknesses.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/analysis.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/analysis.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/graph.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/keyFactors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/keyFactors.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/revenueChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/revenueChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ui/ChatModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ui/ChatModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ui/NotificationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ui/NotificationModal.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Home_page" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ABDElRAHMAN-2003&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ali-Dmerdash/w-eye-de.git&quot;,
+    &quot;accountId&quot;: &quot;489fecfa-7c37-40bb-a560-34d0b8cc81ab&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2uokFhSydriVAS8eHYtv5xjIoy3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Home__page&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/abdelrahmanmagdi/Desktop/eyide/w-eye-de/server/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d14348fc-2c3b-48dd-92ba-fcae0597a0d2" name="Changes" comment="" />
+      <created>1742922213951</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742922213951</updated>
+      <workItem from="1742922215620" duration="6054000" />
+      <workItem from="1743132146588" duration="4661000" />
+      <workItem from="1743136909330" duration="2419000" />
+      <workItem from="1743205183465" duration="460000" />
+      <workItem from="1745406344285" duration="2184000" />
+      <workItem from="1746372662125" duration="68000" />
+      <workItem from="1746389224858" duration="1556000" />
+      <workItem from="1746572670392" duration="1907000" />
+      <workItem from="1746605491027" duration="4325000" />
+      <workItem from="1746612206103" duration="2586000" />
+      <workItem from="1746732455219" duration="14000" />
+      <workItem from="1746880311471" duration="9470000" />
+      <workItem from="1746910837269" duration="3115000" />
+      <workItem from="1747040621935" duration="2735000" />
+      <workItem from="1747660055310" duration="1841000" />
+      <workItem from="1747825735364" duration="483000" />
+      <workItem from="1748125999953" duration="6087000" />
+      <workItem from="1748206561652" duration="78000" />
+      <workItem from="1748206761872" duration="7951000" />
+      <workItem from="1748423638105" duration="144000" />
+      <workItem from="1748423788235" duration="13000" />
+      <workItem from="1748423805976" duration="212000" />
+      <workItem from="1748424111203" duration="322000" />
+      <workItem from="1748690397315" duration="2808000" />
+      <workItem from="1748730979811" duration="1098000" />
+      <workItem from="1748785859594" duration="2115000" />
+      <workItem from="1748811331287" duration="4082000" />
+      <workItem from="1748849707822" duration="607000" />
+      <workItem from="1748851018983" duration="1380000" />
+      <workItem from="1748852415726" duration="10054000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/app/sign-in/signIn/page.tsx</url>
+          <line>1</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

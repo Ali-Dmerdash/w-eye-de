@@ -1,97 +1,112 @@
-"use client";
-import React from "react";
-// Removed Redux hook import
-import { RevenueKeyFactors } from "@/state/type"; // Keep type import
-// Removed LoadingSpinner import as parent handles loading
+"use client"
+import React from "react"
+import { BarChart, TrendingUp, Target, Zap } from "lucide-react"
+import type { RevenueKeyFactors } from "@/state/type"
 
 // Define props for KeyFactorsCard
 interface KeyFactorsCardProps {
-  keyFactorsData: RevenueKeyFactors | undefined | null;
+    keyFactorsData: RevenueKeyFactors | undefined | null
 }
 
 const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
-  // Removed Redux hook call
-  // Removed local useState for keyFactorsState, isLoading, error
+    const formatLabel = (label: string): string => {
+        let result = label.replace(/([A-Z])/g, " $1")
+        result = result.replace(/^\s+/, "")
+        return result.charAt(0).toUpperCase() + result.slice(1)
+    }
 
-  const formatLabel = (label: string): string => {
-    let result = label.replace(/([A-Z])/g, " $1");
-    result = result.replace(/^\s+/, "");
-    return result.toUpperCase();
-  };
+    const getFactorIcon = (index: number) => {
+        const icons = [<Target key="target" />, <TrendingUp key="trending" />, <Zap key="zap" />, <BarChart key="chart" />]
+        return icons[index % icons.length]
+    }
 
-  // Loading and error handling will now be done in the parent component (page.tsx)
+    const getLevelColor = (level: string) => {
+        switch (level) {
+            case "High":
+                return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+            case "Medium":
+                return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+            default:
+                return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+        }
+    }
 
-  if (!keyFactorsData) {
-    // Render a minimal state or rely on parent's handling.
+    if (!keyFactorsData) {
+        return (
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full">
+                <div className="animate-pulse">
+                    {/* Header skeleton */}
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-purple-100 dark:bg-gray-700 rounded-lg"></div>
+                        <div className="h-6 w-32 bg-purple-100 dark:bg-gray-700 rounded"></div>
+                    </div>
+
+                    {/* Grid skeleton */}
+                    <div className="grid grid-cols-1 gap-4">
+                        {Array.from({ length: 3 }).map((_, index) => (
+                            <div
+                                key={index}
+                                className="p-4 bg-purple-50 dark:bg-gray-700/50 rounded-xl border border-purple-100 dark:border-gray-600"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-purple-100 dark:bg-gray-600 rounded-lg"></div>
+                                        <div className="h-4 w-32 bg-purple-100 dark:bg-gray-600 rounded"></div>
+                                    </div>
+                                    <div className="h-6 w-16 bg-purple-200 dark:bg-gray-600 rounded-full"></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const entries = Object.entries(keyFactorsData)
+
     return (
-      <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full max-w-md mx-auto shadow-md">
-        <h2 className="text-4xl font-bayon text-white text-center mb-6">
-          Key Factors
-        </h2>
-        <div className="grid grid-cols-2 gap-4 text-center">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div
-              key={index}
-              className="bg-[#AEC3FF]/50 dark:bg-[#1f252b] border border-slate-500 dark:border-slate-800 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
-            >
-              <div className="h-4 bg-[#AEC3FF]/50 rounded w-24 mx-auto mb-4 pulse" />
-              <div className="h-4 bg-[#AEC3FF]/50 rounded w-20 mx-auto pulse" />
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full">
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                    <BarChart className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div>
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Key Factors</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Revenue impact analysis</p>
+                </div>
             </div>
-          ))}
+
+            {/* Factors Grid */}
+            <div className="space-y-4">
+                {entries.map(([key, value], index) => {
+                    const [score = "", level = ""] = value.split("/").map((s) => s.trim())
+                    const formattedKey = formatLabel(key)
+
+                    return (
+                        <div
+                            key={key}
+                            className="p-4 bg-purple-50 dark:bg-gray-700/50 rounded-xl border border-purple-100 dark:border-gray-600 hover:shadow-md transition-shadow"
+                        >
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-400">
+                                        {React.cloneElement(getFactorIcon(index), { className: "w-4 h-4" })}
+                                    </div>
+                                    <div>
+                                        <h3 className="font-medium text-gray-900 dark:text-white">{formattedKey}</h3>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Score: {score}</p>
+                                    </div>
+                                </div>
+                                <div className={`px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(level)}`}>{level}</div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
-      </div>
-    );
-  }
+    )
+}
 
-  const entries = Object.entries(keyFactorsData);
-
-  return (
-    <div className="p-8 bg-[#4B65AB] dark:bg-[#1d2328] rounded-xl w-full mx-auto shadow-md">
-      <h2 className="text-4xl font-bayon text-white text-center mb-6">
-        Key Factors
-      </h2>
-
-      <div className="grid grid-cols-2 gap-4 text-center">
-        {entries.map(([key, value], index) => {
-          const [score = "", level = ""] = value
-            .split("/")
-            .map((s) => s.trim());
-          const formattedKey = formatLabel(key);
-
-          const factorBox = (
-            <div
-              key={key}
-              className="dark:bg-[#1f252b] bg-[#AEC3FF]/50 border dark:border-slate-800 border-slate-500 rounded-lg py-4 px-2 font-bayon shadow-inner-custom-bg"
-            >
-              <h3 className="text-white text-sm">{formattedKey}</h3>
-              <p
-                className={`${
-                  level === "High"
-                    ? "dark:text-red-500 text-red-700"
-                    : level === "Medium"
-                    ? "text-orange-300"
-                    : "text-gray-300"
-                } text-sm`}
-              >
-                {score} / {level}
-              </p>
-            </div>
-          );
-
-          // Handle odd number of entries - make last one full width
-          if (entries.length % 2 !== 0 && index === entries.length - 1) {
-            return (
-              <div className="col-span-2" key={key}>
-                {factorBox}
-              </div>
-            );
-          }
-
-          return factorBox;
-        })}
-      </div>
-    </div>
-  );
-};
-
-export default KeyFactorsCard;
+export default KeyFactorsCard

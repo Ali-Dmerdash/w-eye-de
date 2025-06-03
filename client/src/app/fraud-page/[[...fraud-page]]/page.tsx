@@ -1,74 +1,78 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import Sidebar from "../../../components/ui/Sidebar";
-import FraudInc from "./components/FraudInc";
-import TableTransaction from "./components/tableTransaction";
-import Header from "../../../components/ui/Header";
-const Graph = dynamic(
-  () => import("@/app/fraud-page/[[...fraud-page]]/components/graph"),
-  { ssr: false }
-);
-const ReportAmeen = dynamic(
-  () => import("@/app/fraud-page/[[...fraud-page]]/components/reportAmeen"),
-  { ssr: false }
-);
+"use client"
+import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
+import Sidebar from "../../../components/ui/Sidebar"
+import FraudInc from "./components/FraudInc"
+import TableTransaction from "./components/tableTransaction"
+import Header from "../../../components/ui/Header"
+import {Button} from "@/components/ui/button";
+import {Download} from "lucide-react";
+const Graph = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/graph"), { ssr: false })
+const ReportAmeen = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/reportAmeen"), { ssr: false })
 
 export default function Page() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   // Listen for changes to the sidebar state
   useEffect(() => {
     const updateSidebarState = () => {
-      const isCollapsed =
-        document.documentElement.getAttribute("data-sidebar-collapsed") ===
-        "true";
-      setIsCollapsed(isCollapsed);
-    };
+      const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
+      setIsCollapsed(isCollapsed)
+    }
 
     // Initial check
-    updateSidebarState();
+    updateSidebarState()
 
     // Set up a mutation observer to watch for attribute changes
-    const observer = new MutationObserver(updateSidebarState);
+    const observer = new MutationObserver(updateSidebarState)
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-sidebar-collapsed"],
-    });
+    })
 
-    return () => observer.disconnect();
-  }, []);
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <div className="min-h-screen transition-colors duration-300 bg-[#FAFAFA] dark:bg-[#15191c]">
-      <Header />
-      <Sidebar />
+      <div className="min-h-screen transition-colors duration-300 dark:bg-[#15191c] bg-[#fafafa]">
+        <Header />
+        <Sidebar />
 
-      <main
-        className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${
-          isCollapsed ? "sm:ml-16" : "sm:ml-64"
-        }`}
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          {/* Top Row */}
-          <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
-            <Graph />
+        <main className={`p-4 md:p-6 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
+          {/* Header Section */}
+          <div className="mb-8 flex flex-row justify-between items-center ">
+            <div> <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Fraud Detection Dashboard</h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              Monitor and analyze fraudulent activities with real-time data
+            </p></div>
+            <div>
+              <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Download Report
+              </Button>
+            </div>
           </div>
 
-          <div className="min-h-[400px] lg:min-h-[40vh]">
-            <FraudInc />
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Top Row */}
+            <div className="lg:col-span-2">
+              <Graph />
+            </div>
 
-          {/* Bottom Row */}
-          <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
-            <TableTransaction />
-          </div>
+            <div>
+              <FraudInc />
+            </div>
 
-          <div className="min-h-[400px] lg:min-h-[40vh]">
-            <ReportAmeen />
+            {/* Bottom Row */}
+            <div className="lg:col-span-2">
+              <TableTransaction />
+            </div>
+
+            <div>
+              <ReportAmeen />
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
-  );
+        </main>
+      </div>
+  )
 }
