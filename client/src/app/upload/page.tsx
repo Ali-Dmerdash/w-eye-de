@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import type React from "react";
-import { Plus, Download, Trash2, Info, Ellipsis, X } from "lucide-react";
+import { Plus, Download, Trash2, Info, Ellipsis, X, Upload, FileText, CheckCircle } from "lucide-react";
 import Sidebar from "@/components/ui/Sidebar";
 import Header from "@/components/ui/Header";
 import { useDispatch } from 'react-redux';
@@ -14,7 +14,7 @@ interface UploadedFile {
   extension: string;
   size: string;
   agent?: string;
-  file?: File; // Added to store the actual file object
+  file?: File;
 }
 
 export default function DataUpload() {
@@ -111,10 +111,9 @@ export default function DataUpload() {
       extension: file.name.split(".").pop() || "",
       size: formatFileSize(file.size),
       agent: undefined,
-      file: file, // Store the actual file object
+      file: file,
     };
     setFiles([newFile]);
-    // Reset upload status when a new file is added
     setUploadStatus(null);
   };
 
@@ -136,7 +135,6 @@ export default function DataUpload() {
 
   const handleRemoveFile = (id: string) => {
     setFiles((prev) => prev.filter((file) => file.id !== id));
-    // Reset upload status when file is removed
     setUploadStatus(null);
   };
 
@@ -156,10 +154,8 @@ export default function DataUpload() {
     }
   };
 
-  // Check if all files have agents selected
   const allFilesHaveAgents = files.every((file) => file.agent);
 
-  // Handle file upload to API
   const handleUpload = async () => {
     if (files.length === 0 || !allFilesHaveAgents) return;
 
@@ -175,7 +171,6 @@ export default function DataUpload() {
 
       const formData = new FormData();
       formData.append("file", fileToUpload.file);
-      // Optionally add agent info if the API needs it
       formData.append("agent", fileToUpload.agent || "");
 
       const response = await fetch("http://localhost:3001/api/data/upload", {
@@ -187,7 +182,6 @@ export default function DataUpload() {
         setUploadStatus(null);
         setShowSuccessModal(true);
         setUploadedFileName(fileToUpload.name);
-        // Clear files when success modal is shown
         dispatch(addNotification({
           title: "Upload Successful",
           message: `File "${fileToUpload.name}" has been uploaded and is ready for processing.`,
@@ -215,7 +209,7 @@ export default function DataUpload() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] dark:bg-[#15191c] transition-all duration-300">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#15191c] transition-all duration-300">
       <Sidebar />
       <Header />
       <div
@@ -223,209 +217,261 @@ export default function DataUpload() {
           isCollapsed ? "sm:ml-16" : "sm:ml-64"
         }`}
       >
-        <div className="flex items-center mb-4">
-          <p className="text-gray-400 text-sm">Pages / Data Upload</p>
+        {/* Header Section */}
+        <div className="mb-8 flex flex-row justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Data Upload</h1>
+            
+          </div>
+          
         </div>
-        <div className="bg-[#4B65AB] dark:bg-[#191e21] p-8 rounded-xl">
-          <h1 className="text-white text-3xl  mb-6 font-bayon">UPLOAD FILE</h1>
 
-          {/* Upload Area */}
-          <div
-            className={`border-2 border-dashed dark:border-gray-600 border-[#AEC3FF]/50 rounded-lg mb-6 py-16 flex flex-col items-center justify-center cursor-pointer transition-all duration-300
-                      ${
-                        isDragging
-                          ? "bg-[#1d2328] border-blue-500"
-                          : "bg-transparent"
-                      }
-                      ${files.length > 0 ? "pointer-events-none" : ""}
-  `}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={handleClickUpload}
-          >
-            <div className="w-20 h-20 dark:bg-gray-700/30 bg-[#AEC3FF]/20 rounded-full flex items-center justify-center mb-4 border dark:border-gray-600 border-[#AEC3FF]/50 bg-opacity-10">
-              <Plus className="w-10 h-10 dark:text-gray-400 text-[#AEC3FF]" />
-            </div>
-
-            <div
-              className={`${
-                files.length > 0 ? "opacity-50" : ""
-              } flex flex-col items-center`}
-            >
-              <p className="dark:text-gray-400 text-[#AEC3FF] text-lg mb-2">
-                Drag & drop or click to choose files
-              </p>
-              <div className="flex flex-col dark:text-gray-500 text-[#AEC3FF]/60 items-center">
-                <p>Accepted files: .csv, .pdf, .json</p>
-
-                <div className="flex items-center">
-                  <Info className="w-5 h-5 mr-2" />
-                  <p>Max file size : ***** MB</p>
-                </div>
-              </div>
-            </div>
-
-            <input
-              type="file"
-              ref={fileInputRef}
-              className="hidden"
-              onChange={handleFileInputChange}
-              multiple={false}
-              accept=".csv, .pdf, .json"
-            />
+        {/* Main Upload Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8 relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
+            <div className="w-full h-full bg-purple-300 rounded-full transform translate-x-12 -translate-y-12"></div>
           </div>
 
-          {files.length > 0 && (
-            <div className="space-y-4 mb-6 overflow-y-auto max-h-[40vh] pr-2 custom-scrollbar">
-              {files.map((file) => (
-                <div
-                  key={file.id}
-                  className="dark:bg-[#1d2328] bg-[#AEC3FF]/10 rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between shadow-sm gap-4"
-                >
-                  <div className="flex items-center">
-                    <div className="mr-3 sm:mr-4">
-                      <FileIcon className="w-10 h-10 sm:w-12 sm:h-12" />
-                    </div>
-                    <div className="flex flex-col flex-1 overflow-hidden">
-                      <h3 className="dark:text-white text-[#AEC3FF] text-base sm:text-lg md:text-xl font-medium truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] lg:max-w-full">
-                        {file.name}
-                      </h3>
-                      <p className="dark:text-gray-400 text-[#AEC3FF]/80 text-xs sm:text-sm md:text-base">
-                        {file.extension} | {file.size} |{" "}
-                        {file.agent ? (
-                          file.agent
-                        ) : (
-                          <span className="font-bold underline dark:text-gray-400 text-[#AEC3FF]/80 ">
-                            Agent Not Selected
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row sm:justify-normal justify-center gap-3 sm:gap-4 mt-4 sm:mt-0">
-                    <button
-                      className={`flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 dark:bg-[#2a3441] bg-[#AEC3FF] border-[#AEC3FF]/50 bg-opacity-10 rounded-2xl md:rounded-full border dark:border-gray-600 hover:bg-[#AEC3FF]/40 transition-colors duration-150 ${
-                        !file.agent ? "animate-pulse-attention" : ""
-                      }`}
-                      onClick={() => openAgentModal(file.id)}
-                      aria-label="Select agent"
-                      title="Select agent"
-                    >
-                      <Ellipsis className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
-                      <p className="text-xs ps-2 md:hidden dark:text-white text-[#AEC3FF]">
-                        Select Agent
-                      </p>
-                    </button>
-                    <button
-                      className="flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 dark:bg-[#2a3441] bg-[#AEC3FF] border-[#AEC3FF]/50 bg-opacity-10 rounded-2xl md:rounded-full border dark:border-gray-600 hover:bg-[#AEC3FF]/40 transition-colors duration-150 "
-                      onClick={() => handleRemoveFile(file.id)}
-                      aria-label="Remove file"
-                      title="Remove file"
-                    >
-                      <Trash2 className="w-5 h-5 dark:text-white text-[#AEC3FF]" />
-                      <p className="text-xs ps-2 md:hidden dark:text-white text-[#AEC3FF]">
-                        Remove File
-                      </p>
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              {/* Upload Status Message - Only show errors */}
-              {uploadStatus && !uploadStatus.success && (
-                <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200">
-                  {uploadStatus.message}
-                </div>
-              )}
-
-              <div className="flex justify-center font-mulish">
-                <button
-                  className={`dark:bg-[#1d2328] bg-[#AEC3FF]/10 dark:text-white text-[#AEC3FF] font-medium py-4 px-32 border dark:border-gray-700 border-[#AEC3FF]/50 rounded-lg transition-colors text-lg ${
-                    allFilesHaveAgents && !isUploading
-                      ? "hover:bg-[#AEC3FF]/20 cursor-pointer dark:hover:bg-[#2A3441]/40"
-                      : "opacity-50 cursor-not-allowed"
-                  }`}
-                  disabled={!allFilesHaveAgents || isUploading}
-                  onClick={handleUpload}
-                >
-                  {isUploading ? "Uploading..." : "Add"}
-                </button>
+          <div className="relative z-10">
+            {/* Card Header */}
+            <div className="flex items-center gap-3 mb-8">
+              <div className="p-2.5 bg-purple-100 dark:bg-purple-900/30 rounded-xl shadow-sm">
+                <Upload className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Upload Your Files</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Drag and drop or click to select files</p>
               </div>
             </div>
-          )}
+
+            {/* Upload Area */}
+            <div
+              className={`border-2 border-dashed rounded-xl mb-6 py-12 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
+                isDragging
+                  ? "border-purple-400 bg-purple-50 dark:bg-purple-900/20 dark:border-purple-500"
+                  : "border-purple-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-gray-500 hover:bg-purple-25 dark:hover:bg-gray-700/30"
+              } ${files.length > 0 ? "pointer-events-none opacity-75" : ""}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={handleClickUpload}
+            >
+              <div className="p-4 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-6 shadow-sm">
+                <Plus className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+              </div>
+
+              <div className={`${files.length > 0 ? "opacity-50" : ""} flex flex-col items-center`}>
+                <p className="text-gray-700 dark:text-gray-300 text-lg mb-2 font-medium">
+                  Drag & drop or click to choose files
+                </p>
+                <div className="flex flex-col text-gray-500 dark:text-gray-400 items-center space-y-1">
+                  <p className="text-sm">Accepted files: .csv, .pdf, .json</p>
+                  <div className="flex items-center">
+                    <Info className="w-4 h-4 mr-2" />
+                    <p className="text-sm">Max file size: 50 MB</p>
+                  </div>
+                </div>
+              </div>
+
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileInputChange}
+                multiple={false}
+                accept=".csv, .pdf, .json"
+              />
+            </div>
+
+            {/* File List */}
+            {files.length > 0 && (
+              <div className="space-y-4 mb-8">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-purple-500" />
+                  Uploaded Files
+                </h3>
+                
+                <div className="space-y-3">
+                  {files.map((file) => (
+                    <div
+                      key={file.id}
+                      className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-purple-100 dark:border-gray-600 hover:shadow-md transition-all duration-200 flex flex-col md:flex-row md:items-center justify-between gap-4"
+                    >
+                      <div className="flex items-center">
+                        <div className="mr-3 sm:mr-4">
+                          <FileIcon className="w-10 h-10 sm:w-12 sm:h-12 text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <div className="flex flex-col flex-1 overflow-hidden">
+                          <h4 className="font-medium text-gray-900 dark:text-white text-base sm:text-lg md:text-xl truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] lg:max-w-full">{file.name}</h4>
+                          <div className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 dark:text-gray-400">
+                            <span>{file.extension.toUpperCase()}</span>
+                            <span>|</span>
+                            <span>{file.size}</span>
+                            <span>|</span>
+                            {file.agent ? (
+                              <span className="text-purple-600 dark:text-purple-400 font-medium">{file.agent}</span>
+                            ) : (
+                              <span className="font-bold underline text-amber-600 dark:text-amber-400">
+                                Agent Not Selected
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col lg:flex-row sm:justify-normal justify-center gap-3 sm:gap-4 mt-4 sm:mt-0">
+                        <button
+                          className={`flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 bg-white dark:bg-gray-700 border border-purple-200 dark:border-gray-600 rounded-2xl md:rounded-full hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors duration-150 ${
+                            !file.agent ? "animate-pulse ring-2 ring-purple-300 dark:ring-purple-600" : ""
+                          }`}
+                          onClick={() => openAgentModal(file.id)}
+                          aria-label="Select agent"
+                          title="Select agent"
+                        >
+                          <Ellipsis className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                          <p className="text-xs ps-2 md:hidden text-purple-600 dark:text-purple-400">
+                            Select Agent
+                          </p>
+                        </button>
+                        <button
+                          className="flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 bg-white dark:bg-gray-700 border border-red-200 dark:border-red-600 rounded-2xl md:rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-150"
+                          onClick={() => handleRemoveFile(file.id)}
+                          aria-label="Remove file"
+                          title="Remove file"
+                        >
+                          <Trash2 className="w-5 h-5 text-red-500 dark:text-red-400" />
+                          <p className="text-xs ps-2 md:hidden text-red-500 dark:text-red-400">
+                            Remove File
+                          </p>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Upload Status */}
+                {uploadStatus && !uploadStatus.success && (
+                  <div className="p-4 rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1 bg-red-100 dark:bg-red-900/50 rounded-full">
+                        <X className="w-4 h-4 text-red-600 dark:text-red-400" />
+                      </div>
+                      <p className="text-red-800 dark:text-red-200 font-medium">Upload Failed</p>
+                    </div>
+                    <p className="text-red-700 dark:text-red-300 text-sm mt-1 ml-6">{uploadStatus.message}</p>
+                  </div>
+                )}
+
+                {/* Upload Button */}
+                <div className="flex justify-center pt-4">
+                  <button
+                    className={`px-8 py-3 rounded-xl font-medium text-white transition-all duration-200 ${
+                      allFilesHaveAgents && !isUploading
+                        ? "bg-purple-600 hover:bg-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
+                        : "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
+                    }`}
+                    disabled={!allFilesHaveAgents || isUploading}
+                    onClick={handleUpload}
+                  >
+                    {isUploading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Uploading...
+                      </div>
+                    ) : (
+                      "Upload File"
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
+      {/* Agent Selection Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div
             ref={modalRef}
-            className="bg-white dark:bg-[#1d2328] rounded-lg shadow-xl w-full max-w-sm sm:max-w-md animate-fadeIn"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-purple-100 dark:border-gray-700 w-full max-w-md transform animate-in zoom-in-95 duration-200 relative overflow-hidden"
           >
-            <div className="flex justify-between items-center p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-base sm:text-lg font-bold dark:text-white text-[#4B65AB]">
-                Select Agent
-              </h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+            {/* Background Pattern */}
+            <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
+              <div className="w-full h-full bg-purple-300 rounded-full transform translate-x-12 -translate-y-12"></div>
             </div>
-            <div className="p-3 sm:p-4">
-              {/* Public Agent Section */}
-              <div className="mb-4">
-                <h3 className="text-sm font-semibold mb-2 dark:text-gray-300 text-gray-600">
-                  Public Agent
-                </h3>
-                <div className="space-y-2">
-                  <button
-                    onClick={() => handleAgentSelection("Public Agent")}
-                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
-                  >
-                    <span className="font-medium">Public</span>
-                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">
-                      General purpose agent for public data
-                    </p>
-                  </button>
+
+            {/* Header */}
+            <div className="p-6 border-b border-purple-100 dark:border-gray-700 relative z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-purple-100 dark:bg-purple-900/30 rounded-xl shadow-sm">
+                    <Ellipsis className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Select Agent</h2>
                 </div>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 relative z-10">
+              {/* Public Agent Section */}
+              <div className="mb-6">
+                <h3 className="text-sm font-semibold mb-3 text-gray-600 dark:text-gray-300">
+                  General Purpose
+                </h3>
+                <button
+                  onClick={() => handleAgentSelection("Public Agent")}
+                  className="w-full p-4 text-left rounded-xl border border-purple-100 dark:border-gray-600 bg-purple-25 dark:bg-gray-700/50 hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors group"
+                >
+                  <div className="font-medium text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                    Public Agent
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    General purpose analysis for public data processing
+                  </p>
+                </button>
               </div>
 
-              {/* Specific Agent Section */}
+              {/* Specific Agents Section */}
               <div>
-                <h3 className="text-sm font-semibold mb-2 dark:text-gray-300 text-gray-600">
-                  Specific Agent
+                <h3 className="text-sm font-semibold mb-3 text-gray-600 dark:text-gray-300">
+                  Specialized Agents
                 </h3>
-                <div className="space-y-2 sm:space-y-3">
-                  <button
-                    onClick={() => handleAgentSelection("Fraud Agent")}
-                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
-                  >
-                    <span className="font-medium">Fraud</span>
-                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">
-                      Detection of fraudulent activities
-                    </p>
-                  </button>
-                  <button
-                    onClick={() => handleAgentSelection("Market Agent")}
-                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
-                  >
-                    <span className="font-medium">Market</span>
-                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">
-                      Competitive market intelligence
-                    </p>
-                  </button>
-                  <button
-                    onClick={() => handleAgentSelection("Revenue Agent")}
-                    className="w-full p-3 sm:p-4 text-left rounded-lg border dark:border-gray-700 border-[#AEC3FF]/50 dark:bg-[#2a3441] bg-[#AEC3FF]/10 dark:text-white text-[#4B65AB] hover:bg-[#AEC3FF]/20 dark:hover:bg-[#2A3441]/60 transition-colors text-sm sm:text-base"
-                  >
-                    <span className="font-medium">Revenue</span>
-                    <p className="text-xs sm:text-sm mt-1 dark:text-gray-400 text-gray-500">
-                      Analysis of revenue patterns
-                    </p>
-                  </button>
+                <div className="space-y-3">
+                  {[
+                    {
+                      name: "Fraud Agent",
+                      description: "Specialized in fraud detection and risk analysis"
+                    },
+                    {
+                      name: "Market Agent", 
+                      description: "Competitive analysis and market intelligence"
+                    },
+                    {
+                      name: "Revenue Agent",
+                      description: "Revenue forecasting and financial analysis"
+                    }
+                  ].map((agent) => (
+                    <button
+                      key={agent.name}
+                      onClick={() => handleAgentSelection(agent.name)}
+                      className="w-full p-4 text-left rounded-xl border border-purple-100 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors group"
+                    >
+                      <div className="font-medium text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                        {agent.name}
+                      </div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        {agent.description}
+                      </p>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -433,46 +479,48 @@ export default function DataUpload() {
         </div>
       )}
 
+      {/* Success Modal */}
       {showSuccessModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div
             ref={successModalRef}
-            className="bg-white dark:bg-[#1d2328] rounded-lg shadow-xl w-full max-w-sm sm:max-w-md animate-fadeIn"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-purple-100 dark:border-gray-700 w-full max-w-md transform animate-in zoom-in-95 duration-200 relative overflow-hidden"
           >
-            <div className="flex justify-between items-center p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-base sm:text-lg font-bold dark:text-white text-[#4B65AB]">
-                Upload Successful!
-              </h2>
-              <button
-                onClick={() => {
-                  setShowSuccessModal(false);
-                  setFiles([]);
-                }}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+            {/* Background Pattern */}
+            <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
+              <div className="w-full h-full bg-green-300 rounded-full transform translate-x-12 -translate-y-12"></div>
             </div>
-            <div className="p-4 sm:p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                <svg 
-                  className="w-8 h-8 text-green-600 dark:text-green-400" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
+
+            {/* Header */}
+            <div className="p-6 border-b border-purple-100 dark:border-gray-700 relative z-10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-green-100 dark:bg-green-900/30 rounded-xl shadow-sm">
+                    <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  </div>
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Upload Successful!</h2>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    setFiles([]);
+                  }}
+                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M5 13l4 4L19 7" 
-                  />
-                </svg>
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <p className="text-lg font-medium dark:text-white text-gray-900 mb-2">
+            </div>
+
+            {/* Content */}
+            <div className="p-6 text-center relative z-10">
+              <div className="p-4 bg-green-100 dark:bg-green-900/30 rounded-full inline-flex mb-6">
+                <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 File Uploaded Successfully!
-              </p>
-              <p className="dark:text-gray-300 text-gray-600 mb-6">
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
                 "{uploadedFileName}" has been uploaded and is ready for processing.
               </p>
               <button
@@ -480,7 +528,7 @@ export default function DataUpload() {
                   setShowSuccessModal(false);
                   setFiles([]);
                 }}
-                className="w-full bg-[#4B65AB] hover:bg-[#3d5291] text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Upload Another File
               </button>
@@ -497,37 +545,18 @@ function FileIcon({ className }: { className?: string }) {
     <div className={`relative ${className}`}>
       <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
         <path
-          d="M14 2H6C5.47 2 4.96 2.21 4.59 2.59C4.21 2.96 4 3.47 4 4V20C4 20.53 4.21 21.04 4.59 21.41C4.96 21.79 5.47 22 6 22H18C18.53 22 19.04 21.79 19.41 21.41C19.79 21.04 20 20.53 20 20V8L14 2Z"
-          fill="#4CAF50"
-          stroke="#4CAF50"
+          d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          fill="currentColor"
+          fillOpacity="0.1"
+          stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M14 2V8H20"
-          stroke="#2E7D32"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 13H8"
-          stroke="#E8F5E9"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 17H8"
-          stroke="#E8F5E9"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M10 9H9H8"
-          stroke="#E8F5E9"
+        <polyline
+          points="14,2 14,8 20,8"
+          fill="none"
+          stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

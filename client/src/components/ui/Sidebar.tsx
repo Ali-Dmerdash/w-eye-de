@@ -83,7 +83,7 @@ export default function Sidebar() {
           ${isCollapsed ? "w-16" : "w-64"}
           ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0
           bg-[#E4E5F1] border-r border-gray-300 shadow-[6px_0_16px_0_rgba(44,62,80,0.15)]
-          dark:bg-[#1d2328] dark:border-gray-800`}
+          dark:bg-[#1F2937] dark:border-gray-800`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}

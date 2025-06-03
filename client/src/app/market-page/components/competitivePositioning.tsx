@@ -113,18 +113,18 @@ export default function CompetitivePositioning() {
       {/* Table */}
       <div className="flex-grow overflow-hidden">
         <div className="overflow-x-auto h-full">
-          <table className="w-full">
+          <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-purple-100 dark:border-gray-700">
-                <th className="text-left py-3 px-2 text-sm font-medium text-gray-600 dark:text-gray-300">Name</th>
-                <th className="text-center py-3 px-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+                <th className="text-left py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[25%]">Name</th>
+                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[18%]">
                   Market Share
                 </th>
-                <th className="text-center py-3 px-2 text-sm font-medium text-gray-600 dark:text-gray-300">Price</th>
-                <th className="text-center py-3 px-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[15%]">Price</th>
+                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[21%]">
                   Satisfaction
                 </th>
-                <th className="text-center py-3 px-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[21%]">
                   Innovation
                 </th>
               </tr>
@@ -144,24 +144,24 @@ export default function CompetitivePositioning() {
                       key={name}
                       className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors"
                     >
-                      <td className="py-4 px-2 font-medium text-gray-900 dark:text-white">{name}</td>
-                      <td className="text-center py-4 px-2">
-                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-full text-sm">
+                      <td className="py-2 px-1 font-medium text-gray-900 dark:text-white text-xs truncate">{name}</td>
+                      <td className="text-center py-2 px-1">
+                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded-full text-xs">
                           {marketShare}
                         </span>
                       </td>
-                      <td className="text-center py-4 px-2">
-                        <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-sm">
+                      <td className="text-center py-2 px-1">
+                        <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full text-xs">
                           ${priceValue}
                         </span>
                       </td>
-                      <td className="text-center py-4 px-2">
-                        <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-2 py-1 rounded-full text-sm">
+                      <td className="text-center py-2 px-1">
+                        <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-1.5 py-0.5 rounded-full text-xs">
                           {satisfaction}
                         </span>
                       </td>
-                      <td className="text-center py-4 px-2">
-                        <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 px-2 py-1 rounded-full text-sm">
+                      <td className="text-center py-2 px-1">
+                        <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 px-1.5 py-0.5 rounded-full text-xs">
                           {innovation}
                         </span>
                       </td>
@@ -170,7 +170,7 @@ export default function CompetitivePositioning() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={5} className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  <td colSpan={5} className="text-center py-6 text-gray-500 dark:text-gray-400 text-xs">
                     No competitive positioning data available
                   </td>
                 </tr>
