@@ -43,7 +43,7 @@ const Row3: React.FC<Props> = ({ section }) => {
       data &&
       data[0].monthlyData.map(({ month, revenue, expenses }) => {
         return {
-          name: month.substring(0, 3),
+          name: month.substring(0, 3).charAt(0).toUpperCase() + month.substring(1, 3),
           revenue: parseFloat(revenue.replace("$", "")),
           expenses: parseFloat(expenses.replace("$", "")),
         };
@@ -150,6 +150,10 @@ const Row3: React.FC<Props> = ({ section }) => {
                 tick={{ dx: 0 }}
                 tickCount={6}
                 padding={{ left: 10, right: 10 }}
+                interval={0}
+                angle={-45}
+                textAnchor="end"
+                height={60}
               />
               <YAxis
                 axisLine={false}
@@ -261,7 +265,7 @@ const Row3: React.FC<Props> = ({ section }) => {
         <BoxHeader
           icon={<TrendingUp size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Performance Overview"
-          sideText="Q1 2023"
+          sideText="Q4 2024"
         />
         
         <div className="h-[calc(100%-60px)] w-full overflow-hidden p-3">

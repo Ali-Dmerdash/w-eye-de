@@ -70,7 +70,7 @@ export default function ReferralCard({ score }: ReferralCardProps) {
           </div>
           <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Score</p>
           <div className="mt-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">
-            Excellent
+            Excellent 
           </div>
         </div>
       </div>
