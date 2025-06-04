@@ -7,6 +7,7 @@ import Dashboard from "./statistics";
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Listen for changes to the sidebar state
   useEffect(() => {
@@ -30,6 +31,10 @@ export default function Page() {
     // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false);
+      // Trigger animations after loading is complete
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 100);
     }, 800);
 
     return () => {
@@ -60,13 +65,21 @@ export default function Page() {
             {/* Header Section */}
             <div className="mb-8 flex flex-row justify-between items-center">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Analytics Dashboard</h1>
-                <p className="text-gray-500 dark:text-gray-400">Monitor your business performance with real-time data and insights</p>
+                <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${
+                  isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                }`}>Analytics Dashboard</h1>
+                <p className={`text-gray-500 dark:text-gray-400 transform transition-all duration-700 ease-out delay-100 ${
+                  isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                }`}>Monitor your business performance with real-time data and insights</p>
               </div>
             </div>
 
             {/* Dashboard Content */}
-            <Dashboard />
+            <div className={`transform transition-all duration-700 ease-out delay-200 ${
+              isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
+              <Dashboard />
+            </div>
           </div>
         )}
       </main>

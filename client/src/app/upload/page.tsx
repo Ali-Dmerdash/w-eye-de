@@ -20,6 +20,7 @@ export default function DataUpload() {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [currentFileId, setCurrentFileId] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -50,6 +51,14 @@ export default function DataUpload() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Trigger animations on component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -218,14 +227,18 @@ export default function DataUpload() {
         {/* Header Section */}
         <div className="mb-8 flex flex-row justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Data Upload</h1>
+            <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-[transform,opacity] duration-700 ease-out ${
+              isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+            }`}>Data Upload</h1>
             
           </div>
           
         </div>
 
         {/* Main Upload Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8 relative overflow-hidden">
+        <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8 relative overflow-hidden transform transition-[transform,opacity] duration-700 ease-out delay-200 ${
+          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+        }`}>
           {/* Background Pattern */}
           <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
             <div className="w-full h-full bg-purple-300 rounded-full transform translate-x-12 -translate-y-12"></div>

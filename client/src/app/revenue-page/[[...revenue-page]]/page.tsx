@@ -20,6 +20,7 @@ const Graph = dynamic(() => import("./components/graph"), { ssr: false })
 
 export default function Page() {
     const [isCollapsed, setIsCollapsed] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false)
 
     // Fetch data using the Redux hook
     const { data: trends, isLoading, error } = useGetRevenueDataQuery()
@@ -47,10 +48,18 @@ export default function Page() {
         return () => observer.disconnect()
     }, [])
 
+    // Trigger animations on component mount - same as statistics
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoaded(true)
+        }, 500)
+        return () => clearTimeout(timer)
+    }, [])
+
     // Handle loading state for the whole section
     if (isLoading) {
         return (
-            <div className="min-h-screen transition-colors duration-300 bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+            <div className="min-h-screen transition-colors duration-300  bg-white dark:bg-[#15191c]">
                 <Header />
                 <Sidebar />
                 <main
@@ -115,8 +124,12 @@ export default function Page() {
                 {/* Header Section */}
                 <div className="mb-8 flex flex-row justify-between items-center">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Revenue Dashboard</h1>
-                        <div className="flex items-center gap-2">
+                        <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${
+                          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}>Revenue Dashboard</h1>
+                        <div className={`flex items-center gap-2 transform transition-all duration-700 ease-out delay-100 ${
+                          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}>
                             <TrendingUp className="w-5 h-5 text-green-500" />
                             <p className="text-gray-600 dark:text-gray-300">
                                 Monitor and analyze revenue performance with real-time insights
@@ -134,23 +147,31 @@ export default function Page() {
                 {/* Dashboard Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Top Row */}
-                    <div className="lg:min-h-[40vh]">
+                    <div className={`lg:min-h-[40vh] transform transition-all duration-700 ease-out delay-200 ${
+                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                    }`}>
                         {/* Pass trendData to RevenueChart */}
                         <RevenueChart trendData={trendData} />
                     </div>
 
-                    <div className="min-h-[400px] lg:min-h-[40vh] lg:col-span-2">
+                    <div className={`min-h-[400px] lg:min-h-[40vh] lg:col-span-2 transform transition-all duration-700 ease-out delay-300 ${
+                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                    }`}>
                         {/* Graph component remains unchanged (uses static data) */}
                         <Graph />
                     </div>
 
                     {/* Bottom Row */}
-                    <div className="lg:min-h-[40vh] w-full">
+                    <div className={`lg:min-h-[40vh] w-full transform transition-all duration-700 ease-out delay-400 ${
+                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                    }`}>
                         {/* Pass key_factors to KeyFactors */}
                         <KeyFactors keyFactorsData={trendData?.key_factors} />
                     </div>
 
-                    <div className="lg:min-h-[40vh] lg:col-span-2 w-full">
+                    <div className={`lg:min-h-[40vh] lg:col-span-2 w-full transform transition-all duration-700 ease-out delay-500 ${
+                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                    }`}>
                         {/* Pass analysis to Analysis */}
                         <Analysis analysisData={trendData?.analysis} />
                     </div>

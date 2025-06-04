@@ -12,6 +12,7 @@ import { useTheme } from "@/context/ThemeContext";
 
 export default function Home() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
   // Listen for changes to the sidebar state
@@ -36,6 +37,11 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  // Trigger animations on component mount
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
     <div className={`min-h-screen transition-colors duration-300 dark:bg-[#15191c] bg-[#FAFAFA]`}>
       <Sidebar />
@@ -51,50 +57,80 @@ export default function Home() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-          <DashboardCard
-            title="Today's Money"
-            value="$53,000"
-            change="+55%"
-            changeType="positive"
-            icon={<Briefcase className="w-5 h-5 text-white" />}
-            iconBg="bg-blue-500"
-          />
-          <DashboardCard
-            title="Today's Users"
-            value="2,300"
-            change="+5%"
-            changeType="positive"
-            icon={<Users className="w-5 h-5 text-white" />}
-            iconBg="bg-blue-500"
-          />
-          <DashboardCard
-            title="New Clients"
-            value="+3,052"
-            change="-14%"
-            changeType="negative"
-            icon={<FileText className="w-5 h-5 text-white" />}
-            iconBg="bg-blue-500"
-          />
-          <DashboardCard
-            title="Total Sales"
-            value="$173,000"
-            change="+8%"
-            changeType="positive"
-            icon={<ShoppingCart className="w-5 h-5 text-white" />}
-            iconBg="bg-blue-500"
-          />
+          <div className={`transform transition-all duration-500 ease-out ${
+            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}>
+            <DashboardCard
+              title="Today's Money"
+              value="$53,000"
+              change="+55%"
+              changeType="positive"
+              icon={<Briefcase className="w-5 h-5 text-white" />}
+              iconBg="bg-blue-500"
+            />
+          </div>
+          <div className={`transform transition-all duration-500 ease-out delay-100 ${
+            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}>
+            <DashboardCard
+              title="Today's Users"
+              value="2,300"
+              change="+5%"
+              changeType="positive"
+              icon={<Users className="w-5 h-5 text-white" />}
+              iconBg="bg-blue-500"
+            />
+          </div>
+          <div className={`transform transition-all duration-500 ease-out delay-200 ${
+            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}>
+            <DashboardCard
+              title="New Clients"
+              value="+3,052"
+              change="-14%"
+              changeType="negative"
+              icon={<FileText className="w-5 h-5 text-white" />}
+              iconBg="bg-blue-500"
+            />
+          </div>
+          <div className={`transform transition-all duration-500 ease-out delay-300 ${
+            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}>
+            <DashboardCard
+              title="Total Sales"
+              value="$173,000"
+              change="+8%"
+              changeType="positive"
+              icon={<ShoppingCart className="w-5 h-5 text-white" />}
+              iconBg="bg-blue-500"
+            />
+          </div>
         </div>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
           <div className="col-span-4 lg:col-span-2 space-y-6">
             <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-              <WelcomeCard />
-              <ReferralCard score={9.3} />
+              <div className={`transform transition-all duration-500 ease-out delay-400 ${
+                isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+              }`}>
+                <WelcomeCard />
+              </div>
+              <div className={`transform transition-all duration-500 ease-out delay-500 ${
+                isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+              }`}>
+                <ReferralCard score={9.3} />
+              </div>
             </div>
-            <ChartCard />
+            <div className={`transform transition-all duration-500 ease-out delay-600 ${
+              isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+            }`}>
+              <ChartCard />
+            </div>
           </div>
-          <div className="hidden lg:block lg:col-span-2 h-full">
+          <div className={`hidden lg:block lg:col-span-2 h-full transform transition-all duration-500 ease-out delay-700 ${
+            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          }`}>
             <SphereVisualization />
           </div>
         </div>
