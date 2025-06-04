@@ -7,15 +7,11 @@ import { Star } from "lucide-react";
 
 export default function WelcomeCard() {
   const { user, isLoaded } = useUser();
-  // console.log(
-  //   user?.unsafeMetadata.btnStatus
-  // );
-
 
   return (
     <>
       {isLoaded ? (
-        <div className="min-h-[300px] md:h-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 relative overflow-hidden hover:shadow-xl transition-all duration-300">
+        <div className="h-full bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 relative overflow-hidden hover:shadow-xl transition-all duration-300">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-indigo-500/10 dark:from-purple-900/20 dark:to-indigo-900/20"></div>
           <div className="absolute inset-0 z-0 opacity-50 blur-sm w-[250%] -left-24">
             <Image
