@@ -4,7 +4,7 @@ const DataModel = require("../models/Data");
 exports.uploadFile = async (req, res) => {
   try {
     const file = req.file;
-
+    const agent = req.body.agent; // Extract agent from request body
     if (!file) {
       return res
         .status(400)
@@ -36,8 +36,8 @@ exports.uploadFile = async (req, res) => {
       content: extractedText,
       originalFileName: file.originalname,
       uploadedAt: new Date(),
+      agent: agent, // Save the agent information
     });
-
     await dataDoc.save();
 
     res.status(200).json({
