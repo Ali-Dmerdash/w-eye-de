@@ -1,10 +1,15 @@
 const pdfParse = require("pdf-parse");
 const DataModel = require("../models/Data");
+const FraudInput = require("../models/FraudInput");
+const MarketInput = require("../models/MarketInput");
+const RevenueInput = require("../models/RevenueInput");
 
 exports.uploadFile = async (req, res) => {
   try {
     const file = req.file;
-    const agent = req.body.agent; // Extract agent from request body
+    const agent = req.body.agent; // Extract agent from request
+    console.log("Received agent:", agent); // Added log
+
     if (!file) {
       return res
         .status(400)
@@ -32,13 +37,54 @@ exports.uploadFile = async (req, res) => {
         .json({ success: false, message: "Unsupported file type" });
     }
 
-    const dataDoc = new DataModel({
+    const commonData = {
       content: extractedText,
-      originalFileName: file.originalname,
+      originalFileName: file.originalname, // Note: This was reverted in your provided code. If you want .txt, we can change it back later.
       uploadedAt: new Date(),
-      agent: agent, // Save the agent information
-    });
+      agent: agent,
+    };
+
+    // Save to general 'datas' collection
+    const dataDoc = new DataModel(commonData);
     await dataDoc.save();
+    console.log("Saved to datas collection."); // Added log
+
+    // Save to agent-specific input collection
+    switch (agent) {
+      case "Public Agent":
+        console.log("Public Agent data - only to general collection.");
+        break;
+      case "Fraud Agent":
+        try {
+          const fraudDoc = new FraudInput(commonData);
+          await fraudDoc.save();
+          console.log("Saved to Fraud_LLM_Input."); // Added log
+        } catch (error) {
+          console.error("Error saving to Fraud_LLM_Input:", error); // Added error log
+        }
+        break;
+      case "Market Agent":
+        try {
+          const marketDoc = new MarketInput(commonData);
+          await marketDoc.save();
+          console.log("Saved to Market_LLM_Input."); // Added log
+        } catch (error) {
+          console.error("Error saving to Market_LLM_Input:", error); // Added error log
+        }
+        break;
+      case "Revenue Agent":
+        try {
+          const revenueDoc = new RevenueInput(commonData);
+          await revenueDoc.save();
+          console.log("Saved to Revenue_LLM_Input."); // Added log
+        } catch (error) {
+          console.error("Error saving to Revenue_LLM_Input:", error); // Added error log
+        }
+        break;
+      default:
+        console.log("No specific agent collection for: ", agent);
+        break;
+    }
 
     res.status(200).json({
       success: true,
@@ -46,6 +92,7 @@ exports.uploadFile = async (req, res) => {
       content: extractedText,
     });
   } catch (err) {
+    console.error("Overall upload error:", err); // Modified log
     res.status(500).json({ success: false, message: err.message });
   }
 };
