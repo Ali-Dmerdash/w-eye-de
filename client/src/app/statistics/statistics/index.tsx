@@ -22,7 +22,7 @@ const Dashboard = () => {
         <div className={`transform transition-all duration-700 ease-out ${
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         }`}>
-          <Row3 section="j" />
+        <Row3 section="j" />
         </div>
 
         {/* Large screens layout */}

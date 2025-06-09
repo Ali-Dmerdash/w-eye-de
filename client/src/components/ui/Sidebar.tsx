@@ -77,6 +77,15 @@ export default function Sidebar() {
   return (
     <>
       {isLoggingOut && <LoadingOverlay message="Signing out..." />}
+      
+      {/* Mobile Overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/50 z-40 sm:hidden transition-opacity duration-300 ${
+          isMobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setIsMobileOpen(false)}
+      />
+      
       <div
         id="sidebar"
         className={`fixed font-mulish z-50 top-0 left-0 h-screen transition-all duration-300 rounded-e-3xl

@@ -5,6 +5,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Magic Mouse Cursor Styles */
+#magicMouseCursor, #magicPointer {
+  z-index: 9999 !important;
+  pointer-events: none !important;
+}
+
+#magicMouseCursor {
+  border-color: rgba(124, 58, 237, 0.5) !important; /* Purple color with transparency */
+  position: fixed !important;
+}
+
+#magicPointer {
+  background-color: #7c3aed !important; /* Purple color */
+  position: fixed !important;
+}
+
+/* Hide default cursor when magic mouse is active */
+#magicMouseBody {
+  cursor: none;
+}
+
 body {
   @apply font-roboto_slab;
 }
@@ -141,6 +162,7 @@ body {
   -webkit-user-select: none;   
   -moz-user-select: none;      
   -ms-user-select: none; 
+  cursor: none !important;
 }
 
 @layer utilities {

@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
 import { Brain, Lightbulb, X, FileText } from "lucide-react"
 import type { RevenueAnalysis } from "@/state/type"
@@ -81,9 +82,9 @@ export default function AnalysisComponent({ analysisData }: AnalysisComponentPro
         </div>
 
         {/* Modal */}
-        {isModalOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full border border-purple-100 dark:border-gray-700">
+        {isModalOpen && typeof document !== 'undefined' && createPortal(
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full border border-purple-100 dark:border-gray-700 relative overflow-hidden">
                 {/* Modal Header */}
                 <div className="p-6 border-b border-purple-100 dark:border-gray-700">
                   <div className="flex items-center justify-between">
@@ -121,7 +122,8 @@ export default function AnalysisComponent({ analysisData }: AnalysisComponentPro
                   </Button>
                 </div>
               </div>
-            </div>
+            </div>,
+            document.body
         )}
       </div>
   )

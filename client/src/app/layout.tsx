@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +34,33 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="bg-[#0E1111]">
+        <head>
+          <script type="text/javascript" src="https://res.cloudinary.com/veseylab/raw/upload/v1684982764/magicmouse-2.0.0.cdn.min.js"></script>
+          {/* <script dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener('DOMContentLoaded', function() {
+                try {
+                  if (typeof magicMouse === 'function') {
+                    magicMouse({
+                      cursorOuter: "circle-basic",
+                      hoverEffect: "circle-move",
+                      hoverItemMove: false,
+                      defaultCursor: false,
+                      outerWidth: 30,
+                      outerHeight: 30
+                    });
+                    console.log("Magic Mouse initialized from inline script");
+                  } else {
+                    console.warn("Magic Mouse function not found");
+                  }
+                } catch (e) {
+                  console.error("Magic Mouse inline initialization error:", e);
+                }
+              });
+            `
+          }} /> */}
+        </head>
+        <body className="bg-[#0E1111]" id="magicMouseBody">
           <SignedOut>
             <Page />
           </SignedOut>

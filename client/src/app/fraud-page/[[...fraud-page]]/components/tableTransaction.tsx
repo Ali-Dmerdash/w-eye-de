@@ -1,6 +1,7 @@
 "use client"
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useState, useEffect, useRef } from "react"
+import { createPortal } from "react-dom"
 import { Settings, AlertTriangle, CheckCircle, Database, X, Eye, Download, MessageSquare } from "lucide-react"
 import { useGetFraudDataQuery } from "@/state/api"
 import type { FraudModelResponse, Transaction, ApiColumnDefinition } from "@/state/type"
@@ -166,8 +167,8 @@ const TransactionModal = ({
 
   if (!isOpen || !transaction) return null
 
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+  return typeof document !== 'undefined' ? createPortal(
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div 
         ref={modalRef}
         className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-purple-100 dark:border-gray-700 w-full max-w-4xl max-h-[90vh] flex flex-col transform animate-in zoom-in-95 duration-200 relative overflow-hidden"
@@ -299,8 +300,9 @@ const TransactionModal = ({
           </div>
         </div>
       </div>
-    </div>
-  )
+    </div>,
+    document.body
+  ) : null
 }
 
 // Column definition interface

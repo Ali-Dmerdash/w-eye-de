@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { store } from "./redux"; // Assuming redux.tsx is in src/app
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -12,6 +12,29 @@ import GlobalHelpModal from "@/components/ui/GlobalHelpModal";
 
 // This component wraps all client-side providers
 export function ClientProviders({ children }: { children: React.ReactNode }) {
+  // Initialize magic mouse
+  useEffect(() => {
+    try {
+      // @ts-ignore
+      if (window.magicMouse) {
+        // @ts-ignore
+        window.magicMouse({
+          cursorOuter: "circle-basic",
+          hoverEffect: "circle-move",
+          hoverItemMove: false,
+          defaultCursor: false,
+          outerWidth: 30,
+          outerHeight: 30
+        });
+        console.log("Magic Mouse initialized successfully");
+      } else {
+        console.warn("Magic Mouse not found in window object");
+      }
+    } catch (e) {
+      console.error("Magic Mouse initialization error:", e);
+    }
+  }, []);
+
   return (
     <Provider store={store}>
       <ThemeProvider>

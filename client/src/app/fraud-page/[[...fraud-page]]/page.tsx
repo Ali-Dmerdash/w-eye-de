@@ -49,22 +49,24 @@ export default function Page() {
 
         <main className={`p-4 md:p-6 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
           {/* Header Section */}
-          <div className="mb-8 flex flex-row justify-between items-center">
+          <div className="mb-8 flex flex-row justify-between items-center space-x-3.5 md:space-x-0">
             <div>
               <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${
                 isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
               }`}>Fraud Detection Dashboard</h1>
-              <p className={`text-gray-600 dark:text-gray-300 transform transition-all duration-700 ease-out delay-100 ${
+              <p className={`hidden md:flex text-gray-600 dark:text-gray-300 transform transition-all duration-700 ease-out delay-100 ${
                 isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
               }`}>
-                Monitor and analyze fraudulent activities with real-time data
+              Monitor and analyze fraudulent activities with real-time data
               </p>
             </div>
-            <div>
+            <div className={` transform transition-all duration-700 ease-out delay-100 ${
+                isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+              }`}>
               <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                Download Report
-              </Button>
+                <span className="hidden md:flex">Download Report</span>
+                </Button>
             </div>
           </div>
 

@@ -63,9 +63,8 @@ export default function Page() {
                 <Header />
                 <Sidebar />
                 <main
-                    className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${
-                        isCollapsed ? "sm:ml-16" : "sm:ml-64"
-                    } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))]`}
+                    className={`p-4 md:p-6 md:pt-20 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
+                        } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))]`}
                 >
                     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8">
                         <div className="flex items-center gap-4">
@@ -91,9 +90,8 @@ export default function Page() {
                 <Header />
                 <Sidebar />
                 <main
-                    className={`p-4 md:p-6 pt-8 transition-all duration-300 ${
-                        isCollapsed ? "sm:ml-16" : "sm:ml-64"
-                    } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))]`}
+                    className={`p-4 md:p-6 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
+                        } flex items-center justify-center min-h-[calc(100vh-theme(spacing.20))]`}
                 >
                     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-red-200 dark:border-red-800 p-8 text-center">
                         <div className="text-red-500 mb-4">
@@ -122,24 +120,23 @@ export default function Page() {
 
             <main className={`p-4 md:p-6 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
                 {/* Header Section */}
-                <div className="mb-8 flex flex-row justify-between items-center">
+                <div className="mb-8 flex flex-row justify-between items-center space-x-3.5 md:space-x-0">
                     <div>
-                        <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${
-                          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                        }`}>Revenue Dashboard</h1>
-                        <div className={`flex items-center gap-2 transform transition-all duration-700 ease-out delay-100 ${
-                          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                        }`}>
+                        <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                            }`}>Revenue Dashboard</h1>
+                        <div className={`items-center gap-2 hidden md:flex transform transition-all duration-700 ease-out delay-100 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                            }`}>
                             <TrendingUp className="w-5 h-5 text-green-500" />
                             <p className="text-gray-600 dark:text-gray-300">
                                 Monitor and analyze revenue performance with real-time insights
                             </p>
                         </div>
                     </div>
-                    <div>
+                    <div className={` transform transition-all duration-700 ease-out delay-100 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}>
                         <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
                             <Download className="w-4 h-4" />
-                            Download Report
+                            <span className="hidden md:flex">Download Report</span>
                         </Button>
                     </div>
                 </div>
@@ -147,31 +144,27 @@ export default function Page() {
                 {/* Dashboard Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Top Row */}
-                    <div className={`lg:min-h-[40vh] transform transition-all duration-700 ease-out delay-200 ${
-                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                    }`}>
+                    <div className={`lg:min-h-[40vh] transform transition-all duration-700 ease-out delay-200 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                        }`}>
                         {/* Pass trendData to RevenueChart */}
                         <RevenueChart trendData={trendData} />
                     </div>
 
-                    <div className={`min-h-[400px] lg:min-h-[40vh] lg:col-span-2 transform transition-all duration-700 ease-out delay-300 ${
-                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                    }`}>
+                    <div className={`min-h-[400px] lg:min-h-[40vh] lg:col-span-2 transform transition-all duration-700 ease-out delay-300 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                        }`}>
                         {/* Graph component remains unchanged (uses static data) */}
                         <Graph />
                     </div>
 
                     {/* Bottom Row */}
-                    <div className={`lg:min-h-[40vh] w-full transform transition-all duration-700 ease-out delay-400 ${
-                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                    }`}>
+                    <div className={`lg:min-h-[40vh] w-full transform transition-all duration-700 ease-out delay-400 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                        }`}>
                         {/* Pass key_factors to KeyFactors */}
                         <KeyFactors keyFactorsData={trendData?.key_factors} />
                     </div>
 
-                    <div className={`lg:min-h-[40vh] lg:col-span-2 w-full transform transition-all duration-700 ease-out delay-500 ${
-                      isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                    }`}>
+                    <div className={`lg:min-h-[40vh] lg:col-span-2 w-full transform transition-all duration-700 ease-out delay-500 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                        }`}>
                         {/* Pass analysis to Analysis */}
                         <Analysis analysisData={trendData?.analysis} />
                     </div>

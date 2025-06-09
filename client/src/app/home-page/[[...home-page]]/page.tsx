@@ -60,50 +60,50 @@ export default function Home() {
           <div className={`transform transition-all duration-500 ease-out ${
             isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}>
-            <DashboardCard
-              title="Today's Money"
-              value="$53,000"
-              change="+55%"
-              changeType="positive"
-              icon={<Briefcase className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
+          <DashboardCard
+            title="Today's Money"
+            value="$53,000"
+            change="+55%"
+            changeType="positive"
+            icon={<Briefcase className="w-5 h-5 text-white" />}
+            iconBg="bg-blue-500"
+          />
           </div>
           <div className={`transform transition-all duration-500 ease-out delay-100 ${
             isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}>
-            <DashboardCard
-              title="Today's Users"
-              value="2,300"
-              change="+5%"
-              changeType="positive"
-              icon={<Users className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
+          <DashboardCard
+            title="Today's Users"
+            value="2,300"
+            change="+5%"
+            changeType="positive"
+            icon={<Users className="w-5 h-5 text-white" />}
+            iconBg="bg-blue-500"
+          />
           </div>
           <div className={`transform transition-all duration-500 ease-out delay-200 ${
             isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}>
-            <DashboardCard
-              title="New Clients"
-              value="+3,052"
-              change="-14%"
-              changeType="negative"
-              icon={<FileText className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
+          <DashboardCard
+            title="New Clients"
+            value="+3,052"
+            change="-14%"
+            changeType="negative"
+            icon={<FileText className="w-5 h-5 text-white" />}
+            iconBg="bg-blue-500"
+          />
           </div>
           <div className={`transform transition-all duration-500 ease-out delay-300 ${
             isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
           }`}>
-            <DashboardCard
-              title="Total Sales"
-              value="$173,000"
-              change="+8%"
-              changeType="positive"
-              icon={<ShoppingCart className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
+          <DashboardCard
+            title="Total Sales"
+            value="$173,000"
+            change="+8%"
+            changeType="positive"
+            icon={<ShoppingCart className="w-5 h-5 text-white" />}
+            iconBg="bg-blue-500"
+          />
           </div>
         </div>
 
@@ -114,18 +114,18 @@ export default function Home() {
               <div className={`transform transition-all duration-500 ease-out delay-400 ${
                 isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
               }`}>
-                <WelcomeCard />
+              <WelcomeCard />
               </div>
               <div className={`transform transition-all duration-500 ease-out delay-500 ${
                 isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
               }`}>
-                <ReferralCard score={9.3} />
+              <ReferralCard score={9.3} />
               </div>
             </div>
             <div className={`transform transition-all duration-500 ease-out delay-600 ${
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
             }`}>
-              <ChartCard />
+            <ChartCard />
             </div>
           </div>
           <div className={`hidden lg:block lg:col-span-2 h-full transform transition-all duration-500 ease-out delay-700 ${

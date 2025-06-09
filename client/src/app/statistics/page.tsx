@@ -78,7 +78,7 @@ export default function Page() {
             <div className={`transform transition-all duration-700 ease-out delay-200 ${
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             }`}>
-              <Dashboard />
+            <Dashboard />
             </div>
           </div>
         )}

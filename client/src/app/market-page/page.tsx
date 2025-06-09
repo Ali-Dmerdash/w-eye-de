@@ -49,12 +49,12 @@ export default function Page() {
 
       <main className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
         {/* Header Section */}
-        <div className="mb-8 flex flex-row justify-between items-center">
+        <div className="mb-8 flex flex-row justify-between items-center space-x-3.5 md:space-x-0">
           <div>
             <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
             }`}>Market Analysis Dashboard</h1>
-            <div className={`flex items-center gap-2 transform transition-all duration-700 ease-out delay-100 ${
+            <div className={`items-center gap-2 hidden md:flex transform transition-all duration-700 ease-out delay-100 ${
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
             }`}>
               <TrendingUp className="w-5 h-5 text-green-500" />
@@ -63,10 +63,12 @@ export default function Page() {
               </p>
             </div>
           </div>
-          <div>
+          <div className={`transform transition-all duration-700 ease-out delay-100 ${
+                isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+              }`}>
             <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
               <Download className="w-4 h-4" />
-              Download Report
+              <span className="hidden md:flex">Download Report</span>
             </Button>
           </div>
         </div>
