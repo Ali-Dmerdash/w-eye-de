@@ -1,10 +1,20 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import type React from "react";
-import { Plus, Download, Trash2, Info, Ellipsis, X, Upload, FileText, CheckCircle } from "lucide-react";
+import {
+  Plus,
+  Download,
+  Trash2,
+  Info,
+  Ellipsis,
+  X,
+  Upload,
+  FileText,
+  CheckCircle,
+} from "lucide-react";
 import Sidebar from "@/components/ui/Sidebar";
 import Header from "@/components/ui/Header";
-import { useNotifications } from '@/context/NotificationContext';
+import { useNotifications } from "@/context/NotificationContext";
 
 interface UploadedFile {
   id: string;
@@ -55,10 +65,10 @@ export default function DataUpload() {
   // Trigger animations on component mount
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoaded(true)
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [])
+      setIsLoaded(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -227,18 +237,24 @@ export default function DataUpload() {
         {/* Header Section */}
         <div className="mb-8 flex flex-row justify-between items-center">
           <div>
-            <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-[transform,opacity] duration-700 ease-out ${
-              isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-            }`}>Data Upload</h1>
-            
+            <h1
+              className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-[transform,opacity] duration-700 ease-out ${
+                isLoaded
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-4 opacity-0"
+              }`}
+            >
+              Data Upload
+            </h1>
           </div>
-          
         </div>
 
         {/* Main Upload Card */}
-        <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8 relative overflow-hidden transform transition-[transform,opacity] duration-700 ease-out delay-200 ${
-          isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-        }`}>
+        <div
+          className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8 relative overflow-hidden transform transition-[transform,opacity] duration-700 ease-out delay-200 ${
+            isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
+        >
           {/* Background Pattern */}
           <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
             <div className="w-full h-full bg-purple-300 rounded-full transform translate-x-12 -translate-y-12"></div>
@@ -251,8 +267,12 @@ export default function DataUpload() {
                 <Upload className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Upload Your Files</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Drag and drop or click to select files</p>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Upload Your Files
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Drag and drop or click to select files
+                </p>
               </div>
             </div>
 
@@ -272,12 +292,18 @@ export default function DataUpload() {
                 <Plus className="w-8 h-8 text-purple-600 dark:text-purple-400" />
               </div>
 
-              <div className={`${files.length > 0 ? "opacity-50" : ""} flex flex-col items-center`}>
+              <div
+                className={`${
+                  files.length > 0 ? "opacity-50" : ""
+                } flex flex-col items-center`}
+              >
                 <p className="text-gray-700 dark:text-gray-300 text-lg mb-2 font-medium">
                   Drag & drop or click to choose files
                 </p>
                 <div className="flex flex-col text-gray-500 dark:text-gray-400 items-center space-y-1">
-                  <p className="text-sm">Accepted files: .csv, .pdf, .json</p>
+                  <p className="text-sm">
+                    Accepted files: .csv, .pdf, .json, .txt
+                  </p>
                   <div className="flex items-center">
                     <Info className="w-4 h-4 mr-2" />
                     <p className="text-sm">Max file size: 50 MB</p>
@@ -291,7 +317,7 @@ export default function DataUpload() {
                 className="hidden"
                 onChange={handleFileInputChange}
                 multiple={false}
-                accept=".csv, .pdf, .json"
+                accept=".csv, .pdf, .json, .txt"
               />
             </div>
 
@@ -302,7 +328,7 @@ export default function DataUpload() {
                   <FileText className="w-5 h-5 text-purple-500" />
                   Uploaded Files
                 </h3>
-                
+
                 <div className="space-y-3">
                   {files.map((file) => (
                     <div
@@ -314,14 +340,18 @@ export default function DataUpload() {
                           <FileIcon className="w-10 h-10 sm:w-12 sm:h-12 text-purple-600 dark:text-purple-400" />
                         </div>
                         <div className="flex flex-col flex-1 overflow-hidden">
-                          <h4 className="font-medium text-gray-900 dark:text-white text-base sm:text-lg md:text-xl truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] lg:max-w-full">{file.name}</h4>
+                          <h4 className="font-medium text-gray-900 dark:text-white text-base sm:text-lg md:text-xl truncate max-w-[180px] sm:max-w-[250px] md:max-w-[350px] lg:max-w-full">
+                            {file.name}
+                          </h4>
                           <div className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 dark:text-gray-400">
                             <span>{file.extension.toUpperCase()}</span>
                             <span>|</span>
                             <span>{file.size}</span>
                             <span>|</span>
                             {file.agent ? (
-                              <span className="text-purple-600 dark:text-purple-400 font-medium">{file.agent}</span>
+                              <span className="text-purple-600 dark:text-purple-400 font-medium">
+                                {file.agent}
+                              </span>
                             ) : (
                               <span className="font-bold underline text-amber-600 dark:text-amber-400">
                                 Agent Not Selected
@@ -333,7 +363,9 @@ export default function DataUpload() {
                       <div className="flex flex-col lg:flex-row sm:justify-normal justify-center gap-3 sm:gap-4 mt-4 sm:mt-0">
                         <button
                           className={`flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 bg-white dark:bg-gray-700 border border-purple-200 dark:border-gray-600 rounded-2xl md:rounded-full hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors duration-150 ${
-                            !file.agent ? "animate-pulse-attention ring-2 ring-purple-300 dark:ring-purple-600" : ""
+                            !file.agent
+                              ? "animate-pulse-attention ring-2 ring-purple-300 dark:ring-purple-600"
+                              : ""
                           }`}
                           onClick={() => openAgentModal(file.id)}
                           aria-label="Select agent"
@@ -367,9 +399,13 @@ export default function DataUpload() {
                       <div className="p-1 bg-red-100 dark:bg-red-900/50 rounded-full">
                         <X className="w-4 h-4 text-red-600 dark:text-red-400" />
                       </div>
-                      <p className="text-red-800 dark:text-red-200 font-medium">Upload Failed</p>
+                      <p className="text-red-800 dark:text-red-200 font-medium">
+                        Upload Failed
+                      </p>
                     </div>
-                    <p className="text-red-700 dark:text-red-300 text-sm mt-1 ml-6">{uploadStatus.message}</p>
+                    <p className="text-red-700 dark:text-red-300 text-sm mt-1 ml-6">
+                      {uploadStatus.message}
+                    </p>
                   </div>
                 )}
 
@@ -419,7 +455,9 @@ export default function DataUpload() {
                   <div className="p-2.5 bg-purple-100 dark:bg-purple-900/30 rounded-xl shadow-sm">
                     <Ellipsis className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Select Agent</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Select Agent
+                  </h2>
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
@@ -459,16 +497,18 @@ export default function DataUpload() {
                   {[
                     {
                       name: "Fraud Agent",
-                      description: "Specialized in fraud detection and risk analysis"
+                      description:
+                        "Specialized in fraud detection and risk analysis",
                     },
                     {
-                      name: "Market Agent", 
-                      description: "Competitive analysis and market intelligence"
+                      name: "Market Agent",
+                      description:
+                        "Competitive analysis and market intelligence",
                     },
                     {
                       name: "Revenue Agent",
-                      description: "Revenue forecasting and financial analysis"
-                    }
+                      description: "Revenue forecasting and financial analysis",
+                    },
                   ].map((agent) => (
                     <button
                       key={agent.name}
@@ -509,7 +549,9 @@ export default function DataUpload() {
                   <div className="p-2.5 bg-green-100 dark:bg-green-900/30 rounded-xl shadow-sm">
                     <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                   </div>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Upload Successful!</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Upload Successful!
+                  </h2>
                 </div>
                 <button
                   onClick={() => {
@@ -532,7 +574,8 @@ export default function DataUpload() {
                 File Uploaded Successfully!
               </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                "{uploadedFileName}" has been uploaded and is ready for processing.
+                "{uploadedFileName}" has been uploaded and is ready for
+                processing.
               </p>
               <button
                 onClick={() => {

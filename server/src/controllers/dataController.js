@@ -31,6 +31,11 @@ exports.uploadFile = async (req, res) => {
       file.originalname.endsWith(".json")
     ) {
       extractedText = file.buffer.toString("utf-8");
+    } else if (
+      file.mimetype === "text/plain" ||
+      file.originalname.endsWith(".txt")
+    ) {
+      extractedText = file.buffer.toString("utf-8");
     } else {
       return res
         .status(400)
