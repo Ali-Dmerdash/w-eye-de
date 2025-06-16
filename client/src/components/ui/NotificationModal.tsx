@@ -1,6 +1,5 @@
 "use client"
-import type React from "react"
-import { useRef, useEffect } from "react"
+import React, { useRef, useEffect } from "react"
 import { X, AlertCircle, CheckCircle, Info, AlertTriangle, Clock, Calendar, Trash2 } from "lucide-react"
 import type { Notification } from "@/context/NotificationContext"
 import { useNotifications } from "@/context/NotificationContext"
@@ -197,7 +196,14 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ notification, isO
             <div
                 className={`p-4 rounded-xl border ${getBorderColor(notification.type)} ${getGradientBackground(notification.type)} mb-6`}
             >
-              <p className="text-gray-800 dark:text-gray-200 leading-relaxed">{notification.message}</p>
+              <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                {notification.message.split('\n').map((line, idx) => (
+                  <React.Fragment key={idx}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </p>
             </div>
 
             {/* Timestamp */}

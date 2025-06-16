@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useChat } from "@/context/ChatContext";
 import { useNotifications, type Notification } from '@/context/NotificationContext';
 import NotificationModal from "./NotificationModal";
+import Link from "next/link";
 
 export default function Header() {
   const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar();
@@ -21,7 +22,7 @@ export default function Header() {
   const inputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
   const { openChat, setShowHelpModal } = useChat();
-  const { notifications, getNewNotificationsCount, markAllAsRead } = useNotifications();
+  const { notifications, getNewNotificationsCount, markAllAsRead, markAsRead } = useNotifications();
   const newNotificationsCount = getNewNotificationsCount();
   const router = useRouter();
 
@@ -39,16 +40,16 @@ export default function Header() {
 
   const toggleNotifications = () => {
     setNotificationsOpen(!notificationsOpen);
-    if (!notificationsOpen) {
-      // Mark notifications as read when opening the dropdown
-      setTimeout(() => markAllAsRead(), 1000);
-    }
+    
   };
 
-  const handleNotificationClick = (notification: Notification) => {
+  const handleNotificationClick = async (notification: Notification) => {
     setSelectedNotification(notification);
     setShowNotificationModal(true);
     setNotificationsOpen(false); // Close dropdown when opening modal
+    if (notification.isNew) {
+      await markAsRead(notification.id);
+    }
   };
 
   const closeNotificationModal = () => {
@@ -317,7 +318,13 @@ export default function Header() {
                   )}
                 </div>
                 <div className="py-2 px-3 border-t border-gray-200 dark:border-gray-700 text-center">
-                  <button className="text-sm text-[#4B65AB] dark:text-[#AEC3FF] hover:underline">View All Notifications</button>
+                  <Link
+                    href="/notifications"
+                    className="text-sm text-[#4B65AB] dark:text-[#AEC3FF] hover:underline"
+                    onClick={() => setNotificationsOpen(false)}
+                  >
+                    View All Notifications
+                  </Link>
                 </div>
               </div>
             )}

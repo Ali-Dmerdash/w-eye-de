@@ -9,6 +9,7 @@ import { ChatProvider } from "@/context/ChatContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import ChatModal from "@/components/ui/ChatModal";
 import GlobalHelpModal from "@/components/ui/GlobalHelpModal";
+import NotificationModal from "@/components/ui/NotificationModal";
 
 // This component wraps all client-side providers
 export function ClientProviders({ children }: { children: React.ReactNode }) {
@@ -32,3 +33,5 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
     </Provider>
   );
 }
+
+export { NotificationModal };

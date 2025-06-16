@@ -17,6 +17,8 @@ interface NotificationContextType {
   deleteNotification: (id: string) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   getNewNotificationsCount: () => number;
+  markAsUnread: (id: string) => Promise<void>;
+  markAsRead: (id: string) => Promise<void>;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -92,13 +94,57 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     return notifications.filter(notification => notification.isNew).length;
   }, [notifications]);
 
+  const markAsUnread = useCallback(async (id: string) => {
+    if (!user) return;
+
+    const updatedNotifications = notifications.map(notification =>
+      notification.id === id
+        ? { ...notification, isNew: true }
+        : notification
+    );
+
+    try {
+      await user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata,
+          notifications: updatedNotifications
+        }
+      });
+    } catch (error) {
+      console.error('Failed to mark notification as unread:', error);
+    }
+  }, [user, notifications]);
+
+  const markAsRead = useCallback(async (id: string) => {
+    if (!user) return;
+
+    const updatedNotifications = notifications.map(notification =>
+      notification.id === id
+        ? { ...notification, isNew: false }
+        : notification
+    );
+
+    try {
+      await user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata,
+          notifications: updatedNotifications
+        }
+      });
+    } catch (error) {
+      console.error('Failed to mark notification as read:', error);
+    }
+  }, [user, notifications]);
+
   return (
     <NotificationContext.Provider value={{
       notifications,
       addNotification,
       deleteNotification,
       markAllAsRead,
-      getNewNotificationsCount
+      getNewNotificationsCount,
+      markAsUnread,
+      markAsRead,
     }}>
       {children}
     </NotificationContext.Provider>
