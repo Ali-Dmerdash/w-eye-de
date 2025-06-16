@@ -36,7 +36,9 @@ export default function RootLayout({
       <html lang="en">
         <body className="bg-[#0E1111]">
           <SignedOut>
-            <Page />
+            <ClientProviders>
+              <Page />
+            </ClientProviders>
           </SignedOut>
           <SignedIn>
             <ClientProviders>

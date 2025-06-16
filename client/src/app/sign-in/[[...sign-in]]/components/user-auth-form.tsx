@@ -14,10 +14,43 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icon } from "@iconify/react";
+import { useUser } from "@clerk/nextjs";
+import { useNotifications } from "@/context/NotificationContext";
+import { useEffect, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 
 export default function UserAuthForm() {
+  const { user, isSignedIn } = useUser();
+  const { addNotification } = useNotifications();
+  const notifiedRef = useRef(false);
+
+  useEffect(() => {
+    async function notifyOnSignIn() {
+      if (isSignedIn && user && !notifiedRef.current) {
+        try {
+          const res = await fetch("https://api.ipify.org?format=json");
+          const data = await res.json();
+          const ip = data.ip;
+          await addNotification({
+            title: "New login detected",
+            message: `Our system has detected a new login from the IP address: ${ip}.
+If this was you, please ignore this message.
+If this was not you, please contact support immediately.`,
+            type: "info",
+          });
+          notifiedRef.current = true;
+        } catch (e) {
+          // Optionally handle error
+        }
+      }
+      if (!isSignedIn) {
+        notifiedRef.current = false;
+      }
+    }
+    notifyOnSignIn();
+  }, [isSignedIn, user, addNotification]);
+
   return (
     <div className="grid w-full grow items-center px-4 sm:justify-center">
       <SignIn.Root>
@@ -28,8 +61,8 @@ export default function UserAuthForm() {
                 <Card className="w-full sm:w-96 bg-transparent text-white border-none">
                   <CardContent className="grid gap-y-4">
                     <Clerk.Field name="identifier" className="space-y-2">
-                    
-              
+
+
                       <div className="relative z-0">
                         <Clerk.Input
                           type="email"
@@ -137,17 +170,7 @@ export default function UserAuthForm() {
               <SignIn.Step name="verifications">
                 <SignIn.Strategy name="password">
                   <Card className="w-full sm:w-96 bg-transparent border-0 ">
-                    <CardHeader>
-                      <CardTitle className="text-white flex justify-center">
-                        Check your email
-                      </CardTitle>
-                      <CardDescription className="text-white flex justify-center">
-                        Enter the verification code sent to your email
-                      </CardDescription>
-                      <p className="text-sm text-white font-bold flex justify-center">
-                        Welcome back <SignIn.SafeIdentifier />
-                      </p>
-                    </CardHeader>
+
                     <CardContent className="grid gap-y-4">
                       <Clerk.Field name="password" className="space-y-2">
                         <div className="relative z-0">
@@ -166,7 +189,7 @@ export default function UserAuthForm() {
                             htmlFor="floating_standard"
                             className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
                           >
-                            <Label>enter your password</Label>
+                            <Label>Enter your password</Label>
                           </Clerk.Label>
                         </div>
                         <Clerk.FieldError className="block text-sm text-destructive" />
@@ -213,9 +236,7 @@ export default function UserAuthForm() {
                       <CardDescription>
                         Enter the verification code sent to your email
                       </CardDescription>
-                      <p className="text-sm text-muted-foreground">
-                        Welcome back <SignIn.SafeIdentifier />
-                      </p>
+
                     </CardHeader>
                     <CardContent className="grid gap-y-4">
                       <Clerk.Field name="code">
@@ -295,6 +316,6 @@ export default function UserAuthForm() {
           )}
         </Clerk.Loading>
       </SignIn.Root>
-  </div>
- );
+    </div>
+  );
 }

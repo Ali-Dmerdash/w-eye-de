@@ -204,16 +204,16 @@ export default function Header() {
             alt="Logo"
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center ">
           <div className="hidden md:flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-48" onClick={handleClick}>
             <svg
-              className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200 cursor-pointer"
+              className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200 cursor-pointer hover:scale-110 transition-all duration-300"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               onClick={(e) => {
-                e.stopPropagation(); // Prevent triggering handleClick
+                e.stopPropagation();
                 openChat();
               }}
             >
@@ -241,7 +241,7 @@ export default function Header() {
         <div className="flex items-center md:space-x-4 space-x-2 ms-1">
           {/* Chat icon for small screens */}
           <div 
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 hover:bg-gray-100 dark:hover:bg-gray-800/30 transition-colors cursor-pointer"
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 hover:bg-gray-100 dark:hover:bg-gray-800/30 cursor-pointer transition-all duration-300"
             onClick={() => openChat()}
           >
             <MessageSquare className="w-5 h-5 text-[#15191c] dark:text-gray-200" />
