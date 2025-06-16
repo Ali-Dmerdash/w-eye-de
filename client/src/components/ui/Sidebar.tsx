@@ -10,6 +10,7 @@ import {
   Upload,
   LogOut,
   Search,
+  Sparkles,
 } from "lucide-react";
 import Image from "next/image";
 import LogoLight from "@/assets/LogoLight.png";
@@ -57,6 +58,7 @@ export default function Sidebar() {
     { icon: DollarSign, label: "Revenue agent", href: "/revenue-page" },
     { icon: Globe, label: "Global market agent", href: "/market-page" },
     { icon: Upload, label: "Data upload", href: "/upload" },
+    { icon: Sparkles, label: "Admin Panel", href: "/adminPanel_Notifications" },
   ];
 
   const handleSignOut = () => {
