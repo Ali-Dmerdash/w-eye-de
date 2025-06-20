@@ -107,7 +107,6 @@ export default function DataUpload() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    if (files.length > 0) return;
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFiles(e.dataTransfer.files);
     }
@@ -120,17 +119,15 @@ export default function DataUpload() {
   };
 
   const handleFiles = (fileList: FileList) => {
-    if (files.length > 0) return;
-    const file = fileList[0];
-    const newFile = {
+    const newFiles = Array.from(fileList).map(file => ({
       id: Math.random().toString(36).substring(2, 9),
       name: file.name.split(".")[0],
       extension: file.name.split(".").pop() || "",
       size: formatFileSize(file.size),
       agent: undefined,
       file: file,
-    };
-    setFiles([newFile]);
+    }));
+    setFiles(prevFiles => [...prevFiles, ...newFiles]);
     setUploadStatus(null);
   };
 
@@ -145,9 +142,7 @@ export default function DataUpload() {
   };
 
   const handleClickUpload = () => {
-    if (files.length === 0) {
-      fileInputRef.current?.click();
-    }
+    fileInputRef.current?.click();
   };
 
   const handleRemoveFile = (id: string) => {
@@ -180,37 +175,56 @@ export default function DataUpload() {
     setUploadStatus(null);
 
     try {
-      const fileToUpload = files[0];
-
-      if (!fileToUpload.file) {
-        throw new Error("File object not found");
+      // Track successful and failed uploads
+      let successCount = 0;
+      let failedCount = 0;
+      let uploadedFileNames: string[] = [];
+      
+      // Process each file
+      for (const fileToUpload of files) {
+        if (!fileToUpload.file) {
+          failedCount++;
+          continue;
+        }
+        
+        try {
+          const formData = new FormData();
+          formData.append("file", fileToUpload.file);
+          formData.append("agent", fileToUpload.agent || "");
+          
+          const response = await fetch("http://localhost:3001/api/data/upload", {
+            method: "POST",
+            body: formData,
+          });
+          
+          if (response.ok) {
+            successCount++;
+            uploadedFileNames.push(fileToUpload.name);
+          } else {
+            failedCount++;
+          }
+        } catch (error) {
+          failedCount++;
+        }
       }
-
-      const formData = new FormData();
-      formData.append("file", fileToUpload.file);
-      formData.append("agent", fileToUpload.agent || "");
-
-      const response = await fetch("http://localhost:3001/api/data/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
+      
+      // Show results
+      if (successCount > 0) {
         setUploadStatus(null);
         setShowSuccessModal(true);
-        setUploadedFileName(fileToUpload.name);
+        setUploadedFileName(uploadedFileNames.join(", "));
+        
+        const message = successCount === 1
+          ? `File "${uploadedFileNames[0]}" has been uploaded and is ready for processing.`
+          : `${successCount} files have been uploaded and are ready for processing.`;
+          
         addNotification({
           title: "Upload Successful",
-          message: `File "${fileToUpload.name}" has been uploaded and is ready for processing.`,
+          message,
           type: "success",
         });
       } else {
-        const errorText = await response.text();
-        throw new Error(
-          `Upload failed: ${response.status} ${response.statusText}${
-            errorText ? ` - ${errorText}` : ""
-          }`
-        );
+        throw new Error("All uploads failed");
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -282,7 +296,7 @@ export default function DataUpload() {
                 isDragging
                   ? "border-purple-400 bg-purple-50 dark:bg-purple-900/20 dark:border-purple-500"
                   : "border-purple-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-gray-500 hover:bg-purple-25 dark:hover:bg-gray-700/30"
-              } ${files.length > 0 ? "pointer-events-none opacity-75" : ""}`}
+              }`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
@@ -293,9 +307,7 @@ export default function DataUpload() {
               </div>
 
               <div
-                className={`${
-                  files.length > 0 ? "opacity-50" : ""
-                } flex flex-col items-center`}
+                className="flex flex-col items-center"
               >
                 <p className="text-gray-700 dark:text-gray-300 text-lg mb-2 font-medium">
                   Drag & drop or click to choose files
@@ -316,7 +328,7 @@ export default function DataUpload() {
                 ref={fileInputRef}
                 className="hidden"
                 onChange={handleFileInputChange}
-                multiple={false}
+                multiple={true}
                 accept=".csv, .pdf, .json, .txt"
               />
             </div>
@@ -326,7 +338,7 @@ export default function DataUpload() {
               <div className="space-y-4 mb-8">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white flex items-center gap-2">
                   <FileText className="w-5 h-5 text-purple-500" />
-                  Uploaded Files
+                  Uploaded Files ({files.length})
                 </h3>
 
                 <div className="space-y-3">
@@ -423,10 +435,10 @@ export default function DataUpload() {
                     {isUploading ? (
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Uploading...
+                        Uploading {files.length} {files.length === 1 ? "file" : "files"}...
                       </div>
                     ) : (
-                      "Upload File"
+                      `Upload ${files.length} ${files.length === 1 ? "File" : "Files"}`
                     )}
                   </button>
                 </div>
@@ -571,11 +583,18 @@ export default function DataUpload() {
                 <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                File Uploaded Successfully!
+                {uploadedFileName.includes(", ") ? "Files Uploaded Successfully!" : "File Uploaded Successfully!"}
               </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                "{uploadedFileName}" has been uploaded and is ready for
-                processing.
+                {uploadedFileName.includes(", ") ? (
+                  <>
+                    <span className="font-medium">{uploadedFileName.split(", ").length}</span> files have been uploaded and are ready for processing.
+                  </>
+                ) : (
+                  <>
+                    "{uploadedFileName}" has been uploaded and is ready for processing.
+                  </>
+                )}
               </p>
               <button
                 onClick={() => {
@@ -584,7 +603,7 @@ export default function DataUpload() {
                 }}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
-                Upload Another File
+                Upload More Files
               </button>
             </div>
           </div>
