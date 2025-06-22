@@ -1,7 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors"); // ✅ Add this
+const cors = require("cors");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args)); // Add this line
 
 const errorHandler = require("./src/utils/errorHandler");
 const fraudRoutes = require("./src/routes/fraudRoutes");
@@ -13,7 +15,7 @@ const dataRoutes = require("./src/routes/dataRoutes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ✅ CORS configuration
+// CORS configuration
 app.use(
   cors({
     origin: "http://localhost:3000", // your frontend origin
@@ -30,6 +32,29 @@ app.use("/api/revenue", revenueRoutes);
 app.use("/api/market", marketRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/data", dataRoutes);
+
+// New chatbot proxy route
+app.post("/api/chat", async (req, res) => {
+  try {
+    const response = await fetch("https://bora-eyide-xcgh.vercel.app/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Chatbot proxy error:", error);
+    res.status(500).json({ error: "Failed to fetch from chatbot API" });
+  }
+});
 
 // Default route
 app.get("/", (req, res) => {
