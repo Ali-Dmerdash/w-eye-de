@@ -17,3 +17,12 @@ exports.getRevenueResults = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+exports.runLLM = async (req, res) => {
+  try {
+    const response = await revenueService.runLLM();
+    res.status(200).json({ success: true, message: response });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};

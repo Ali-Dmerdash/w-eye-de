@@ -8,4 +8,6 @@ const fraudInputSchema = new mongoose.Schema(
   },
   { collection: "Fraud_LLM_Input" }
 ); // Explicitly define
-module.exports = mongoose.model("Fraud_LLM_Input", fraudInputSchema);
+module.exports =
+  mongoose.models.Fraud_LLM_Input ||
+  mongoose.model("Fraud_LLM_Input", fraudInputSchema);
