@@ -441,12 +441,7 @@ export default function ChatModal() {
                                                 type: "success",
                                             })
                                         } catch (error) {
-                                            // Send error notification if export fails
-                                            addNotification({
-                                                title: "Export Failed",
-                                                message: "Failed to export chat history. Please try again.",
-                                                type: "error",
-                                            })
+                                            alert("Failed to export chat history. Please try again.")
                                         }
                                     } else {
                                         // Show modal alert if no messages to export

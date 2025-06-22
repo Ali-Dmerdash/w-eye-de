@@ -102,10 +102,10 @@ export default function FraudAnalyticsOverview() {
               </div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Transaction Analysis</h2>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-green-500" />
               <p className="text-sm text-green-600 dark:text-green-400 font-medium">+5% detection rate this month</p>
-            </div>
+            </div> */}
           </div>
           <div className="bg-purple-50 dark:bg-purple-900/20 px-3 py-1 rounded-full">
             <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Q4 2024</span>
