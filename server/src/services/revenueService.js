@@ -23,3 +23,35 @@ exports.getRevenueResults = async () => {
     throw new Error("Error retrieving Revenue Results: " + err.message);
   }
 };
+
+const RevenueInput = require("../models/revenueInput");
+const axios = require("axios");
+
+exports.runLLM = async () => {
+  try {
+    const requiredFiles = ["file1.txt", "file2.txt"]; // Placeholder for required files
+    const uploadedFiles = await RevenueInput.find({}).select(
+      "originalFileName -_id"
+    );
+    const uploadedFileNames = uploadedFiles.map(
+      (file) => file.originalFileName
+    );
+
+    const missingFiles = requiredFiles.filter(
+      (file) => !uploadedFileNames.includes(file)
+    );
+
+    if (missingFiles.length > 0) {
+      throw new Error(`Missing required files: ${missingFiles.join(", ")}`);
+    }
+
+    // Call the LLM at localhost:8001 (assuming same port for revenue LLM)
+    const llmResponse = await axios.post(
+      "http://localhost:8000/run/revenue",
+      {}
+    ); // Placeholder endpoint
+    return llmResponse.data;
+  } catch (err) {
+    throw new Error("Error running Revenue LLM: " + err.message);
+  }
+};
