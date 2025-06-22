@@ -18,3 +18,12 @@ exports.getMarketResults = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.runLLM = async (req, res) => {
+  try {
+    const response = await marketService.runLLM();
+    res.status(200).json({ success: true, message: response });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};

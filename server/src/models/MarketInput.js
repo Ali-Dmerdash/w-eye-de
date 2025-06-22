@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const marketInputSchema = new mongoose.Schema(
+
+const MarketInputSchema = new mongoose.Schema(
   {
     originalFileName: String,
     content: String,
@@ -7,5 +8,8 @@ const marketInputSchema = new mongoose.Schema(
     agent: String,
   },
   { collection: "Market_LLM_Input" }
-); // Explicitly define
-module.exports = mongoose.model("Market_LLM_Input", marketInputSchema);
+);
+
+module.exports =
+  mongoose.models.Market_LLM_Input ||
+  mongoose.model("Market_LLM_Input", MarketInputSchema);
