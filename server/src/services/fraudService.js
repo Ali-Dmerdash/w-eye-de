@@ -45,11 +45,7 @@ exports.runLLM = async () => {
       throw new Error(`Missing required files: ${missingFiles.join(", ")}`);
     }
 
-    // Call the LLM at localhost:8001 (assuming same port for fraud LLM)
-    const llmResponse = await axios.post(
-      "http://localhost:8000//run/fraud",
-      {}
-    ); // Placeholder endpoint
+    const llmResponse = await axios.post("http://localhost:8000/run/fraud", {});
     return llmResponse.data;
   } catch (err) {
     throw new Error("Error running Fraud LLM: " + err.message);
