@@ -1,196 +1,234 @@
 "use client"
 import React, { useRef, useEffect, useMemo } from "react"
-import { ArrowLeft, ArrowRight, Bell, Dot, MessageSquare } from "lucide-react"
+import { Bell, MessageSquare } from "lucide-react"
 import Image from "next/image"
 import eye from "@/assets/eye.png"
 import eyeLight from "@/assets/eyeLight.png"
-import { useTheme } from "@/context/ThemeContext";
-import { useSidebar } from "@/context/SidebarContext";
-import { useRouter } from "next/navigation";
-import { useChat } from "@/context/ChatContext";
-import { useNotifications, type Notification } from '@/context/NotificationContext';
-import NotificationModal from "./NotificationModal";
-import Link from "next/link";
+import { useTheme } from "@/context/ThemeContext"
+import { useSidebar } from "@/context/SidebarContext"
+import { useRouter } from "next/navigation"
+import { useChat } from "@/context/ChatContext"
+import { useNotifications, type Notification } from "@/context/NotificationContext"
+import NotificationModal from "./NotificationModal"
+import Link from "next/link"
 
 export default function Header() {
-  const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar();
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [notificationsOpen, setNotificationsOpen] = React.useState(false);
-  const [selectedNotification, setSelectedNotification] = React.useState<Notification | null>(null);
-  const [showNotificationModal, setShowNotificationModal] = React.useState(false);
-  const notificationRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { theme, setTheme } = useTheme();
-  const { openChat, setShowHelpModal } = useChat();
-  const { notifications, getNewNotificationsCount, markAllAsRead, markAsRead } = useNotifications();
-  const newNotificationsCount = getNewNotificationsCount();
-  const router = useRouter();
+  const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar()
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [notificationsOpen, setNotificationsOpen] = React.useState(false)
+  const [selectedNotification, setSelectedNotification] = React.useState<Notification | null>(null)
+  const [showNotificationModal, setShowNotificationModal] = React.useState(false)
+  const notificationRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const { theme, setTheme } = useTheme()
+  const { openChat, setShowHelpModal } = useChat()
+  const { notifications, getNewNotificationsCount, markAllAsRead, markAsRead } = useNotifications()
+  const newNotificationsCount = getNewNotificationsCount()
+  const router = useRouter()
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
-        setNotificationsOpen(false);
+        setNotificationsOpen(false)
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
 
   const toggleNotifications = () => {
-    setNotificationsOpen(!notificationsOpen);
-    
-  };
+    setNotificationsOpen(!notificationsOpen)
+  }
 
   const handleNotificationClick = async (notification: Notification) => {
-    setSelectedNotification(notification);
-    setShowNotificationModal(true);
-    setNotificationsOpen(false); // Close dropdown when opening modal
+    setSelectedNotification(notification)
+    setShowNotificationModal(true)
+    setNotificationsOpen(false) // Close dropdown when opening modal
     if (notification.isNew) {
-      await markAsRead(notification.id);
+      await markAsRead(notification.id)
     }
-  };
+  }
 
   const closeNotificationModal = () => {
-    setShowNotificationModal(false);
-    setSelectedNotification(null);
-  };
+    setShowNotificationModal(false)
+    setSelectedNotification(null)
+  }
 
   const handleClick = () => {
-    setIsEditing(true);
-    setTimeout(() => inputRef.current?.focus(), 100);
-  };
+    setIsEditing(true)
+    setTimeout(() => inputRef.current?.focus(), 100)
+  }
 
   const handleBlur = () => {
     if (!inputRef.current?.value) {
-      setIsEditing(false);
+      setIsEditing(false)
     }
-  };
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && inputRef.current?.value) {
-      const query = inputRef.current.value;
-      
-      if (query.trim().toLowerCase() === '/help') {
-        setShowHelpModal(true);
-        openChat();
-        inputRef.current.value = '';
-        setIsEditing(false);
-        return;
+    if (e.key === "Enter" && inputRef.current?.value) {
+      const query = inputRef.current.value
+
+      if (query.trim().toLowerCase() === "/help") {
+        setShowHelpModal(true)
+        openChat()
+        inputRef.current.value = ""
+        setIsEditing(false)
+        return
       }
-      
-      openChat(query);
-      inputRef.current.value = '';
-      setIsEditing(false);
+
+      openChat(query)
+      inputRef.current.value = ""
+      setIsEditing(false)
     }
-  };
+  }
 
   const todayDate = useMemo(() => {
-    const today = new Date();
+    const today = new Date()
     const options: Intl.DateTimeFormatOptions = {
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long'
-    };
-    return `${today.toLocaleDateString("en-US", options)}`;
-  }, []);
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    }
+    return `${today.toLocaleDateString("en-US", options)}`
+  }, [])
 
   const yesterdayDate = useMemo(() => {
-    const today = new Date();
-    today.setDate(today.getDate() - 1);
+    const today = new Date()
+    today.setDate(today.getDate() - 1)
     const options: Intl.DateTimeFormatOptions = {
-      month: 'long',
-      day: 'numeric'
-    };
-    return `${today.toLocaleDateString("en-US", options)}`;
-  }, []);
+      month: "long",
+      day: "numeric",
+    }
+    return `${today.toLocaleDateString("en-US", options)}`
+  }, [])
 
   const tmwDate = useMemo(() => {
-    const today = new Date();
-    today.setDate(today.getDate() + 1);
+    const today = new Date()
+    today.setDate(today.getDate() + 1)
     const options: Intl.DateTimeFormatOptions = {
-      month: 'long',
-      day: 'numeric'
-    };
-    return `${today.toLocaleDateString("en-US", options)}`;
-  }, []);
+      month: "long",
+      day: "numeric",
+    }
+    return `${today.toLocaleDateString("en-US", options)}`
+  }, [])
 
   const formatTimeAgo = (timestamp: number) => {
-    const now = Date.now();
-    const diffInSeconds = Math.floor((now - timestamp) / 1000);
-    
+    const now = Date.now()
+    const diffInSeconds = Math.floor((now - timestamp) / 1000)
+
     if (diffInSeconds < 60) {
-      return 'Just now';
+      return "Just now"
     } else if (diffInSeconds < 3600) {
-      const minutes = Math.floor(diffInSeconds / 60);
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      const minutes = Math.floor(diffInSeconds / 60)
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`
     } else if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600);
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      const hours = Math.floor(diffInSeconds / 3600)
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`
     } else if (diffInSeconds < 604800) {
-      const days = Math.floor(diffInSeconds / 86400);
-      return `${days} day${days > 1 ? 's' : ''} ago`;
+      const days = Math.floor(diffInSeconds / 86400)
+      return `${days} day${days > 1 ? "s" : ""} ago`
     } else {
-      return new Date(timestamp).toLocaleDateString();
+      return new Date(timestamp).toLocaleDateString()
     }
-  };
+  }
 
   const getNotificationBorderColor = (type: string, isNew: boolean) => {
-    if (!isNew) return 'border-gray-300 dark:border-gray-600';
-    
+    if (!isNew) return "border-gray-300 dark:border-gray-600"
+
     switch (type) {
-      case 'success':
-        return 'border-green-500';
-      case 'warning':
-        return 'border-[#ef672d]';
-      case 'error':
-        return 'border-red-500';
+      case "success":
+        return "border-green-500"
+      case "warning":
+        return "border-[#ef672d]"
+      case "error":
+        return "border-red-500"
       default:
-        return 'border-blue-500';
+        return "border-blue-500"
     }
-  };
+  }
 
   const getNotificationBgColor = (type: string, isNew: boolean) => {
-    if (!isNew) return 'hover:bg-gray-100 dark:hover:bg-gray-700/30';
-    
-    switch (type) {
-      case 'success':
-        return 'bg-green-500/10 dark:bg-green-500/5 hover:bg-green-500/20 dark:hover:bg-green-500/10';
-      case 'warning':
-        return 'bg-[#ef672d]/10 dark:bg-[#ef672d]/5 hover:bg-[#ef672d]/20 dark:hover:bg-[#ef672d]/10';
-      case 'error':
-        return 'bg-red-500/10 dark:bg-red-500/5 hover:bg-red-500/20 dark:hover:bg-red-500/10';
-      default:
-        return 'bg-blue-500/10 dark:bg-blue-500/5 hover:bg-blue-500/20 dark:hover:bg-blue-500/10';
-    }
-  };
+    if (!isNew) return "hover:bg-gray-100 dark:hover:bg-gray-700/30"
 
-  const toggleButton = theme === "dark" ? (
-    <div id="lightMode-btn" className="relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
-      <button type="button" className="flex items-center rounded-full text-sm text-white" onClick={() => setTheme("light")}>
-        <svg className="shrink-0 size-4 text-white" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-          <circle cx={12} cy={12} r={4} />
-          <path d="M12 2v2" />
-          <path d="M12 20v2" />
-          <path d="m4.93 4.93 1.41 1.41" />
-          <path d="m17.66 17.66 1.41 1.41" />
-          <path d="M2 12h2" />
-          <path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" />
-          <path d="m19.07 4.93-1.41 1.41" />
-        </svg>
-      </button>
-    </div>
-  ) : (
-    <div id="darkMode-btn" className="relative flex items-center border border-[#15191c] border-opacity-40 h-10 px-4 md:space-x-2 space-x-1 rounded-xl">
-      <button type="button" className="flex items-center rounded-full text-sm text-[#15191c]" onClick={() => setTheme("dark")}>
-        <svg className="shrink-0 size-4 text-[#15191c]" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-      </button>
-    </div>
-  );
+    switch (type) {
+      case "success":
+        return "bg-green-500/10 dark:bg-green-500/5 hover:bg-green-500/20 dark:hover:bg-green-500/10"
+      case "warning":
+        return "bg-[#ef672d]/10 dark:bg-[#ef672d]/5 hover:bg-[#ef672d]/20 dark:hover:bg-[#ef672d]/10"
+      case "error":
+        return "bg-red-500/10 dark:bg-red-500/5 hover:bg-red-500/20 dark:hover:bg-red-500/10"
+      default:
+        return "bg-blue-500/10 dark:bg-blue-500/5 hover:bg-blue-500/20 dark:hover:bg-blue-500/10"
+    }
+  }
+
+  const toggleButton =
+    theme === "dark" ? (
+      <div
+        id="lightMode-btn"
+        className="relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl"
+        data-onboarding="theme-toggle"
+      >
+        <button
+          type="button"
+          className="flex items-center rounded-full text-sm text-white"
+          onClick={() => setTheme("light")}
+        >
+          <svg
+            className="shrink-0 size-4 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            width={24}
+            height={24}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx={12} cy={12} r={4} />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+        </button>
+      </div>
+    ) : (
+      <div
+        id="darkMode-btn"
+        className="relative flex items-center border border-[#15191c] border-opacity-40 h-10 px-4 md:space-x-2 space-x-1 rounded-xl"
+        data-onboarding="theme-toggle"
+      >
+        <button
+          type="button"
+          className="flex items-center rounded-full text-sm text-[#15191c]"
+          onClick={() => setTheme("dark")}
+        >
+          <svg
+            className="shrink-0 size-4 text-[#15191c]"
+            xmlns="http://www.w3.org/2000/svg"
+            width={24}
+            height={24}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+        </button>
+      </div>
+    )
 
   return (
     <>
@@ -206,7 +244,11 @@ export default function Header() {
           />
         </div>
         <div className="flex items-center ">
-          <div className="hidden md:flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-48" onClick={handleClick}>
+          <div
+            className="hidden md:flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-48"
+            onClick={handleClick}
+            data-onboarding="ai-assistant"
+          >
             <svg
               className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200 cursor-pointer hover:scale-110 transition-all duration-300"
               fill="none"
@@ -214,8 +256,8 @@ export default function Header() {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
               onClick={(e) => {
-                e.stopPropagation();
-                openChat();
+                e.stopPropagation()
+                openChat()
               }}
             >
               <path
@@ -235,24 +277,28 @@ export default function Header() {
                 onKeyDown={handleKeyDown}
               />
             ) : (
-              <span className="text-sm font-medium text-[#15191c] dark:text-gray-200 opacity-80 cursor-text">AI Assistant</span>
+              <span className="text-sm font-medium text-[#15191c] dark:text-gray-200 opacity-80 cursor-text">
+                AI Assistant
+              </span>
             )}
           </div>
         </div>
         <div className="flex items-center md:space-x-4 space-x-2 ms-1">
           {/* Chat icon for small screens */}
-          <div 
+          <div
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 hover:bg-gray-100 dark:hover:bg-gray-800/30 cursor-pointer transition-all duration-300"
             onClick={() => openChat()}
+            data-onboarding="ai-assistant"
           >
             <MessageSquare className="w-5 h-5 text-[#15191c] dark:text-gray-200" />
           </div>
-          
+
           {toggleButton}
-          <div 
-            ref={notificationRef} 
+          <div
+            ref={notificationRef}
             className="relative flex items-center border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/30 transition-colors"
             onClick={toggleNotifications}
+            data-onboarding="notifications"
           >
             <div className="flex items-center relative">
               <Bell className="w-5 h-5 text-[#15191c] dark:text-gray-200" />
@@ -272,7 +318,7 @@ export default function Header() {
                 </span>
               </div>
             )}
-            
+
             {/* Notification Dropdown */}
             {notificationsOpen && (
               <div className="absolute right-0 mt-2 top-12 w-80 rounded-md shadow-lg bg-white dark:bg-[#1d2328] border dark:border-gray-700 border-gray-200 z-50 no-scrollbar">
@@ -289,20 +335,26 @@ export default function Header() {
                 <div className="max-h-80 overflow-y-auto overflow-x-hidden dark:custom-scrollbar">
                   {notifications.length > 0 ? (
                     notifications.map((notification) => (
-                      <div 
+                      <div
                         key={notification.id}
                         className={`p-3 border-l-4 ${getNotificationBorderColor(notification.type, notification.isNew)} ${getNotificationBgColor(notification.type, notification.isNew)} transition-colors cursor-pointer hover:scale-[1.02] transform`}
                         onClick={() => handleNotificationClick(notification)}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className={`font-semibold text-sm ${notification.isNew ? 'text-[#15191c] dark:text-white' : 'text-[#15191c]/80 dark:text-gray-300'}`}>
+                          <span
+                            className={`font-semibold text-sm ${notification.isNew ? "text-[#15191c] dark:text-white" : "text-[#15191c]/80 dark:text-gray-300"}`}
+                          >
                             {notification.title}
                           </span>
-                          <span className={`text-xs ${notification.isNew ? 'text-[#15191c]/70 dark:text-gray-400' : 'text-[#15191c]/60 dark:text-gray-500'}`}>
+                          <span
+                            className={`text-xs ${notification.isNew ? "text-[#15191c]/70 dark:text-gray-400" : "text-[#15191c]/60 dark:text-gray-500"}`}
+                          >
                             {formatTimeAgo(notification.timestamp)}
                           </span>
                         </div>
-                        <p className={`text-sm ${notification.isNew ? 'text-[#15191c]/80 dark:text-gray-300' : 'text-[#15191c]/70 dark:text-gray-400'}`}>
+                        <p
+                          className={`text-sm ${notification.isNew ? "text-[#15191c]/80 dark:text-gray-300" : "text-[#15191c]/70 dark:text-gray-400"}`}
+                        >
                           {notification.message}
                         </p>
                       </div>
@@ -313,7 +365,9 @@ export default function Header() {
                         <Bell className="w-8 h-8 text-gray-400 dark:text-gray-500" />
                       </div>
                       <p className="text-gray-500 dark:text-gray-400 text-sm">No notifications yet</p>
-                      <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">You'll see notifications here when they arrive</p>
+                      <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">
+                        You'll see notifications here when they arrive
+                      </p>
                     </div>
                   )}
                 </div>
@@ -332,21 +386,17 @@ export default function Header() {
           <div className="hidden sm:flex items-center px-4 h-10 border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 md:space-x-6 space-x-2 rounded-xl text-nowrap">
             <span className="flex flex-row items-center justify-center space-y-">
               {/* <ArrowLeft className="md:w-5 w-3 md:h-5 h-3 text-[#15191c] dark:text-gray-200" /> */}
-              <span className="text-gray-500 dark:text-gray-400 text-[0.5rem] hidden md:block">
-                {yesterdayDate}
-              </span>
+              <span className="text-gray-500 dark:text-gray-400 text-[0.5rem] hidden md:block">{yesterdayDate}</span>
             </span>
             <span className="md:text-sm text-xs font-medium text-[#15191c] dark:text-gray-200">{todayDate}</span>
             <span className="flex flex-row-reverse items-center justify-center space-y-">
               {/* <ArrowRight className="md:w-5 w-3 md:h-5 h-3 text-[#15191c] dark:text-gray-200" /> */}
-              <span className="text-gray-500 dark:text-gray-400 text-[0.5rem] hidden md:block">
-                {tmwDate}
-              </span>
+              <span className="text-gray-500 dark:text-gray-400 text-[0.5rem] hidden md:block">{tmwDate}</span>
             </span>
           </div>
         </div>
       </div>
-      
+
       {/* Notification Modal */}
       <NotificationModal
         notification={selectedNotification}
@@ -354,6 +404,5 @@ export default function Header() {
         onClose={closeNotificationModal}
       />
     </>
-  );
+  )
 }
-
