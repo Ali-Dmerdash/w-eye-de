@@ -52,7 +52,7 @@ export default function Sidebar() {
   if (!hasMounted) return null;
 
   const navItems = [
-    { icon: Home, label: "Home", href: "/" },
+    { icon: Home, label: "Home", href: "/home-page" },
     { icon: BarChart2, label: "Statistics", href: "/statistics" },
     { icon: CreditCard, label: "Fraud agent", href: "/fraud-page" },
     { icon: DollarSign, label: "Revenue agent", href: "/revenue-page" },
@@ -73,7 +73,7 @@ export default function Sidebar() {
     // Add a small delay to ensure loading overlay appears
     setTimeout(() => {
       signOut();
-    }, 300);
+    }, 0);
   };
 
   return (

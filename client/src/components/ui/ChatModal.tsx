@@ -263,13 +263,13 @@ export default function ChatModal() {
 
         const parts = text.split(new RegExp(`(${searchQuery})`, "gi"))
         return parts.map((part, i) =>
-                part.toLowerCase() === searchQuery.toLowerCase() ? (
-                    <span key={i} className="bg-yellow-200 dark:bg-yellow-700">
-          {part}
-        </span>
-                ) : (
-                    part
-                ),
+            part.toLowerCase() === searchQuery.toLowerCase() ? (
+                <span key={i} className="bg-yellow-200 dark:bg-yellow-700">
+                    {part}
+                </span>
+            ) : (
+                part
+            ),
         )
     }
 
@@ -410,11 +410,10 @@ export default function ChatModal() {
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={toggleSearch}
-                                className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                                    searchVisible
+                                className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 ${searchVisible
                                         ? "bg-gray-100 dark:bg-gray-700 text-purple-600 dark:text-purple-400"
                                         : "text-gray-500 dark:text-gray-400"
-                                }`}
+                                    }`}
                                 title="Search messages"
                             >
                                 <Search className="w-5 h-5" />
@@ -433,7 +432,7 @@ export default function ChatModal() {
                                             a.click()
                                             document.body.removeChild(a)
                                             URL.revokeObjectURL(url)
-                                            
+
                                             // Send success notification
                                             addNotification({
                                                 title: "Chat Exported",
@@ -508,8 +507,8 @@ export default function ChatModal() {
                             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                                 {searchResults.length > 0 && (
                                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {currentResultIndex + 1}/{searchResults.length}
-                  </span>
+                                        {currentResultIndex + 1}/{searchResults.length}
+                                    </span>
                                 )}
                                 <button
                                     onClick={() => navigateSearchResults("prev")}
@@ -619,9 +618,8 @@ export default function ChatModal() {
                                 >
                                     <div className={`flex max-w-3xl ${message.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
                                         <div
-                                            className={`flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0 ${
-                                                message.sender === "user" ? "bg-purple-600 ml-3" : "bg-gray-700 dark:bg-purple-900/50 mr-3"
-                                            }`}
+                                            className={`flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0 ${message.sender === "user" ? "bg-purple-600 ml-3" : "bg-gray-700 dark:bg-purple-900/50 mr-3"
+                                                }`}
                                         >
                                             {message.sender === "user" ? (
                                                 <User className="h-5 w-5 text-white" />
@@ -630,13 +628,11 @@ export default function ChatModal() {
                                             )}
                                         </div>
                                         <div
-                                            className={`rounded-2xl px-5 py-3 shadow-sm ${
-                                                isSearchResult ? "ring-2 ring-purple-500 dark:ring-purple-400" : ""
-                                            } ${
-                                                message.sender === "user"
+                                            className={`rounded-2xl px-5 py-3 shadow-sm ${isSearchResult ? "ring-2 ring-purple-500 dark:ring-purple-400" : ""
+                                                } ${message.sender === "user"
                                                     ? "bg-purple-600 text-white"
                                                     : "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                            }`}
+                                                }`}
                                         >
                                             <div className="whitespace-pre-wrap">
                                                 {searchVisible ? highlightSearchText(message.text) : message.text}
@@ -661,11 +657,10 @@ export default function ChatModal() {
                                             )}
 
                                             <div
-                                                className={`text-xs mt-1.5 flex items-center gap-1 ${
-                                                    message.sender === "user"
+                                                className={`text-xs mt-1.5 flex items-center gap-1 ${message.sender === "user"
                                                         ? "text-purple-200 dark:text-purple-300"
                                                         : "text-gray-500 dark:text-gray-400"
-                                                }`}
+                                                    }`}
                                             >
                                                 <Clock className="w-3 h-3" />
                                                 {new Date(message.timestamp).toLocaleTimeString([], {
@@ -803,11 +798,10 @@ export default function ChatModal() {
                         <button
                             onClick={handleSendMessage}
                             disabled={(!input.trim() && draftAttachments.length === 0) || isLoading}
-                            className={`flex-shrink-0 rounded-lg p-2.5 ${
-                                (input.trim() || draftAttachments.length > 0) && !isLoading
+                            className={`flex-shrink-0 rounded-lg p-2.5 ${(input.trim() || draftAttachments.length > 0) && !isLoading
                                     ? "bg-purple-600 text-white hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105"
                                     : "bg-gray-200 dark:bg-gray-600 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                            } transition-all duration-200`}
+                                } transition-all duration-200`}
                         >
                             <Send className="h-5 w-5" />
                         </button>

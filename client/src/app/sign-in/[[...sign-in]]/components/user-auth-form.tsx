@@ -25,6 +25,7 @@ export default function UserAuthForm() {
   const { addNotification } = useNotifications();
   const notifiedRef = useRef(false);
 
+
   useEffect(() => {
     async function notifyOnSignIn() {
       if (isSignedIn && user && !notifiedRef.current) {
@@ -40,6 +41,7 @@ If this was not you, please contact support immediately.`,
             type: "info",
           });
           notifiedRef.current = true;
+          
         } catch (e) {
           // Optionally handle error
         }
@@ -49,6 +51,7 @@ If this was not you, please contact support immediately.`,
       }
     }
     notifyOnSignIn();
+    // Removed problematic redirect - let ProtectedRoute handle post-login routing
   }, [isSignedIn, user, addNotification]);
 
   return (

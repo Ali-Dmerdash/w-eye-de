@@ -21,7 +21,7 @@ export default function AuthenticationPage() {
         <div className="relative h-full flex-col rounded-xl flex p-6 px-24 items-start justify-center overflow-hidden bg-gradient-to-r from-[#15191c] to-[#000000]">
 
           <div className="absolute inset-0 z-0 opacity-50 blur-sm w-[200%] -left-12">
-            <Spline scene="https://prod.spline.design/PFx5G2qyftQjNcww/scene.splinecode" className="w-[200%]" />
+            {/* <Spline scene="https://prod.spline.design/PFx5G2qyftQjNcww/scene.splinecode" className="w-[200%]" /> */}
           </div>
 
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-8 z-10">

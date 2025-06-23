@@ -6,6 +6,8 @@ import "./globals.css";
 
 // Import the ClientProviders wrapper
 import { ClientProviders } from "./ClientProviders";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,16 +37,16 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="bg-[#0E1111]">
-          <SignedOut>
-            <ClientProviders>
-            <Page />
-            </ClientProviders>
-          </SignedOut>
-          <SignedIn>
-            <ClientProviders>
-              <main>{children}</main>
-            </ClientProviders>
-          </SignedIn>
+          <ClientProviders>
+            <SignedOut>
+              <Page />
+            </SignedOut>
+            <SignedIn>
+              <ProtectedRoute>
+                <main>{children}</main>
+              </ProtectedRoute>
+            </SignedIn>
+          </ClientProviders>
         </body>
       </html>
     </ClerkProvider>

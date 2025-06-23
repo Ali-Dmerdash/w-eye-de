@@ -142,7 +142,7 @@ export default function DataUpload() {
   };
 
   const handleClickUpload = () => {
-    fileInputRef.current?.click();
+      fileInputRef.current?.click();
   };
 
   const handleRemoveFile = (id: string) => {
@@ -179,25 +179,25 @@ export default function DataUpload() {
       let successCount = 0;
       let failedCount = 0;
       let uploadedFileNames: string[] = [];
-      
+
       // Process each file
       for (const fileToUpload of files) {
-        if (!fileToUpload.file) {
+      if (!fileToUpload.file) {
           failedCount++;
           continue;
-        }
-        
+      }
+
         try {
-          const formData = new FormData();
-          formData.append("file", fileToUpload.file);
-          formData.append("agent", fileToUpload.agent || "");
-          
-          const response = await fetch("http://localhost:3001/api/data/upload", {
-            method: "POST",
-            body: formData,
-          });
-          
-          if (response.ok) {
+      const formData = new FormData();
+      formData.append("file", fileToUpload.file);
+      formData.append("agent", fileToUpload.agent || "");
+
+      const response = await fetch("http://localhost:3001/api/data/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
             successCount++;
             uploadedFileNames.push(fileToUpload.name);
           } else {
@@ -450,10 +450,10 @@ export default function DataUpload() {
 
       {/* Agent Selection Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div
             ref={modalRef}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-purple-100 dark:border-gray-700 w-full max-w-md transform animate-in zoom-in-95 duration-200 relative overflow-hidden"
+            className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl border border-white/10 w-full max-w-md transform relative overflow-hidden"
           >
             {/* Background Pattern */}
             <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
@@ -461,19 +461,19 @@ export default function DataUpload() {
             </div>
 
             {/* Header */}
-            <div className="p-6 border-b border-purple-100 dark:border-gray-700 relative z-10">
+            <div className="p-6 border-b border-white/10 relative z-10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-purple-100 dark:bg-purple-900/30 rounded-xl shadow-sm">
-                    <Ellipsis className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <div className="p-2.5 bg-purple-600/20 rounded-xl">
+                    <Ellipsis className="w-5 h-5 text-purple-400" />
                   </div>
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-white">
                     Select Agent
                   </h2>
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="p-2 text-gray-400 hover:text-gray-300 rounded-lg hover:bg-white/10 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -484,17 +484,17 @@ export default function DataUpload() {
             <div className="p-6 relative z-10">
               {/* Public Agent Section */}
               <div className="mb-6">
-                <h3 className="text-sm font-semibold mb-3 text-gray-600 dark:text-gray-300">
+                <h3 className="text-sm font-semibold mb-3 text-gray-300">
                   General Purpose
                 </h3>
                 <button
                   onClick={() => handleAgentSelection("Public Agent")}
-                  className="w-full p-4 text-left rounded-xl border border-purple-100 dark:border-gray-600 bg-purple-25 dark:bg-gray-700/50 hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors group"
+                  className="w-full p-4 text-left rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group"
                 >
-                  <div className="font-medium text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                  <div className="font-medium text-white group-hover:text-purple-400">
                     Public Agent
                   </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     General purpose analysis for public data processing
                   </p>
                 </button>
@@ -502,7 +502,7 @@ export default function DataUpload() {
 
               {/* Specific Agents Section */}
               <div>
-                <h3 className="text-sm font-semibold mb-3 text-gray-600 dark:text-gray-300">
+                <h3 className="text-sm font-semibold mb-3 text-gray-300">
                   Specialized Agents
                 </h3>
                 <div className="space-y-3">
@@ -525,12 +525,12 @@ export default function DataUpload() {
                     <button
                       key={agent.name}
                       onClick={() => handleAgentSelection(agent.name)}
-                      className="w-full p-4 text-left rounded-xl border border-purple-100 dark:border-gray-600 bg-white dark:bg-gray-700/50 hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors group"
+                      className="w-full p-4 text-left rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group"
                     >
-                      <div className="font-medium text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                      <div className="font-medium text-white group-hover:text-purple-400">
                         {agent.name}
                       </div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-gray-400 mt-1">
                         {agent.description}
                       </p>
                     </button>

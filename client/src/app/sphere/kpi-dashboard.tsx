@@ -45,7 +45,7 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
 
   const getAccentColor = () => {
     const colors: Record<"good" | "warning" | "critical", string> = {
-      good: "#00ff5d",
+      good: "#4CA64C",
       warning: "#ffcd03",
       critical: "#ff0000",
     }
@@ -95,10 +95,10 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
         return (
           <meshStandardMaterial
             color={hovered ? accentColor : color}
-            wireframe
-            wireframeLinewidth={hovered ? 3 : 2}
+            metalness={0.1}
+            roughness={0.8}
             emissive={color}
-            emissiveIntensity={hovered ? 0.8 : 0.1}
+            emissiveIntensity={hovered ? 0.15 : 0.05}
           />
         )
 
@@ -133,7 +133,7 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
         )
 
       default:
-        return <meshStandardMaterial color={color} wireframe emissive={color} emissiveIntensity={0.2} />
+        return <meshStandardMaterial color={color} metalness={0.1} roughness={0.8} emissive={color} emissiveIntensity={0.05} />
     }
   }
 
@@ -145,7 +145,7 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
         <lineBasicMaterial
           color={hovered ? getAccentColor() : getColor()}
           transparent
-          opacity={hovered ? 1 : 0.7}
+          opacity={hovered ? 0.9 : 0.5}
           linewidth={hovered ? 8 : 4}
         />
       </line>
@@ -174,75 +174,74 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
           document.body.style.cursor = "default"
         }}
       >
-        <sphereGeometry args={[1, styleMode === "wireframe" ? 16 : 32, styleMode === "wireframe" ? 16 : 32]} />
+        <sphereGeometry args={[1, 32, 32]} />
         {renderMaterial()}
+      </mesh>
 
-        {/* Enhanced tooltip */}
-        {hovered && (
-          <Html distanceFactor={8} position={[0, 4, 0]} center>
-            <div
-              className={`${theme === "dark" ? "bg-gray-900/95" : "bg-white/95"} backdrop-blur-md text-${theme === "dark" ? "white" : "gray-900"} p-4 rounded-xl shadow-2xl min-w-[300px] border ${theme === "dark" ? "border-gray-700" : "border-gray-200"} transform transition-all duration-200`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-bold text-lg">{kpi.name}</h4>
-                <div className="flex gap-2">
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full ${theme === "dark" ? "bg-blue-500/20 text-blue-300" : "bg-blue-500/20 text-blue-700"}`}
-                  >
-                    {kpi.category}
-                  </span>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full capitalize ${
-                      kpi.status === "good"
-                        ? theme === "dark"
-                          ? "bg-green-500/20 text-green-300"
-                          : "bg-green-500/20 text-green-700"
-                        : kpi.status === "warning"
-                          ? theme === "dark"
-                            ? "bg-yellow-500/20 text-yellow-300"
-                            : "bg-yellow-500/20 text-yellow-700"
-                          : theme === "dark"
-                            ? "bg-red-500/20 text-red-300"
-                            : "bg-red-500/20 text-red-700"
-                    }`}
-                  >
-                    {kpi.status}
-                  </span>
-                </div>
+      {/* Status Indicator Dot */}
+      <mesh position={[position[0], position[1] + 1.0, position[2]]}>
+        <sphereGeometry args={[0.15, 16, 16]} />
+        <meshStandardMaterial
+          color={getAccentColor()}
+          emissive={getAccentColor()}
+          emissiveIntensity={0.5}
+          metalness={0}
+          roughness={0.3}
+        />
+      </mesh>
+
+      {/* Tooltip */}
+      {hovered && (
+        <Html 
+          distanceFactor={8} 
+          position={[position[0], position[1] + 1.5, position[2] + 1]} 
+          center
+        >
+          <div
+            className={`${theme === "dark" ? "bg-gray-900/90" : "bg-white/90"} backdrop-blur-sm text-${theme === "dark" ? "white" : "gray-900"} p-3 rounded-lg shadow-lg min-w-[200px] border ${theme === "dark" ? "border-gray-700" : "border-gray-200"} transform transition-all duration-200`}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-semibold text-sm">{kpi.name}</h4>
+              <span
+                className={`text-xs px-2 py-1 rounded-full capitalize ${
+                  kpi.status === "good"
+                    ? theme === "dark"
+                      ? "bg-green-500/20 text-green-300"
+                      : "bg-green-500/20 text-green-700"
+                    : kpi.status === "warning"
+                      ? theme === "dark"
+                        ? "bg-yellow-500/20 text-yellow-300"
+                        : "bg-yellow-500/20 text-yellow-700"
+                      : theme === "dark"
+                        ? "bg-red-500/20 text-red-300"
+                        : "bg-red-500/20 text-red-700"
+                }`}
+              >
+                {kpi.status}
+              </span>
+            </div>
+
+            <div className="text-xl font-bold mb-2 text-center" style={{ color: hovered ? getAccentColor() : getColor() }}>
+              {kpi.value}
+            </div>
+
+            <p className={`text-xs mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              {kpi.description}
+            </p>
+
+            <div className="text-xs">
+              <div className="flex justify-between">
+                <span className={theme === "dark" ? "text-gray-400" : "text-gray-500"}>Importance:</span>
+                <span className="font-medium">{kpi.importance}/10</span>
               </div>
-
-              <div className="text-3xl font-bold mb-3 text-center" style={{ color: getColor() }}>
-                {kpi.value}
-              </div>
-
-              <p className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                {kpi.description}
-              </p>
-
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className={`p-2 rounded-lg ${theme === "dark" ? "bg-gray-800" : "bg-gray-100"}`}>
-                  <div className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Importance</div>
-                  <div className="font-bold">{kpi.importance}/10</div>
-                </div>
-                <div className={`p-2 rounded-lg ${theme === "dark" ? "bg-gray-800" : "bg-gray-100"}`}>
-                  <div className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Relevance</div>
-                  <div className="font-bold">{kpi.relevanceToOverall}/10</div>
-                </div>
-                <div className={`p-2 rounded-lg ${theme === "dark" ? "bg-gray-800" : "bg-gray-100"}`}>
-                  <div className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Distance</div>
-                  <div className="font-bold">{distance.toFixed(1)} units</div>
-                </div>
-                <div className={`p-2 rounded-lg ${theme === "dark" ? "bg-gray-800" : "bg-gray-100"}`}>
-                  <div className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Target</div>
-                  <div className="font-bold">
-                    {kpi.benchmark ? `${kpi.benchmark.good}${kpi.unit === "percentage" ? "%" : ""}` : "N/A"}
-                  </div>
-                </div>
+              <div className="flex justify-between">
+                <span className={theme === "dark" ? "text-gray-400" : "text-gray-500"}>Distance:</span>
+                <span className="font-medium">{distance.toFixed(1)} units</span>
               </div>
             </div>
-          </Html>
-        )}
-      </mesh>
+          </div>
+        </Html>
+      )}
     </group>
   )
 }
