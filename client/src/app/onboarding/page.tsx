@@ -204,18 +204,18 @@ export default function OnboardingPage() {
             // Show completion screen first, then update metadata to prevent immediate redirect
             setTimeout(async () => {
                 // Update user metadata with onboarding completion
-                await user?.update({
-                    unsafeMetadata: {
-                        ...user.unsafeMetadata,
+            await user?.update({
+                unsafeMetadata: {
+                    ...user.unsafeMetadata,
                         firstLogin: false,
                         onboardingCompleted: true,
                         filesUploaded: uploadedFiles.length > 0,
-                        uploadedFileNames: uploadedFiles.map((f) => f.name),
-                    },
-                })
+                    uploadedFileNames: uploadedFiles.map((f) => f.name),
+                },
+            })
                 
                 // Small delay after metadata update before redirect
-                setTimeout(() => {
+            setTimeout(() => {
                     window.location.href = "/home-page"
                 }, 500)
             }, 3000) // Show completion screen for 3 seconds first
@@ -537,13 +537,13 @@ export default function OnboardingPage() {
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
                                                     Click to upload files
-                                                <Input
-                                                    id="file-upload"
-                                                    type="file"
-                                                    multiple
+                                                    <Input
+                                                        id="file-upload"
+                                                        type="file"
+                                                        multiple
                                                     accept=".csv,.pdf,.json,.txt"
-                                                    className="hidden"
-                                                    onChange={handleFileUpload}
+                                                        className="hidden"
+                                                        onChange={handleFileUpload}
                     
                                                     />
                                                 </Label>
@@ -568,7 +568,7 @@ export default function OnboardingPage() {
                                                                 {getFileIcon(file.extension)}
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <span className="text-sm text-white truncate max-w-[180px] font-medium">{file.name}</span>
+                                                            <span className="text-sm text-white truncate max-w-[180px] font-medium">{file.name}</span>
                                                                 <div className="flex items-center gap-2 text-xs text-gray-400">
                                                                     <span>{file.extension.toUpperCase()}</span>
                                                                     <span>|</span>

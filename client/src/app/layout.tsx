@@ -38,15 +38,15 @@ export default function RootLayout({
       <html lang="en">
         <body className="bg-[#0E1111]">
           <ClientProviders>
-            <SignedOut>
-              <Page />
-            </SignedOut>
-            <SignedIn>
+          <SignedOut>
+            <Page />
+          </SignedOut>
+          <SignedIn>
               <ProtectedRoute>
-                <main>{children}</main>
+              <main>{children}</main>
               </ProtectedRoute>
             </SignedIn>
-          </ClientProviders>
+            </ClientProviders>
         </body>
       </html>
     </ClerkProvider>

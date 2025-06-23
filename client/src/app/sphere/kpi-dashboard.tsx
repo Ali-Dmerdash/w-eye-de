@@ -37,8 +37,8 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
   const getColor = () => {
     const colors: Record<"good" | "warning" | "critical", string> = {
       good: theme === "dark" ? "#8b5cf6" : "#7c3aed",
-      warning: theme === "dark" ? "#ffcd03" : "#ffcd03",
-      critical: theme === "dark" ? "#ff0000" : "#ff0000",
+      warning: theme === "dark" ? "#8b5cf6" : "#7c3aed",
+      critical: theme === "dark" ? "#8b5cf6" : "#7c3aed",
     }
     return colors[kpi.status as keyof typeof colors] || (theme === "dark" ? "#64748b" : "#475569")
   }

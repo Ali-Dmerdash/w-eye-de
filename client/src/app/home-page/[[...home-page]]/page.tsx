@@ -244,7 +244,7 @@ export default function Home() {
                     <span className="font-medium">{stats.total}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className={theme === "dark" ? "text-purple-700" : "text-purple-600"}>Good:</span>
+                    <span className={theme === "dark" ? "text-green-700" : "text-green-600"}>Good:</span>
                     <span className="font-medium">{stats.good}</span>
                   </div>
                   <div className="flex justify-between">

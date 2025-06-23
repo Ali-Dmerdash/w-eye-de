@@ -161,6 +161,6 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   // Since we're within SignedIn wrapper, user should be signed in
   // Render children for authenticated users
-  return <>{children}</>;
+    return <>{children}</>;
 }
 

@@ -34,9 +34,23 @@ export default function SalesOverview() {
               <p className="text-sm text-green-600 dark:text-green-400 font-medium">+5% more in 2024</p>
             </div>
           </div>
-          <div className="bg-purple-50 dark:bg-purple-900/20 px-3 py-1 rounded-full">
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Q4 2024</span>
-          </div>
+          {(() => {
+          const now = new Date();
+          const year = now.getFullYear();
+          const month = now.getMonth(); // 0-based
+          let quarter = 1;
+          if (month >= 0 && month <= 2) quarter = 1;
+          else if (month >= 3 && month <= 5) quarter = 2;
+          else if (month >= 6 && month <= 8) quarter = 3;
+          else if (month >= 9 && month <= 11) quarter = 4;
+          return (
+            <div className="bg-purple-50 dark:bg-purple-900/20 px-3 py-1 rounded-full">
+              <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+                {`Q${quarter} ${year}`}
+              </span>
+            </div>
+          );
+        })()}
         </div>
 
         {/* Chart */}

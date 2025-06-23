@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Spline from '@splinetool/react-spline';
 import logo from "../../../assets/LOGO1.png";
+import loginSphere from "../../../assets/loginSphere.png";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import UserAuthForm from "./components/user-auth-form";
@@ -20,8 +21,9 @@ export default function AuthenticationPage() {
 
         <div className="relative h-full flex-col rounded-xl flex p-6 px-24 items-start justify-center overflow-hidden bg-gradient-to-r from-[#15191c] to-[#000000]">
 
-          <div className="absolute inset-0 z-0 opacity-50 blur-sm w-[200%] -left-12">
-            {/* <Spline scene="https://prod.spline.design/PFx5G2qyftQjNcww/scene.splinecode" className="w-[200%]" /> */}
+          <div className="absolute inset-0 z-0 opacity-50 blur-sm flex items-center justify-center w-[150%] left-[22rem]">
+            <Image src={loginSphere} alt="logo" />
+
           </div>
 
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-8 z-10">
