@@ -78,7 +78,7 @@ const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
     const entries = Object.entries(keyFactorsData)
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full ">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
@@ -91,7 +91,7 @@ const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
             </div>
 
             {/* Factors Grid */}
-            <div className="space-y-4 overflow-y-auto max-h-80 custom-scrollbar">
+            <div className="space-y-4 overflow-y-auto max-h-[40vh] custom-scrollbar">
                 {entries.map(([key, value], index) => {
                     const [score = "", level = ""] = value.split("/").map((s) => s.trim())
                     const formattedKey = formatLabel(key)
@@ -99,7 +99,8 @@ const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
                     return (
                         <div
                             key={key}
-                            className="flex items-center justify-between flex-col gap-3 p-4 bg-purple-50 dark:bg-gray-700/50 rounded-xl border border-purple-100 dark:border-gray-600 hover:shadow-md transition-shadow"
+                            className="
+                            flex items-center justify-between flex-col gap-3 p-4 bg-purple-50 dark:bg-gray-700/50 rounded-xl border border-purple-100 dark:border-gray-600 hover:shadow-md transition-shadow"
                         >
                             <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-3">

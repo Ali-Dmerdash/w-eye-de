@@ -153,8 +153,8 @@ export default function Page() {
 
                     <div className={`min-h-[400px] lg:min-h-[40vh] lg:col-span-2 transform transition-all duration-700 ease-out delay-300 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                         }`}>
-                        {/* Graph component remains unchanged (uses static data) */}
-                        <Graph />
+                        {/* Pass monthly_forecast_next_year to Graph */}
+                        <Graph monthlyForecast={trendData?.monthly_forecast_next_year} />
                     </div>
 
                     {/* Bottom Row */}

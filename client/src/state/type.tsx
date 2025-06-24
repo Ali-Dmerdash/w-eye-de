@@ -126,6 +126,7 @@ export interface RevenueTrend {
   confidence_level: string; // e.g., "High"
   key_factors: RevenueKeyFactors;
   analysis: RevenueAnalysis;
+  monthly_forecast_next_year?: Record<string, string>; // e.g., { January: "$175,000", ... }
 }
 
 export interface RawRevenueApiResponse {
