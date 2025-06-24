@@ -30,7 +30,7 @@ export default function Page() {
 
     // Listen for changes to the sidebar state
     useEffect(() => {
-
+        console.log("trendData", trendData)
         const updateSidebarState = () => {
             const isCollapsed = document.documentElement.getAttribute("data-sidebar-collapsed") === "true"
             setIsCollapsed(isCollapsed)
