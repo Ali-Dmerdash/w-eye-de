@@ -3,49 +3,15 @@ import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketModelResponse, PricingComparison as PCType } from "@/state/type"
 import { DollarSign, TrendingUp, AlertCircle } from "lucide-react"
 
-// Helper function to get a safe error message string
-function getErrorMessage(error: unknown): string {
-  if (!error) {
-    return "An unknown error occurred"
-  }
-  if (typeof error === "object" && error !== null) {
-    if ("status" in error) {
-      let details = ""
-      if (
-        "data" in error &&
-        typeof error.data === "object" &&
-        error.data !== null &&
-        "message" in error.data &&
-        typeof error.data.message === "string"
-      ) {
-        details = error.data.message
-      } else if ("error" in error && typeof error.error === "string") {
-        details = error.error
-      }
-      return `Error ${error.status}${details ? ": " + details : ""}`
-    }
-    if ("message" in error && typeof error.message === "string") {
-      return error.message
-    }
-  }
-  try {
-    return String(error)
-  } catch {
-    return "An unknown error occurred"
-  }
-}
-
 export default function PricingComparison() {
   const { data: marketDataArray, isLoading, error: queryError } = useGetMarketDataQuery()
 
   const marketData: MarketModelResponse | undefined = marketDataArray?.[0]
   const pricingComparisonData: PCType | undefined | null = marketData?.pricing_comparison
 
-  const competitors: Record<string, string> | undefined = pricingComparisonData?.competitors
-  const discountStrategies: string[] | undefined = pricingComparisonData?.discount_strategies
-
-  const hasCompetitors = competitors && Object.keys(competitors).length > 0
-  const firstDiscountStrategy = discountStrategies?.[0]?.split(" (Source:")[0].trim() || "N/A"
+  // Parse new response structure
+  const competitorPricing = pricingComparisonData?.competitor_pricing || []
+  const ourPricing = pricingComparisonData?.our_pricing || []
 
   // Loading State
   if (isLoading) {
@@ -103,12 +69,11 @@ export default function PricingComparison() {
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Pricing Comparison</h2>
           <div className="flex items-center gap-1">
-            {hasCompetitors ? (
+            {competitorPricing.length > 0 ? (
               <>
                 <TrendingUp className="w-3 h-3 text-green-500" />
                 <span className="text-sm text-green-600 dark:text-green-400">
-                  {Object.keys(competitors).length} competitor{Object.keys(competitors).length !== 1 ? "s" : ""}{" "}
-                  analyzed
+                  {competitorPricing.length} competitor{competitorPricing.length !== 1 ? "s" : ""} analyzed
                 </span>
               </>
             ) : (
@@ -130,26 +95,23 @@ export default function PricingComparison() {
               </tr>
             </thead>
             <tbody>
-              {hasCompetitors ? (
-                Object.entries(competitors).map(([name, priceString], index) => {
-                  const priceValue = priceString?.match(/\d+(\.\d+)?/)?.[0] ?? "N/A"
-                  return (
-                    <tr
-                      key={name}
-                      className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors"
-                    >
-                      <td className="py-4 px-2 font-medium text-gray-900 dark:text-white">{name}</td>
-                      <td className="text-center py-4 px-2">
-                        <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-sm font-medium">
-                          ${priceValue}
-                        </span>
-                      </td>
-                      <td className="text-center py-4 px-2 text-sm text-gray-600 dark:text-gray-300">
-                        {firstDiscountStrategy}
-                      </td>
-                    </tr>
-                  )
-                })
+              {competitorPricing.length > 0 ? (
+                competitorPricing.map((row, idx) => (
+                  <tr
+                    key={idx}
+                    className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors"
+                  >
+                    <td className="py-8 px-2 text-sm text-gray-900 dark:text-white">{row.competitor}</td>
+                    <td className="text-center py-4 px-2">
+                      <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs font-medium">
+                        {row.price_range}
+                      </span>
+                    </td>
+                    <td className="text-center py-4 px-2 text-sm text-gray-600 dark:text-gray-300">
+                      {row.product_line}
+                    </td>
+                  </tr>
+                ))
               ) : (
                 <tr>
                   <td colSpan={3} className="text-center py-8 text-gray-500 dark:text-gray-400">
@@ -157,10 +119,58 @@ export default function PricingComparison() {
                   </td>
                 </tr>
               )}
+              {ourPricing.length > 0 && (
+                <tr
+                  className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors"
+                >
+                  <td className="py-8 px-2 text-sm text-gray-900 dark:text-white">Our Company</td>
+                  <td className="text-center py-4 px-2">
+                    <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs font-medium">
+                      {ourPricing[0].price_range}
+                    </span>
+                  </td>
+                  <td className="text-center py-4 px-2 text-sm text-gray-600 dark:text-gray-300">
+                    {ourPricing[0].product_line}
+                  </td>
+                </tr>
+
+
+              )}
             </tbody>
           </table>
         </div>
       </div>
     </div>
   )
+}
+
+function getErrorMessage(error: unknown): string {
+  if (!error) {
+    return "An unknown error occurred"
+  }
+  if (typeof error === "object" && error !== null) {
+    if ("status" in error) {
+      let details = ""
+      if (
+        "data" in error &&
+        typeof error.data === "object" &&
+        error.data !== null &&
+        "message" in error.data &&
+        typeof error.data.message === "string"
+      ) {
+        details = error.data.message
+      } else if ("error" in error && typeof error.error === "string") {
+        details = error.error
+      }
+      return `Error ${error.status}${details ? ": " + details : ""}`
+    }
+    if ("message" in error && typeof error.message === "string") {
+      return error.message
+    }
+  }
+  try {
+    return String(error)
+  } catch {
+    return "An unknown error occurred"
+  }
 }

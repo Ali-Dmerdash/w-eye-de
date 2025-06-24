@@ -116,39 +116,13 @@ const TransactionModal = ({
     URL.revokeObjectURL(url)
   }
 
-  // Helper function to create transaction data file and open chat
-  const uploadToChatAsAttachment = () => {
-    if (!transaction) return
-
-    // Create a detailed transaction object text file
-    const transactionData = {
-      transactionId: transaction._id,
-      exportDate: new Date().toISOString(),
-      data: {} as Record<string, any>
-    }
-
-    // Add all transaction fields
-    allColumns.forEach(col => {
-      transactionData.data[col.label] = transaction[col.key as keyof Transaction]
-    })
-
-    const content = JSON.stringify(transactionData, null, 2)
-    const blob = new Blob([content], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-
-    // Create file attachment object
-    const attachment = {
-      id: Date.now().toString(),
-      name: `transaction-${transaction._id || 'data'}.json`,
-      type: 'application/json',
-      url: url,
-      size: blob.size
-    }
-
-    // Set the attachment and open chat
-    setDraftAttachments([attachment])
-    openChat('I have uploaded a transaction for analysis. Can you help me understand this transaction data?')
-    onClose()
+  // Helper function to open chat and send transaction row directly
+  const sendRowToChat = () => {
+    if (!transaction) return;
+    // Create a readable message for the transaction row
+    const rowText = allColumns.map(col => `${col.label}: ${transaction[col.key as keyof Transaction]}`).join('\n');
+    openChat(`Analyze this transaction:\n${rowText}`);
+    onClose();
   }
 
   useEffect(() => {
@@ -277,9 +251,9 @@ const TransactionModal = ({
                 <span className="relative z-10">Download CSV</span>
               </button>
 
-              {/* Upload to Chat Button */}
+              {/* Send Row to Chat Button */}
               <button
-                onClick={uploadToChatAsAttachment}
+                onClick={sendRowToChat}
                 className="group relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
                 title="Send transaction to chat for analysis"
               >

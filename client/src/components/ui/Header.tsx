@@ -171,6 +171,7 @@ export default function Header() {
         id="lightMode-btn"
         className="relative flex items-center border border-gray-200 border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl"
         data-onboarding="theme-toggle"
+        title="Convert To Light Mode"
       >
         <button
           type="button"
@@ -206,6 +207,7 @@ export default function Header() {
         id="darkMode-btn"
         className="relative flex items-center border border-[#15191c] border-opacity-40 h-10 px-4 md:space-x-2 space-x-1 rounded-xl"
         data-onboarding="theme-toggle"
+        title="Convert To Dark Mode"
       >
         <button
           type="button"
@@ -248,6 +250,7 @@ export default function Header() {
             className="hidden md:flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-48"
             onClick={handleClick}
             data-onboarding="ai-assistant"
+            title="AI Assistant"
           >
             <svg
               className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200 cursor-pointer hover:scale-110 transition-all duration-300"
@@ -289,8 +292,11 @@ export default function Header() {
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 hover:bg-gray-100 dark:hover:bg-gray-800/30 cursor-pointer transition-all duration-300"
             onClick={() => openChat()}
             data-onboarding="ai-assistant"
+            title="AI Assistant"
+
           >
             <MessageSquare className="w-5 h-5 text-[#15191c] dark:text-gray-200" />
+            
           </div>
 
           {toggleButton}
@@ -299,6 +305,8 @@ export default function Header() {
             className="relative flex items-center border border-[#15191c] dark:border-gray-200 border-opacity-40 dark:border-opacity-30 h-10 px-4 md:space-x-2 space-x-1 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/30 transition-colors"
             onClick={toggleNotifications}
             data-onboarding="notifications"
+            title="Notifications"
+
           >
             <div className="flex items-center relative">
               <Bell className="w-5 h-5 text-[#15191c] dark:text-gray-200" />

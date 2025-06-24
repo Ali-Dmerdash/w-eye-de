@@ -2,6 +2,9 @@
 import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketModelResponse, CompetitivePositioning as CPType, PricingComparison as PCType } from "@/state/type"
 import { BarChart3, TrendingUp, AlertCircle } from "lucide-react"
+import { useEffect } from "react"
+import Modal from "@/components/ui/Modal"
+import React from "react"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -36,17 +39,33 @@ function getErrorMessage(error: unknown): string {
 }
 
 export default function CompetitivePositioning() {
+
   const { data: marketDataArray, isLoading, error: queryError } = useGetMarketDataQuery()
 
   const marketData: MarketModelResponse | undefined = marketDataArray?.[0]
   const competitivePositioningData: CPType | undefined | null = marketData?.competitive_positioning
   const pricingComparisonData: PCType | undefined | null = marketData?.pricing_comparison
 
-  const scores: Record<string, (string | number)[]> | undefined = competitivePositioningData?.scores
-  const prices: Record<string, string> | undefined = pricingComparisonData?.competitors
+  // Parse new response structure
+  const marketShare = competitivePositioningData?.market_share || 'N/A';
+  const keyDifferentiators = competitivePositioningData?.key_differentiators || [];
+  const customerSegments = competitivePositioningData?.customer_segments || [];
 
-  const hasScores = scores && Object.keys(scores).length > 0
-  const hasPrices = prices && Object.keys(prices).length > 0
+  // Modal state
+  const [modalOpen, setModalOpen] = React.useState<null | 'key' | 'customer'>(null);
+
+  useEffect(() => {
+    console.log("Competitive Positioning", marketData)
+  }, [marketData])
+
+  // Table row logic
+  const row = {
+    marketShare,
+    keyDifferentiator: keyDifferentiators.length > 0 ? '' : 'N/A',
+    customerSegment: customerSegments.length > 0 ? '' : 'N/A',
+    hasMoreKey: keyDifferentiators.length > 1,
+    hasMoreCustomer: customerSegments.length > 1,
+  };
 
   // Loading State
   if (isLoading) {
@@ -95,90 +114,97 @@ export default function CompetitivePositioning() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full flex flex-col">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-          <BarChart3 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+    <>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full flex flex-col">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+            <BarChart3 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Competitive Positioning</h2>
+            <div className="flex items-center gap-1">
+              <TrendingUp className="w-3 h-3 text-green-500" />
+              <span className="text-sm text-gray-500 dark:text-gray-400">Market performance analysis</span>
+            </div>
+          </div>
         </div>
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Competitive Positioning</h2>
-          <div className="flex items-center gap-1">
-            <TrendingUp className="w-3 h-3 text-green-500" />
-            <span className="text-sm text-gray-500 dark:text-gray-400">Market performance analysis</span>
+
+        {/* Table */}
+        <div className="flex-grow overflow-hidden">
+          <div className="overflow-x-auto h-full">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-purple-100 dark:border-gray-700">
+                  <th className="text-center py-2 px-1 text-sm font-medium text-gray-600 dark:text-gray-300 w-[33%]">Market Share</th>
+                  <th className="text-center py-2 px-1 text-sm font-medium text-gray-600 dark:text-gray-300 w-[33%]">Key Differentiators</th>
+                  <th className="text-center py-2 px-1 text-sm font-medium text-gray-600 dark:text-gray-300 w-[34%]">Customer Segments</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors">
+                  <td className="text-center py-8 px-1">
+                    <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded-full text-xs">
+                      {row.marketShare}
+                    </span>
+                  </td>
+                  <td className="text-center py-8 px-1">
+                    <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-1.5 py-0.5 rounded-full text-xs">
+                    {row.keyDifferentiator}
+                    {keyDifferentiators && (
+                      <button
+                        className="text-xs text-purple-700 dark:text-purple-300 underline hover:text-purple-900 dark:hover:text-purple-100 font-medium focus:outline-none"
+                        onClick={() => setModalOpen('key')}
+                      >
+                        Show All
+                      </button>
+                    )}
+                    </span>
+                  </td>
+                  <td className="text-center py-8 px-1">
+                    <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 px-1.5 py-0.5 rounded-full text-xs">
+                    {row.customerSegment}
+
+                    {customerSegments && (
+                      <button
+                        className="text-xs text-orange-700 dark:text-orange-300 underline hover:text-orange-900 dark:hover:text-orange-100 font-medium focus:outline-none"
+                        onClick={() => setModalOpen('customer')}
+                      >
+                        Show All
+                      </button>
+                    )}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-
-      {/* Table */}
-      <div className="flex-grow overflow-hidden">
-        <div className="overflow-x-auto h-full">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-purple-100 dark:border-gray-700">
-                <th className="text-left py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[25%]">Name</th>
-                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[18%]">
-                  Market Share
-                </th>
-                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[15%]">Price</th>
-                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[21%]">
-                  Satisfaction
-                </th>
-                <th className="text-center py-2 px-1 text-xs font-medium text-gray-600 dark:text-gray-300 w-[21%]">
-                  Innovation
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {hasScores && hasPrices ? (
-                Object.entries(scores).map(([name, scoreArray], index) => {
-                  const priceString = prices[name]
-                  const priceValue = priceString?.match(/\d+(\.\d+)?/)?.[0] ?? "N/A"
-
-                  const marketShare = scoreArray?.[1] ?? "N/A"
-                  const satisfaction = scoreArray?.[2] ?? "N/A"
-                  const innovation = scoreArray?.[3] ?? "N/A"
-
-                  return (
-                    <tr
-                      key={name}
-                      className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors"
-                    >
-                      <td className="py-2 px-1 font-medium text-gray-900 dark:text-white text-xs truncate">{name}</td>
-                      <td className="text-center py-2 px-1">
-                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded-full text-xs">
-                          {marketShare}
-                        </span>
-                      </td>
-                      <td className="text-center py-2 px-1">
-                        <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full text-xs">
-                          ${priceValue}
-                        </span>
-                      </td>
-                      <td className="text-center py-2 px-1">
-                        <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-1.5 py-0.5 rounded-full text-xs">
-                          {satisfaction}
-                        </span>
-                      </td>
-                      <td className="text-center py-2 px-1">
-                        <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 px-1.5 py-0.5 rounded-full text-xs">
-                          {innovation}
-                        </span>
-                      </td>
-                    </tr>
-                  )
-                })
-              ) : (
-                <tr>
-                  <td colSpan={5} className="text-center py-6 text-gray-500 dark:text-gray-400 text-xs">
-                    No competitive positioning data available
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      {/* Modal for Key Differentiators */}
+      <Modal open={modalOpen === 'key'} onClose={() => setModalOpen(null)} title="All Key Differentiators">
+        {keyDifferentiators.length > 0 ? (
+          <ul className="list-disc pl-5 space-y-2">
+            {keyDifferentiators.map((item, idx) => (
+              <li key={idx} className="text-sm text-purple-900 dark:text-purple-200">{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400">No key differentiators data available.</p>
+        )}
+      </Modal>
+      {/* Modal for Customer Segments */}
+      <Modal open={modalOpen === 'customer'} onClose={() => setModalOpen(null)} title="All Customer Segments">
+        {customerSegments.length > 0 ? (
+          <ul className="list-disc pl-5 space-y-2">
+            {customerSegments.map((item, idx) => (
+              <li key={idx} className="text-sm text-orange-900 dark:text-orange-200">{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400">No customer segments data available.</p>
+        )}
+      </Modal>
+    </>
   )
 }

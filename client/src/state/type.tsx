@@ -71,42 +71,41 @@ export interface SwotAnalysis {
 }
 
 export interface PricingComparison {
-  competitors: Record<string, string>; // e.g., { Xiaomi: "232 (Source...)" }
-  discount_strategies: string[];
+  competitor_pricing: {
+    competitor: string;
+    product_line: string;
+    price_range: string;
+  }[];
+  our_pricing: {
+    product_line: string;
+    price_range: string;
+  }[];
 }
 
 export interface CompetitivePositioning {
-  metrics: string[];
-  // Use Record<string, (string | number)[]> to allow mixed types in scores array
-  scores: Record<string, (string | number)[]>;
-  visualization_note: string;
-}
-
-export interface MarketTrend {
-  name: string;
-  growth: string;
-  impact: string; // e.g., "high", "medium"
+  market_share: string;
+  key_differentiators: string[];
+  customer_segments: string[];
 }
 
 export interface MarketAnalysis {
-  trends: MarketTrend[];
-  market_share: Record<string, string>; // e.g., { Xiaomi: "12% (Source...)" }
+  industry_trends: string[];
+  consumer_behaviors: string[];
+  market_growth: string;
 }
 
 export interface Recommendations {
-  immediate_actions: string[];
-  strategic_initiatives: string[];
-  urgent_alerts: string[];
+  strategic_moves: string[];
+  product_development: string[];
 }
 
 export interface MarketModelResponse {
-  _id: string;
-  id: number;
   swot_analysis: SwotAnalysis;
   pricing_comparison: PricingComparison;
   competitive_positioning: CompetitivePositioning;
   market_analysis: MarketAnalysis;
   recommendations: Recommendations;
+  createdAt: { $date: string };
 }
 
 // --- Revenue Service Types ---

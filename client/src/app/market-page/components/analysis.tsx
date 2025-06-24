@@ -2,6 +2,8 @@
 import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketAnalysis } from "@/state/type"
 import { BarChart3, TrendingUp, PieChart, AlertCircle } from "lucide-react"
+import React from "react"
+import Modal from "@/components/ui/Modal"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -39,6 +41,9 @@ export default function Analysis() {
   const { data: marketDataArray, isLoading, error: queryError } = useGetMarketDataQuery()
 
   const marketAnalysisData: MarketAnalysis | undefined | null = marketDataArray?.[0]?.market_analysis
+
+  // Modal state for table fields
+  const [modalOpen, setModalOpen] = React.useState<{ field: string; items: string[] } | null>(null);
 
   // Loading state
   if (isLoading) {
@@ -98,121 +103,90 @@ export default function Analysis() {
     )
   }
 
-  const { trends, market_share } = marketAnalysisData
+  const { industry_trends = [], consumer_behaviors = [], market_growth = '' } = marketAnalysisData;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full flex flex-col">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-          <BarChart3 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+    <>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full flex flex-col">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+            <BarChart3 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Market Analysis</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Trends and market share insights</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Market Analysis</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Trends and market share insights</p>
-        </div>
-      </div>
 
-      {/* Content */}
-      <div className="flex-grow overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
-          {/* Trends Section */}
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="w-5 h-5 text-green-500" />
-              <h3 className="font-medium text-gray-900 dark:text-white">Market Trends</h3>
-            </div>
-            <div className="flex-grow overflow-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-purple-100 dark:border-gray-700">
-                    <th className="text-left py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Name</th>
-                    <th className="text-center py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Growth</th>
-                    <th className="text-center py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Impact</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {trends?.length > 0 ? (
-                    trends.map((trend, index) => (
-                      <tr
-                        key={index}
-                        className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors"
-                      >
-                        <td className="py-3 text-sm text-gray-900 dark:text-white">{trend.name}</td>
-                        <td className="text-center py-3">
-                          <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs">
-                            {trend.growth?.match(/\d+(\.\d+)?/)?.[0] ?? "N/A"}%
-                          </span>
-                        </td>
-                        <td className="text-center py-3">
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs capitalize ${
-                              trend.impact === "high"
-                                ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                                : trend.impact === "medium"
-                                  ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                  : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                            }`}
+        {/* Content */}
+        <div className="flex-grow overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+            {/* Table Section */}
+            <div className="flex flex-col col-span-2">
+              <div className="flex-grow overflow-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-purple-100 dark:border-gray-700">
+                      <th className="text-left py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Industry Trends</th>
+                      <th className="text-center py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Consumer Behaviors</th>
+                      <th className="text-center py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Market Growth</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors">
+                      {/* Industry Trends */}
+                      <td className="py-3 text-sm text-gray-900 dark:text-white">
+                        <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full text-xs font-medium">
+                        
+                        
+                        {industry_trends.length === 1 ? industry_trends[0] : (
+                          <button
+                            className="text-xs text-green-700 dark:text-green-300 underline hover:text-green-900 dark:hover:text-green-100 font-medium focus:outline-none"
+                            onClick={() => setModalOpen({ field: 'All Industry Trends', items: industry_trends })}
                           >
-                            {trend.impact}
-                          </span>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="text-center py-6 text-gray-500 dark:text-gray-400">
-                        No trend data available
+                            Show All
+                          </button>
+                        )}</span>
+                      </td>
+                      {/* Consumer Behaviors */}
+                      <td className="text-center py-3 text-sm text-gray-900 dark:text-white">
+                        <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-2 py-1 rounded-full text-xs font-medium">                        
+                        {consumer_behaviors.length === 1 ? consumer_behaviors[0] : (
+                          <button
+                            className="text-xs text-purple-700 dark:text-purple-300 underline hover:text-purple-900 dark:hover:text-purple-100 font-medium focus:outline-none"
+                            onClick={() => setModalOpen({ field: 'All Consumer Behaviors', items: consumer_behaviors })}
+                          >
+                            Show All
+                          </button>
+                        )}</span>
+                      </td>
+                      {/* Market Growth */}
+                      <td className="text-center py-3 text-sm text-gray-900 dark:text-white">
+                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-full text-xs font-medium">
+                          {market_growth}
+                        </span>
                       </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Market Share Section */}
-          <div className="flex flex-col md:border-l md:border-purple-100 md:dark:border-gray-700 md:pl-6">
-            <div className="flex items-center gap-2 mb-4">
-              <PieChart className="w-5 h-5 text-purple-500" />
-              <h3 className="font-medium text-gray-900 dark:text-white">Market Share</h3>
-            </div>
-            <div className="flex-grow overflow-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-purple-100 dark:border-gray-700">
-                    <th className="text-left py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Company</th>
-                    <th className="text-right py-2 text-sm font-medium text-gray-600 dark:text-gray-300">Share</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {market_share && Object.keys(market_share).length > 0 ? (
-                    Object.entries(market_share).map(([name, percentage], index) => (
-                      <tr
-                        key={index}
-                        className="border-b border-purple-50 dark:border-gray-800 hover:bg-purple-25 dark:hover:bg-gray-700/50 transition-colors"
-                      >
-                        <td className="py-3 text-sm text-gray-900 dark:text-white">{name}</td>
-                        <td className="text-right py-3">
-                          <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-2 py-1 rounded-full text-xs font-medium">
-                            {percentage?.match(/\d+(\.\d+)?/)?.[0] ?? "N/A"}%
-                          </span>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={2} className="text-center py-6 text-gray-500 dark:text-gray-400">
-                        No market share data available
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      {/* Modal for Table Fields */}
+      <Modal open={!!modalOpen} onClose={() => setModalOpen(null)} title={modalOpen?.field}>
+        {modalOpen && Array.isArray(modalOpen.items) && modalOpen.items.length > 0 ? (
+          <ul className="list-disc pl-5 space-y-2">
+            {modalOpen.items.map((item, idx) => (
+              <li key={idx} className="text-sm text-gray-900 dark:text-gray-200">{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400">No data available.</p>
+        )}
+      </Modal>
+    </>
   )
 }

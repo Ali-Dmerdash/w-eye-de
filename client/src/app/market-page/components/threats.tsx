@@ -2,6 +2,8 @@
 import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketModelResponse, SwotAnalysis } from "@/state/type"
 import { AlertTriangle, Zap, AlertCircle, TrendingDown, Shield } from "lucide-react"
+import Modal from "@/components/ui/Modal"
+import React from "react"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -44,6 +46,9 @@ export default function Threats() {
 
   const hasThreats = threats && threats.length > 0
   const threatText = hasThreats ? threats[0].split(" (Source:")[0].trim() : "No threats data available."
+
+  // Modal state
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   // Loading State
   if (isLoading) {
@@ -101,7 +106,12 @@ export default function Threats() {
   }
 
   return (
-      <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-2xl shadow-lg border border-orange-200 dark:border-orange-800/30 p-6 h-full flex flex-col relative overflow-hidden">
+    <>
+      <div
+        className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-2xl shadow-lg border border-orange-200 dark:border-orange-800/30 p-6 h-full flex flex-col relative overflow-hidden cursor-pointer hover:shadow-xl hover:scale-105 transition-all duration-300"
+        onClick={() => hasThreats && setModalOpen(true)}
+        title={hasThreats ? "Click for more details" : undefined}
+      >
         {/* Background Pattern */}
         <div className="absolute top-0 right-0 w-20 h-20 opacity-10">
           <div className="w-full h-full bg-orange-300 rounded-full transform translate-x-6 -translate-y-6"></div>
@@ -124,33 +134,53 @@ export default function Threats() {
         {/* Content */}
         <div className="flex-grow flex items-center justify-center relative z-10">
           {hasThreats ? (
-              <div className="text-center">
-                <div className="space-y-1">
-                  <p className="text-sm text-orange-800 dark:text-orange-200 leading-relaxed font-bold font-mulish px-2">
-                    {threatText}
-                  </p>
-
-                </div>
+            <div className="text-center">
+              <div className="space-y-1">
+                <p className="text-sm text-orange-800 dark:text-orange-200 leading-relaxed font-bold font-mulish px-2">
+                  {threatText}
+                </p>
+                <button
+                  className="mt-4 text-xs text-orange-700 dark:text-orange-300 underline hover:text-orange-900 dark:hover:text-orange-100 font-medium focus:outline-none"
+                  onClick={e => { e.stopPropagation(); setModalOpen(true); }}
+                >
+                  Show More
+                </button>
               </div>
+            </div>
           ) : (
-              <div className="text-center space-y-4">
-                <div className="bg-gray-100 dark:bg-gray-800/50 p-4 rounded-full">
-                  <AlertTriangle className="w-10 h-10 text-gray-400" />
-                </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 px-2">{threatText}</p>
+            <div className="text-center space-y-4">
+              <div className="bg-gray-100 dark:bg-gray-800/50 p-4 rounded-full">
+                <AlertTriangle className="w-10 h-10 text-gray-400" />
               </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 px-2">{threatText}</p>
+            </div>
           )}
         </div>
 
         {/* Footer Indicator */}
         {hasThreats && (
-            <div className="mt-4 pt-3 border-t border-orange-200 dark:border-orange-800/30 relative z-10">
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                <span className="text-xs text-orange-600 dark:text-orange-400 font-medium">Monitor Closely</span>
-              </div>
+          <div className="mt-4 pt-3 border-t border-orange-200 dark:border-orange-800/30 relative z-10">
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+              <span className="text-xs text-orange-600 dark:text-orange-400 font-medium">Monitor Closely</span>
             </div>
+          </div>
         )}
       </div>
+      {/* Modal for more details */}
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="All Threats">
+        {hasThreats ? (
+          <ul className="list-disc pl-5 space-y-2">
+            {threats!.map((t, idx) => (
+              <li key={idx} className="text-sm text-orange-900 dark:text-orange-200">
+                {t}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400">No threats data available.</p>
+        )}
+      </Modal>
+    </>
   )
 }
