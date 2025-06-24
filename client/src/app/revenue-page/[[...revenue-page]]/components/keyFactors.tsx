@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import { BarChart, TrendingUp, Target, Zap } from "lucide-react"
 import type { RevenueKeyFactors } from "@/state/type"
 
@@ -8,7 +8,11 @@ interface KeyFactorsCardProps {
     keyFactorsData: RevenueKeyFactors | undefined | null
 }
 
+
+
 const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
+
+
     const formatLabel = (label: string): string => {
         let result = label.replace(/([A-Z])/g, " $1")
         result = result.replace(/^\s+/, "")
@@ -22,12 +26,20 @@ const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
 
     const getLevelColor = (level: string) => {
         switch (level) {
-            case "High":
-                return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-            case "Medium":
-                return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+            case "High Positive":
+                return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
+            case "Moderate Positive":
+                return "bg-yellow-50 text-yellow-600 dark:bg-yellow-900/10 dark:text-yellow-300";
+            case "Low Positive":
+                return "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/10 dark:text-emerald-300";
+            case "High Negative":
+                return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+            case "Moderate Negative":
+                return "bg-orange-50 text-orange-600 dark:bg-orange-900/10 dark:text-orange-300";
+            case "Low Negative":
+                return "bg-red-50 text-red-600 dark:bg-red-900/10 dark:text-red-300";
             default:
-                return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                return "bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-300";
         }
     }
 
@@ -79,7 +91,7 @@ const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
             </div>
 
             {/* Factors Grid */}
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-y-auto max-h-80 custom-scrollbar">
                 {entries.map(([key, value], index) => {
                     const [score = "", level = ""] = value.split("/").map((s) => s.trim())
                     const formattedKey = formatLabel(key)
@@ -87,20 +99,20 @@ const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
                     return (
                         <div
                             key={key}
-                            className="p-4 bg-purple-50 dark:bg-gray-700/50 rounded-xl border border-purple-100 dark:border-gray-600 hover:shadow-md transition-shadow"
+                            className="flex items-center justify-between flex-col gap-3 p-4 bg-purple-50 dark:bg-gray-700/50 rounded-xl border border-purple-100 dark:border-gray-600 hover:shadow-md transition-shadow"
                         >
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-400">
                                         {React.cloneElement(getFactorIcon(index), { className: "w-4 h-4" })}
                                     </div>
-                                    <div>
-                                        <h3 className="font-medium text-gray-900 dark:text-white">{formattedKey}</h3>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Score: {score}</p>
+                                    <div className="flex flex-col items-start  gap-2">
+                                        <h3 className="text-sm text-gray-900 dark:text-white">{formattedKey}</h3>
                                     </div>
                                 </div>
-                                <div className={`px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(level)}`}>{level}</div>
+
                             </div>
+                            <div className={`px-3 py-1 rounded-full w-fit text-xs text-center ${getLevelColor(score)}`}>{score}</div>
                         </div>
                     )
                 })}

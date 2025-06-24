@@ -8,4 +8,6 @@ const revenueInputSchema = new mongoose.Schema(
   },
   { collection: "Revenue_LLM_Input" }
 ); // Explicitly define
-module.exports = mongoose.model("Revenue_LLM_Input", revenueInputSchema);
+module.exports =
+  mongoose.models.Revenue_LLM_Input ||
+  mongoose.model("Revenue_LLM_Input", revenueInputSchema);

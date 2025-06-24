@@ -473,6 +473,7 @@ export default function ProjectsTable() {
   }
 
   useEffect(() => {
+    console.log("fraudData", fraudDataArray)
     if (fraudData) {
       let columnsToUse: Column[]
       if (apiColumns && Array.isArray(apiColumns) && apiColumns.length > 0) {
