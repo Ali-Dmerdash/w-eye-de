@@ -29,7 +29,7 @@ const axios = require("axios");
 
 exports.runLLM = async () => {
   try {
-    const requiredFiles = ["file1.txt", "file2.txt"]; // Placeholder for required files
+    const requiredFiles = ["company_revenue.txt"]; // Placeholder for required files
     const uploadedFiles = await RevenueInput.find({}).select(
       "originalFileName -_id"
     );
@@ -45,10 +45,9 @@ exports.runLLM = async () => {
       throw new Error(`Missing required files: ${missingFiles.join(", ")}`);
     }
 
-    // Call the LLM at localhost:8001 (assuming same port for revenue LLM)
-    const llmResponse = await axios.post(
-      "http://localhost:8000/run/revenue",
-      {}
+    // Call the LLM at localhost:8002 (assuming same port for revenue LLM)
+    const llmResponse = await axios.get(
+      "http://localhost:8002/run/revenue"
     ); // Placeholder endpoint
     return llmResponse.data;
   } catch (err) {

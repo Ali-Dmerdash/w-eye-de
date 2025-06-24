@@ -29,7 +29,7 @@ const axios = require("axios");
 
 exports.runLLM = async () => {
   try {
-    const requiredFiles = ["file1.txt", "file2.txt"]; // Placeholder for required files
+    const requiredFiles = ["sample_db.embeddings.csv"]; // Placeholder for required files
     const uploadedFiles = await FraudInput.find({}).select(
       "originalFileName -_id"
     );
@@ -45,7 +45,7 @@ exports.runLLM = async () => {
       throw new Error(`Missing required files: ${missingFiles.join(", ")}`);
     }
 
-    const llmResponse = await axios.post("http://localhost:8000/run/fraud", {});
+    const llmResponse = await axios.post("http://localhost:8001/run/fraud", {});
     return llmResponse.data;
   } catch (err) {
     throw new Error("Error running Fraud LLM: " + err.message);

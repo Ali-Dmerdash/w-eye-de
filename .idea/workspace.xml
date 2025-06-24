@@ -5,29 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d14348fc-2c3b-48dd-92ba-fcae0597a0d2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/FraudInc.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/FraudInc.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/reportAmeen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/reportAmeen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/tableTransaction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/tableTransaction.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/analysis.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/competitivePositioning.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/marketMap.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/opportunities.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/pricingComparison.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/strengths.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/threats.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/components/weaknesses.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/[[...market-page]]/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/analysis.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/analysis.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/keyFactors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/keyFactors.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/revenueChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/components/revenueChart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ui/ChatModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ui/ChatModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ui/NotificationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ui/NotificationModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/fraudService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/fraudService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/marketService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/marketService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/revenueService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/revenueService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +112,7 @@
       <workItem from="1748849707822" duration="607000" />
       <workItem from="1748851018983" duration="1380000" />
       <workItem from="1748852415726" duration="10054000" />
+      <workItem from="1750784648218" duration="5225000" />
     </task>
     <servers />
   </component>
