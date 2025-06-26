@@ -43,6 +43,7 @@ export default function DataUpload() {
   const [uploadedFileName, setUploadedFileName] = useState<string>("");
   const successModalRef = useRef<HTMLDivElement>(null);
   const { addNotification } = useNotifications();
+  const [noThanksLoading, setNoThanksLoading] = useState(false);
 
   useEffect(() => {
     const updateSidebarState = () => {
@@ -142,7 +143,7 @@ export default function DataUpload() {
   };
 
   const handleClickUpload = () => {
-      fileInputRef.current?.click();
+    fileInputRef.current?.click();
   };
 
   const handleRemoveFile = (id: string) => {
@@ -182,22 +183,22 @@ export default function DataUpload() {
 
       // Process each file
       for (const fileToUpload of files) {
-      if (!fileToUpload.file) {
+        if (!fileToUpload.file) {
           failedCount++;
           continue;
-      }
+        }
 
         try {
-      const formData = new FormData();
-      formData.append("file", fileToUpload.file);
-      formData.append("agent", fileToUpload.agent || "");
+          const formData = new FormData();
+          formData.append("file", fileToUpload.file);
+          formData.append("agent", fileToUpload.agent || "");
 
-      const response = await fetch("http://localhost:3001/api/data/upload", {
-        method: "POST",
-        body: formData,
-      });
+          const response = await fetch("http://localhost:3001/api/data/upload", {
+            method: "POST",
+            body: formData,
+          });
 
-      if (response.ok) {
+          if (response.ok) {
             successCount++;
             uploadedFileNames.push(fileToUpload.name);
           } else {
@@ -207,17 +208,44 @@ export default function DataUpload() {
           failedCount++;
         }
       }
-      
+
+      // --- NEW LOGIC: Call LLMRun endpoints for each unique agent type ---
+      // Map agent display names to endpoint paths
+      const agentEndpointMap: Record<string, string> = {
+        "Fraud Agent": "http://localhost:3001/api/fraud/LLMRun",
+        "Market Agent": "http://localhost:3001/api/market/LLMRun",
+        "Revenue Agent": "http://localhost:3001/api/revenue/LLMRun",
+      };
+      // Get unique agent types from uploaded files
+      const uniqueAgents = Array.from(new Set(files.map(f => f.agent).filter(Boolean)));
+      console.log("[Upload] Unique agents to call LLMRun for:", uniqueAgents);
+      // Call each endpoint for the agent types present
+      for (const agent of uniqueAgents) {
+        const endpoint = agentEndpointMap[agent as string];
+        if (endpoint) {
+          console.log(`[Upload] Calling LLMRun endpoint for agent: ${agent} -> ${endpoint}`);
+          try {
+            const resp = await fetch(endpoint, { method: "GET" });
+            console.log(`[Upload] Response for ${agent}:`, resp.status, resp.statusText);
+          } catch (err) {
+            console.error(`Error calling LLMRun for agent ${agent}:`, err);
+          }
+        } else {
+          console.warn(`[Upload] No endpoint mapped for agent: ${agent}`);
+        }
+      }
+      // --- END NEW LOGIC ---
+
       // Show results
       if (successCount > 0) {
         setUploadStatus(null);
         setShowSuccessModal(true);
         setUploadedFileName(uploadedFileNames.join(", "));
-        
+
         const message = successCount === 1
           ? `File "${uploadedFileNames[0]}" has been uploaded and is ready for processing.`
           : `${successCount} files have been uploaded and are ready for processing.`;
-          
+
         addNotification({
           title: "Upload Successful",
           message,
@@ -230,9 +258,8 @@ export default function DataUpload() {
       console.error("Upload error:", error);
       setUploadStatus({
         success: false,
-        message: `Upload failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        message: `Upload failed: ${error instanceof Error ? error.message : String(error)
+          }`,
       });
     } finally {
       setIsUploading(false);
@@ -244,19 +271,17 @@ export default function DataUpload() {
       <Sidebar />
       <Header />
       <div
-        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${
-          isCollapsed ? "sm:ml-16" : "sm:ml-64"
-        }`}
+        className={`p-4 md:p-6 pt-20 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"
+          }`}
       >
         {/* Header Section */}
         <div className="mb-8 flex flex-row justify-between items-center">
           <div>
             <h1
-              className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-[transform,opacity] duration-700 ease-out ${
-                isLoaded
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
+              className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-[transform,opacity] duration-700 ease-out ${isLoaded
+                ? "translate-y-0 opacity-100"
+                : "translate-y-4 opacity-0"
+                }`}
             >
               Data Upload
             </h1>
@@ -265,9 +290,8 @@ export default function DataUpload() {
 
         {/* Main Upload Card */}
         <div
-          className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8 relative overflow-hidden transform transition-[transform,opacity] duration-700 ease-out delay-200 ${
-            isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-          }`}
+          className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-8 relative overflow-hidden transform transition-[transform,opacity] duration-700 ease-out delay-200 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            }`}
         >
           {/* Background Pattern */}
           <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
@@ -292,11 +316,10 @@ export default function DataUpload() {
 
             {/* Upload Area */}
             <div
-              className={`border-2 border-dashed rounded-xl mb-6 py-12 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
-                isDragging
-                  ? "border-purple-400 bg-purple-50 dark:bg-purple-900/20 dark:border-purple-500"
-                  : "border-purple-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-gray-500 hover:bg-purple-25 dark:hover:bg-gray-700/30"
-              }`}
+              className={`border-2 border-dashed rounded-xl mb-6 py-12 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${isDragging
+                ? "border-purple-400 bg-purple-50 dark:bg-purple-900/20 dark:border-purple-500"
+                : "border-purple-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-gray-500 hover:bg-purple-25 dark:hover:bg-gray-700/30"
+                }`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
@@ -374,11 +397,10 @@ export default function DataUpload() {
                       </div>
                       <div className="flex flex-col lg:flex-row sm:justify-normal justify-center gap-3 sm:gap-4 mt-4 sm:mt-0">
                         <button
-                          className={`flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 bg-white dark:bg-gray-700 border border-purple-200 dark:border-gray-600 rounded-2xl md:rounded-full hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors duration-150 ${
-                            !file.agent
-                              ? "animate-pulse-attention ring-2 ring-purple-300 dark:ring-purple-600"
-                              : ""
-                          }`}
+                          className={`flex justify-center w-full lg:w-auto items-center p-3 w-12 h-12 bg-white dark:bg-gray-700 border border-purple-200 dark:border-gray-600 rounded-2xl md:rounded-full hover:bg-purple-50 dark:hover:bg-gray-600 transition-colors duration-150 ${!file.agent
+                            ? "animate-pulse-attention ring-2 ring-purple-300 dark:ring-purple-600"
+                            : ""
+                            }`}
                           onClick={() => openAgentModal(file.id)}
                           aria-label="Select agent"
                           title="Select agent"
@@ -424,11 +446,10 @@ export default function DataUpload() {
                 {/* Upload Button */}
                 <div className="flex justify-center pt-4">
                   <button
-                    className={`px-8 py-3 rounded-xl font-medium text-white transition-all duration-200 ${
-                      allFilesHaveAgents && !isUploading
-                        ? "bg-purple-600 hover:bg-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
-                        : "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
-                    }`}
+                    className={`px-8 py-3 rounded-xl font-medium text-white transition-all duration-200 ${allFilesHaveAgents && !isUploading
+                      ? "bg-purple-600 hover:bg-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
+                      : "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
+                      }`}
                     disabled={!allFilesHaveAgents || isUploading}
                     onClick={handleUpload}
                   >
@@ -453,27 +474,27 @@ export default function DataUpload() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div
             ref={modalRef}
-            className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl border border-white/10 w-full max-w-md transform relative overflow-hidden"
+            className="bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-white/10 w-full max-w-md transform relative overflow-hidden"
           >
             {/* Background Pattern */}
             <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
-              <div className="w-full h-full bg-purple-300 rounded-full transform translate-x-12 -translate-y-12"></div>
+              <div className="w-full h-full bg-purple-200 dark:bg-purple-300 rounded-full transform translate-x-12 -translate-y-12"></div>
             </div>
 
             {/* Header */}
-            <div className="p-6 border-b border-white/10 relative z-10">
+            <div className="p-6 border-b border-gray-200 dark:border-white/10 relative z-10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-purple-600/20 rounded-xl">
-                    <Ellipsis className="w-5 h-5 text-purple-400" />
+                  <div className="p-2.5 bg-purple-100 dark:bg-purple-600/20 rounded-xl">
+                    <Ellipsis className="w-5 h-5 text-purple-500 dark:text-purple-400" />
                   </div>
-                  <h2 className="text-lg font-semibold text-white">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                     Select Agent
                   </h2>
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="p-2 text-gray-400 hover:text-gray-300 rounded-lg hover:bg-white/10 transition-colors"
+                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -484,17 +505,17 @@ export default function DataUpload() {
             <div className="p-6 relative z-10">
               {/* Public Agent Section */}
               <div className="mb-6">
-                <h3 className="text-sm font-semibold mb-3 text-gray-300">
+                <h3 className="text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">
                   General Purpose
                 </h3>
                 <button
                   onClick={() => handleAgentSelection("Public Agent")}
-                  className="w-full p-4 text-left rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group"
+                  className="w-full p-4 text-left rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 hover:bg-purple-50 dark:hover:bg-white/10 transition-colors group"
                 >
-                  <div className="font-medium text-white group-hover:text-purple-400">
+                  <div className="font-medium text-purple-700 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">
                     Public Agent
                   </div>
-                  <p className="text-sm text-gray-400 mt-1">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                     General purpose analysis for public data processing
                   </p>
                 </button>
@@ -502,7 +523,7 @@ export default function DataUpload() {
 
               {/* Specific Agents Section */}
               <div>
-                <h3 className="text-sm font-semibold mb-3 text-gray-300">
+                <h3 className="text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">
                   Specialized Agents
                 </h3>
                 <div className="space-y-3">
@@ -525,12 +546,12 @@ export default function DataUpload() {
                     <button
                       key={agent.name}
                       onClick={() => handleAgentSelection(agent.name)}
-                      className="w-full p-4 text-left rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors group"
+                      className="w-full p-4 text-left rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 hover:bg-purple-50 dark:hover:bg-white/10 transition-colors group"
                     >
-                      <div className="font-medium text-white group-hover:text-purple-400">
+                      <div className="font-medium text-purple-700 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">
                         {agent.name}
                       </div>
-                      <p className="text-sm text-gray-400 mt-1">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                         {agent.description}
                       </p>
                     </button>
@@ -601,9 +622,47 @@ export default function DataUpload() {
                   setShowSuccessModal(false);
                   setFiles([]);
                 }}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className={`w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 ${noThanksLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
               >
                 Upload More Files
+              </button>
+              <button
+                onClick={() => {
+                  setNoThanksLoading(true);
+
+                  setTimeout(() => {
+                    window.location.href = "/home-page";
+                    setShowSuccessModal(false);
+
+                  }, 3000);
+                  setFiles([]);
+                }}
+                disabled={noThanksLoading}
+                className={`mt-2 w-full dark:text-white text-gray-400 hover:text-gray-600 font-medium py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 ${noThanksLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+              >
+                {noThanksLoading ? (
+                   <div role="status" className="flex justify-center items-center">
+                   <svg
+                     aria-hidden="true"
+                     className="animate-spin text-gray-200 fill-gray-500"
+                     style={{ width: '1.5rem', height: '1.5rem' }}
+                     viewBox="0 0 100 101"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg"
+                   >
+                     <path
+                       d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                       fill="currentColor"
+                     />
+                     <path
+                       d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                       fill="currentFill"
+                     />
+                   </svg>
+                 </div>
+                ) : (
+                  'No, Thanks'
+                )}
               </button>
             </div>
           </div>

@@ -28,18 +28,22 @@ const KeyFactorsCard: React.FC<KeyFactorsCardProps> = ({ keyFactorsData }) => {
         switch (level) {
             case "High Positive":
                 return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
+            case "Positive":
+                return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
             case "Moderate Positive":
                 return "bg-yellow-50 text-yellow-600 dark:bg-yellow-900/10 dark:text-yellow-300";
             case "Low Positive":
                 return "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/10 dark:text-emerald-300";
             case "High Negative":
                 return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
+            case "Negative":
+                return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
             case "Moderate Negative":
                 return "bg-orange-50 text-orange-600 dark:bg-orange-900/10 dark:text-orange-300";
             case "Low Negative":
                 return "bg-red-50 text-red-600 dark:bg-red-900/10 dark:text-red-300";
             default:
-                return "bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-300";
+                return "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300";
         }
     }
 

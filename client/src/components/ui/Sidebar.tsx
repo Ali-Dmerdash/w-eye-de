@@ -8,9 +8,7 @@ import {
   DollarSign,
   Globe,
   Upload,
-  LogOut,
-  Search,
-  Sparkles,
+  LogOut
 } from "lucide-react";
 import Image from "next/image";
 import LogoLight from "@/assets/LogoLight.png";
@@ -57,9 +55,8 @@ export default function Sidebar() {
     { icon: CreditCard, label: "Fraud agent", href: "/fraud-page" },
     { icon: DollarSign, label: "Revenue agent", href: "/revenue-page" },
     { icon: Globe, label: "Global market agent", href: "/market-page" },
-    { icon: Upload, label: "Data upload", href: "/upload" },
-    { icon: Sparkles, label: "Admin Panel", href: "/adminPanel_Notifications" },
-  ];
+    { icon: Upload, label: "Data upload", href: "/upload" }
+    ];
 
   const handleSignOut = () => {
     // Show loading overlay
@@ -73,7 +70,7 @@ export default function Sidebar() {
     // Add a small delay to ensure loading overlay appears
     setTimeout(() => {
       signOut();
-    }, 0);
+    }, 3000);
   };
 
   return (

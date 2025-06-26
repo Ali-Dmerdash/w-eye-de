@@ -50,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, title, children }) => {
 
   if (!open) return null;
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 transition-all duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 transition-all duration-200">
       <div
         ref={modalRef}
         tabIndex={-1}

@@ -72,6 +72,7 @@ body {
 
     --second-gradient: #204d72;
   }
+
   .dark {
     --background: 240 10% 3.9%;
 
@@ -131,22 +132,23 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     @apply font-roboto_slab;
   }
 }
 
-*{
-  user-select: none;          
-  -webkit-user-select: none;   
-  -moz-user-select: none;      
-  -ms-user-select: none; 
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 @layer utilities {
   .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -173,15 +175,19 @@ body {
     0% {
       box-shadow: 0 0 0 0 rgba(174, 195, 255, 0.7);
     }
+
     25% {
       box-shadow: 0 0 0 2.5px rgba(174, 195, 255, 0.5);
     }
+
     50% {
       box-shadow: 0 0 0 5px rgba(174, 195, 255, 0.3);
     }
+
     75% {
       box-shadow: 0 0 0 7.5px rgba(174, 195, 255, 0.1);
     }
+
     100% {
       box-shadow: 0 0 0 10px rgba(174, 195, 255, 0.05);
     }
@@ -198,25 +204,51 @@ body {
 
 @keyframes pulse-animation {
   0% {
-      opacity: 1;  
-    }
+    opacity: 1;
+  }
 
   25% {
-      opacity: 0.8;  
-    }
+    opacity: 0.8;
+  }
 
   50% {
-      opacity: 0.6;  
-    }
+    opacity: 0.6;
+  }
 
   75% {
-      opacity: 0.8;  
-    }
+    opacity: 0.8;
+  }
 
   100% {
-      opacity:1 ;  
-    }
+    opacity: 1;
+  }
 }
+/* 
+input:is(:-webkit-autofill, :autofill),
+textarea:is(:-webkit-autofill, :autofill),
+select:is(:-webkit-autofill, :autofill) {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: inherit !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:active {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: inherit !important;
+
+} */
 
 /* Add custom scrollbar styles */
 .custom-scrollbar1::-webkit-scrollbar {
@@ -247,10 +279,12 @@ body {
 
 /* Floating animation */
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }

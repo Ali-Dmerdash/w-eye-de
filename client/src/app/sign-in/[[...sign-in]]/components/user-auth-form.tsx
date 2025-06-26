@@ -72,15 +72,16 @@ If this was not you, please contact support immediately.`,
                           required
                           asChild
                           id="floating_standard"
-                          className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 rounded-b-none border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 focus-visible:ring-0 peer"
+                          className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 rounded-b-none border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white-500 focus:outline-none focus:ring-0 focus:border-white-600 focus-visible:ring-0 peer"
                           placeholder=" "
+                          autoComplete="off"
                         >
                           <Input />
                         </Clerk.Input>
                         <Clerk.Label
                           asChild
                           htmlFor="floating_standard"
-                          className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                          className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-white-600 peer-focus:dark:text-white-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
                         >
                           <Label>Email your email</Label>
                         </Clerk.Label>
@@ -91,11 +92,11 @@ If this was not you, please contact support immediately.`,
                   </CardContent>
 
                   <CardFooter>
-                    <div className="grid w-full gap-y-4">
+                    <div className="grid w-full gap-y-4 bg-transparent">
                       <SignIn.Action submit asChild>
                         <Button
                           disabled={isGlobalLoading}
-                          className="border-2 border-gray-600 bg-transparent text-white"
+                          className="border-2 border-gray-600 bg-transparent text-white hover:bg-white/10"
                         >
                           <Clerk.Loading>
                             {(isLoading) => {
@@ -118,19 +119,19 @@ If this was not you, please contact support immediately.`,
               </SignIn.Step>
 
               <SignIn.Step name="choose-strategy">
-                <Card className="w-full sm:w-96">
+                <Card className="w-full sm:w-96 bg-transparent border-0 rounded-2xl text-white text-center">
                   <CardHeader>
-                    <CardTitle>Use another method</CardTitle>
-                    <CardDescription>
-                      Facing issues? You can use any of these methods to sign
-                      in.
+                    <CardTitle className="text-white">Facing issues?</CardTitle>
+                    <CardDescription className="text-white/80">
+                      You can use any of these methods to sign in.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="grid gap-y-4">
+                  <CardContent className="grid gap-y-4 py-2">
                     <SignIn.SupportedStrategy name="email_code" asChild>
                       <Button
                         type="button"
-                        variant="link"
+                        variant="ghost"
+                        className="w-full border border-white/10 text-white hover:bg-white/10 hover:text-white rounded-lg transition-all duration-200"
                         disabled={isGlobalLoading}
                       >
                         Email code
@@ -139,7 +140,8 @@ If this was not you, please contact support immediately.`,
                     <SignIn.SupportedStrategy name="password" asChild>
                       <Button
                         type="button"
-                        variant="link"
+                        variant="ghost"
+                        className="w-full border border-white/10 text-white hover:bg-white/10 hover:text-white rounded-lg transition-all duration-200"
                         disabled={isGlobalLoading}
                       >
                         Password
@@ -147,9 +149,12 @@ If this was not you, please contact support immediately.`,
                     </SignIn.SupportedStrategy>
                   </CardContent>
                   <CardFooter>
-                    <div className="grid w-full gap-y-4">
+                    <div className="grid w-full gap-y-4 bg-transparent">
                       <SignIn.Action navigate="previous" asChild>
-                        <Button disabled={isGlobalLoading}>
+                        <Button
+                          disabled={isGlobalLoading}
+                          className="w-full bg-white/10 border border-white/10 text-white hover:bg-white/20 hover:text-white rounded-lg transition-all duration-200"
+                        >
                           <Clerk.Loading>
                             {(isLoading) => {
                               return isLoading ? (
@@ -174,7 +179,7 @@ If this was not you, please contact support immediately.`,
                 <SignIn.Strategy name="password">
                   <Card className="w-full sm:w-96 bg-transparent border-0 ">
 
-                    <CardContent className="grid gap-y-4">
+                    <CardContent className="grid gap-y-4 py-2 ">
                       <Clerk.Field name="password" className="space-y-2">
                         <div className="relative z-0">
                           <Clerk.Input
@@ -182,7 +187,7 @@ If this was not you, please contact support immediately.`,
                             required
                             asChild
                             id="floating_standard"
-                            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 rounded-b-none border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 focus-visible:ring-0 peer"
+                            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 rounded-b-none border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white-500 focus:outline-none focus:ring-0 focus:border-white-600 focus-visible:ring-0 peer"
                             placeholder=" "
                           >
                             <Input />
@@ -190,7 +195,7 @@ If this was not you, please contact support immediately.`,
                           <Clerk.Label
                             asChild
                             htmlFor="floating_standard"
-                            className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                            className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-white-600 peer-focus:dark:text-white-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
                           >
                             <Label>Enter your password</Label>
                           </Clerk.Label>
@@ -199,9 +204,9 @@ If this was not you, please contact support immediately.`,
                       </Clerk.Field>
                     </CardContent>
                     <CardFooter>
-                      <div className="grid w-full gap-y-4">
+                      <div className="grid w-full gap-y-4 bg-transparent">
                         <SignIn.Action submit asChild>
-                          <Button disabled={isGlobalLoading}>
+                          <Button disabled={isGlobalLoading} className="">
                             <Clerk.Loading>
                               {(isLoading) => {
                                 return isLoading ? (
@@ -233,15 +238,14 @@ If this was not you, please contact support immediately.`,
                 </SignIn.Strategy>
 
                 <SignIn.Strategy name="email_code">
-                  <Card className="w-full sm:w-96">
+                  <Card className="w-full sm:w-96 bg-transparent border-0 rounded-2xl text-white text-center">
                     <CardHeader>
-                      <CardTitle>Check your email</CardTitle>
-                      <CardDescription>
+                      <CardTitle className="text-white">Check your email</CardTitle>
+                      <CardDescription className="text-white/80">
                         Enter the verification code sent to your email
                       </CardDescription>
-
                     </CardHeader>
-                    <CardContent className="grid gap-y-4">
+                    <CardContent className="grid gap-y-4 py-2">
                       <Clerk.Field name="code">
                         <Clerk.Label className="sr-only">
                           Email verification code
@@ -251,7 +255,7 @@ If this was not you, please contact support immediately.`,
                             <Clerk.Input
                               type="otp"
                               autoSubmit
-                              className="flex justify-center has-[:disabled]:opacity-50"
+                              className="flex justify-center has-[:disabled]:opacity-20 text-white"
                               render={({ value, status }) => {
                                 return (
                                   <div
@@ -268,9 +272,9 @@ If this was not you, please contact support immediately.`,
                           <SignIn.Action
                             asChild
                             resend
-                            className="text-muted-foreground"
+                            className="text-white"
                             fallback={({ resendableAfter }) => (
-                              <Button variant="link" size="sm" disabled>
+                              <Button variant="link" size="sm" disabled className="text-white">
                                 Didn&apos;t receive a code? Resend (
                                 <span className="tabular-nums">
                                   {resendableAfter}
@@ -279,7 +283,7 @@ If this was not you, please contact support immediately.`,
                               </Button>
                             )}
                           >
-                            <Button variant="link" size="sm">
+                            <Button variant="link" size="sm" className="text-white">
                               Didn&apos;t receive a code? Resend
                             </Button>
                           </SignIn.Action>
@@ -287,9 +291,9 @@ If this was not you, please contact support immediately.`,
                       </Clerk.Field>
                     </CardContent>
                     <CardFooter>
-                      <div className="grid w-full gap-y-4">
+                      <div className="grid w-full gap-y-4 bg-transparent">
                         <SignIn.Action submit asChild>
-                          <Button disabled={isGlobalLoading}>
+                          <Button disabled={isGlobalLoading} className="w-full border border-white/10 text-white hover:bg-white/10 hover:text-white rounded-lg transition-all duration-200">
                             <Clerk.Loading>
                               {(isLoading) => {
                                 return isLoading ? (
@@ -306,7 +310,7 @@ If this was not you, please contact support immediately.`,
                           </Button>
                         </SignIn.Action>
                         <SignIn.Action navigate="choose-strategy" asChild>
-                          <Button size="sm" variant="link">
+                          <Button size="sm" variant="link" className="text-white">
                             Use another method
                           </Button>
                         </SignIn.Action>
