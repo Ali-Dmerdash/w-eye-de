@@ -30,8 +30,8 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
   const [hovered, setHovered] = useState(false)
   const { theme } = useTheme()
 
-  // Calculate size based on importance (0.3 to 0.8 scale for better proportion)
-  const size = 0.3 + (kpi.importance / 10) * 0.5
+  // Calculate size based on importance (make range more dramatic, e.g., 0.2 to 2.0, exponential mapping)
+  const size = 0.2 + Math.pow(kpi.importance / 10, 2) * 1.8
 
   // Enhanced color system
   const getColor = () => {
@@ -179,7 +179,7 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
       </mesh>
 
       {/* Status Indicator Dot */}
-      <mesh position={[position[0], position[1] + 1.0, position[2]]}>
+      <mesh position={[position[0], position[1] + size + 0.15, position[2]]}>
         <sphereGeometry args={[0.15, 16, 16]} />
         <meshStandardMaterial
           color={getAccentColor()}
