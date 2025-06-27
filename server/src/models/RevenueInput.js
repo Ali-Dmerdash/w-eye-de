@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const revenueInputSchema = new mongoose.Schema(
+const RevenueInputSchema = new mongoose.Schema(
   {
     originalFileName: String,
     content: String,
@@ -10,4 +10,4 @@ const revenueInputSchema = new mongoose.Schema(
 ); // Explicitly define
 module.exports =
   mongoose.models.Revenue_LLM_Input ||
-  mongoose.model("Revenue_LLM_Input", revenueInputSchema);
+  mongoose.model("Revenue_LLM_Input", RevenueInputSchema);
