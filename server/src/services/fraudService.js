@@ -24,7 +24,7 @@ exports.getFraudHistory = async () => {
   }
 };
 
-const FraudInput = require("../models/fraudInput");
+const FraudInput = require("../models/FraudInput");
 const axios = require("axios");
 
 exports.runLLM = async () => {
