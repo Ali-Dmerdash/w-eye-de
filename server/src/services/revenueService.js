@@ -24,7 +24,7 @@ exports.getRevenueResults = async () => {
   }
 };
 
-const RevenueInput = require("../models/revenueInput");
+const RevenueInput = require("../models/RevenueInput");
 const axios = require("axios");
 
 exports.runLLM = async () => {
@@ -46,9 +46,7 @@ exports.runLLM = async () => {
     }
 
     // Call the LLM at localhost:8002 (assuming same port for revenue LLM)
-    const llmResponse = await axios.get(
-      "http://localhost:8002/run/revenue"
-    ); // Placeholder endpoint
+    const llmResponse = await axios.get("http://localhost:8002/run/revenue"); // Placeholder endpoint
     return llmResponse.data;
   } catch (err) {
     throw new Error("Error running Revenue LLM: " + err.message);
