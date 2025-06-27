@@ -58,8 +58,8 @@ exports.runLLM = async () => {
     }
 
     // Call the LLM at localhost:8001
-    const llmResponse = await axios.post(
-      "http://localhost:8003//run/market",
+    const llmResponse = await axios.get(
+      "http://localhost:8003/run/market",
       {}
     ); // Assuming a POST request to /run-llm
     return llmResponse.data;
