@@ -6,12 +6,13 @@ import FraudInc from "./components/FraudInc"
 import TableTransaction from "./components/tableTransaction"
 import Header from "../../../components/ui/Header"
 import { Button } from "@/components/ui/button"
-import { Download } from "lucide-react"
+import { Download, CheckCircle, XCircle, TrendingUp, Sparkles } from "lucide-react"
 import OnboardingOverlay from "@/components/ui/OnboardingOverlay"
 import OnboardingHelpButton from "@/components/ui/OnboardingHelpButton"
 import { useOnboarding } from "@/context/OnboardingContext"
 import { useDownloadFraudReportMutation } from "@/state/api"
-import { useToast } from "@/app/sphere/ui/use-toast"
+import { Toaster, toast } from "react-hot-toast"
+import { useNotifications } from "@/context/NotificationContext"
 
 const Graph = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/graph"), { ssr: false })
 const ReportAmeen = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/reportAmeen"), { ssr: false })
@@ -21,7 +22,7 @@ export default function Page() {
   const [isLoaded, setIsLoaded] = useState(false)
   const { setCurrentPage } = useOnboarding()
   const [downloadReport, { isLoading: isDownloading }] = useDownloadFraudReportMutation()
-  const { toast } = useToast()
+  const { addNotification } = useNotifications()
 
   // Set current page for onboarding
   useEffect(() => {
@@ -60,18 +61,58 @@ export default function Page() {
   const handleDownloadReport = async () => {
     try {
       await downloadReport().unwrap()
-      toast({
-        title: "Success!",
-        description: "Fraud detection report downloaded successfully.",
-        variant: "default",
+      toast.custom((t) => (
+        <div
+          className={`$${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white/80 dark:bg-[#23272e]/90 shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-purple-500/20 backdrop-blur-md border border-purple-200/40 dark:border-purple-900/40 transition-all duration-300`}
+          style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <CheckCircle className="h-8 w-8 text-green-500 dark:text-green-400" />
+              </div>
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Report Status:
+                </p>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                  Fraud detection report downloaded successfully.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+      addNotification({
+        title: "Report Status:",
+        message: "Fraud detection report downloaded successfully.",
+        type: "success"
       })
     } catch (error) {
       console.error("Failed to download report:", error)
-      toast({
-        title: "Error",
-        description: "Failed to download fraud detection report. Please try again.",
-        variant: "destructive",
-      })
+      toast.custom((t) => (
+        <div
+          className={`$${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white/80 dark:bg-[#23272e]/90 shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-purple-500/20 backdrop-blur-md border border-purple-200/40 dark:border-purple-900/40 transition-all duration-300`}
+          style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <XCircle className="h-8 w-8 text-red-500 dark:text-red-400" />
+              </div>
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Report Status:
+                </p>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                  Failed to download fraud detection report. Please try again.
+                </p>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      ))
     }
   }
 
@@ -86,22 +127,36 @@ export default function Page() {
           className="mb-8 flex flex-row justify-between items-center space-x-3.5 md:space-x-0"
           data-onboarding="fraud-header"
         >
+
           <div>
-            <h1
-              className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${
-                isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-              }`}
-            >
+            <div className="flex items-center gap-3 mb-2">
+              <div
+                className={`w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg transform transition-all duration-700 ease-out ${
+                  isLoaded ? "translate-y-0 opacity-100 rotate-0" : "translate-y-4 opacity-0 rotate-12"
+                }`}
+              >
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h1
+                className={`text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent transform transition-all duration-700 ease-out ${
+                  isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                }`}
+              >
               Fraud Detection Dashboard
-            </h1>
-            <p
-              className={`hidden md:flex text-gray-600 dark:text-gray-300 transform transition-all duration-700 ease-out delay-100 ${
+              </h1>
+            </div>
+            <div
+              className={`items-center gap-2 hidden md:flex transform transition-all duration-700 ease-out delay-100 ${
                 isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
               }`}
             >
+              <Sparkles className="w-5 h-5 text-purple-500" />
+              <p className="text-gray-600 dark:text-gray-300">
               Monitor and analyze fraudulent activities with real-time data
-            </p>
+              </p>
+            </div>
           </div>
+
           <div
             className={`transform transition-all duration-700 ease-out delay-100 ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"

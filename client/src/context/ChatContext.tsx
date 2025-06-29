@@ -34,11 +34,6 @@ interface ChatContextType {
   sendMessage: (text: string, attachments?: FileAttachment[]) => void;
   isLoading: boolean;
   typingIndicator: boolean;
-  draftMessage: string;
-  setDraftMessage: (draft: string) => void;
-  draftAttachments: FileAttachment[];
-  setDraftAttachments: (attachments: FileAttachment[]) => void;
-  handleActionClick: (actionId: string, messageId: string) => void;
   showHelpModal: boolean;
   setShowHelpModal: (show: boolean) => void;
 }
@@ -54,10 +49,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     topic?: string;
     lastMentionedEntities?: string[];
   }>({});
-  const [draftMessage, setDraftMessage] = useState("");
-  const [draftAttachments, setDraftAttachments] = useState<FileAttachment[]>(
-    []
-  );
   const [showHelpModal, setShowHelpModal] = useState(false);
 
   // API endpoint
@@ -66,8 +57,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const savedMessages = localStorage.getItem("chatMessages");
     const savedContext = localStorage.getItem("chatContext");
-    const savedDraft = localStorage.getItem("chatDraft");
-    const savedDraftAttachments = localStorage.getItem("chatDraftAttachments");
 
     if (savedMessages) {
       try {
@@ -88,18 +77,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("Failed to parse saved context:", error);
       }
     }
-
-    if (savedDraft) {
-      setDraftMessage(savedDraft);
-    }
-
-    if (savedDraftAttachments) {
-      try {
-        setDraftAttachments(JSON.parse(savedDraftAttachments));
-      } catch (error) {
-        console.error("Failed to parse saved draft attachments:", error);
-      }
-    }
   }, []);
 
   useEffect(() => {
@@ -110,22 +87,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     if (Object.keys(conversationContext).length > 0) {
       localStorage.setItem("chatContext", JSON.stringify(conversationContext));
     }
-
-    if (draftMessage) {
-      localStorage.setItem("chatDraft", draftMessage);
-    } else {
-      localStorage.removeItem("chatDraft");
-    }
-
-    if (draftAttachments.length > 0) {
-      localStorage.setItem(
-        "chatDraftAttachments",
-        JSON.stringify(draftAttachments)
-      );
-    } else {
-      localStorage.removeItem("chatDraftAttachments");
-    }
-  }, [messages, conversationContext, draftMessage, draftAttachments]);
+  }, [messages, conversationContext]);
 
   const openChat = (initialQuery?: string) => {
     setIsChatOpen(true);
@@ -261,11 +223,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     setMessages((prev) => [...prev, newUserMessage]);
 
-    setDraftMessage("");
-    setDraftAttachments([]);
-    localStorage.removeItem("chatDraft");
-    localStorage.removeItem("chatDraftAttachments");
-
     generateAIResponse(text);
   };
 
@@ -379,11 +336,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         sendMessage,
         isLoading,
         typingIndicator,
-        draftMessage,
-        setDraftMessage,
-        draftAttachments,
-        setDraftAttachments,
-        handleActionClick,
         showHelpModal,
         setShowHelpModal,
       }}

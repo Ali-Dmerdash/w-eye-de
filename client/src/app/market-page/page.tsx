@@ -14,9 +14,10 @@ import OnboardingOverlay from "@/components/ui/OnboardingOverlay"
 import OnboardingHelpButton from "@/components/ui/OnboardingHelpButton"
 import { OnboardingProvider, useOnboarding } from "@/context/OnboardingContext"
 import { Button } from "@/components/ui/button"
-import { Download, TrendingUp, Sparkles } from "lucide-react"
+import { Download, TrendingUp, Sparkles, CheckCircle, XCircle } from "lucide-react"
 import { useDownloadMarketReportMutation, useDownloadMarketReportPdfMutation, useGetMarketDataQuery } from "@/state/api"
-import { useToast } from "@/app/sphere/ui/use-toast"
+import { Toaster, toast } from "react-hot-toast"
+import { useNotifications } from "@/context/NotificationContext"
 
 function MarketAnalysisContent() {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -24,9 +25,9 @@ function MarketAnalysisContent() {
   const { setCurrentPage } = useOnboarding()
   const [downloadReport, { isLoading: isDownloading }] = useDownloadMarketReportMutation()
   const [downloadPdf, { isLoading: isDownloadingPdf }] = useDownloadMarketReportPdfMutation()
-  const { toast } = useToast()
   const { data: marketData, isLoading, error } = useGetMarketDataQuery()
   const latestMarket = marketData?.[0]
+  const { addNotification } = useNotifications()
 
   // Set current page for onboarding
   useEffect(() => {
@@ -62,18 +63,58 @@ function MarketAnalysisContent() {
   const handleDownloadReport = async () => {
     try {
       await downloadReport().unwrap()
-      toast({
-        title: "Success!",
-        description: "Market analysis report (JSON) downloaded successfully.",
-        variant: "default",
+      toast.custom((t) => (
+        <div
+          className={`$${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white/80 dark:bg-[#23272e]/90 shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-purple-500/20 backdrop-blur-md border border-purple-200/40 dark:border-purple-900/40 transition-all duration-300`}
+          style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <CheckCircle className="h-8 w-8 text-green-500 dark:text-green-400" />
+              </div>
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Report Status:
+                </p>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                  Market analysis report (JSON) downloaded successfully.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+      addNotification({
+        title: "Report Status:",
+        message: "Market analysis report (JSON) downloaded successfully.",
+        type: "success"
       })
     } catch (error) {
       console.error("Failed to download report:", error)
-      toast({
-        title: "Error",
-        description: "Failed to download market analysis report. Please try again.",
-        variant: "destructive",
-      })
+      toast.custom((t) => (
+        <div
+          className={`$${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white/80 dark:bg-[#23272e]/90 shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-purple-500/20 backdrop-blur-md border border-purple-200/40 dark:border-purple-900/40 transition-all duration-300`}
+          style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <XCircle className="h-8 w-8 text-red-500 dark:text-red-400" />
+              </div>
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Report Status:
+                </p>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                  Failed to download market analysis report. Please try again.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      ))
     }
   }
 
@@ -81,18 +122,70 @@ function MarketAnalysisContent() {
   const handleDownloadPdf = async () => {
     try {
       await downloadPdf().unwrap()
-      toast({
-        title: "Success!",
-        description: "Market analysis PDF downloaded successfully.",
-        variant: "default",
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? 'animate-enter' : 'animate-leave'
+          } max-w-md w-full
+            bg-white/80 dark:bg-[#23272e]/90
+            shadow-2xl
+            rounded-2xl
+            pointer-events-auto
+            flex
+            ring-1 ring-purple-500/20
+            backdrop-blur-md
+            border border-purple-200/40 dark:border-purple-900/40
+            transition-all duration-300
+          `}
+          style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+              <CheckCircle className="h-8 w-8 text-green-500 dark:text-green-400" />
+
+              </div>
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Report Status:
+                </p>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                  Market analysis report downloaded successfully.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+      addNotification({
+        title: "Report Status:",
+        message: "Market analysis report downloaded successfully.",
+        type: "success"
       })
     } catch (error) {
       console.error("Failed to download PDF:", error)
-      toast({
-        title: "Error",
-        description: "Failed to download market analysis PDF. Please try again.",
-        variant: "destructive",
-      })
+      toast.custom((t) => (
+        <div
+          className={`$${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white/80 dark:bg-[#23272e]/90 shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-purple-500/20 backdrop-blur-md border border-purple-200/40 dark:border-purple-900/40 transition-all duration-300`}
+          style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <XCircle className="h-8 w-8 text-red-500 dark:text-red-400" />
+              </div>
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Report Status:
+                </p>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                  Failed to download market analysis PDF. Please try again.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
     }
   }
 
@@ -112,7 +205,7 @@ function MarketAnalysisContent() {
       <main className={`p-4 md:p-6 pt-20 transition-all duration-500 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
         {/* Enhanced Header Section */}
         <div className="mb-8 flex flex-row justify-between items-center space-x-3.5 md:space-x-0">
-          <div>
+          <div className="s">
             <div className="flex items-center gap-3 mb-2">
               <div
                 className={`w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg transform transition-all duration-700 ease-out ${

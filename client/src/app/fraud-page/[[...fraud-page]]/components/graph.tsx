@@ -1,25 +1,25 @@
 "use client"
 import React from "react"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from "recharts"
-import { TrendingUp, TrendingDown, Activity, AlertTriangle, Shield } from "lucide-react"
+import { Activity, AlertTriangle, Shield } from "lucide-react"
 import { useGetFraudDataQuery } from "@/state/api"
 import type { FraudModelResponse, FraudRateOverTime } from "@/state/type"
 
 // Helper function to format date for display
 function formatDateForDisplay(dateString: string): string {
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" })
 }
 
 // Helper function to format fraud rate for display
 function formatFraudRate(rate: string | number): number {
-  if (typeof rate === 'string') {
+  if (typeof rate === "string") {
     // If it's already a string with %
-    if (rate.includes('%')) {
+    if (rate.includes("%")) {
       // Extract the number part and check if it's in decimal format
-      const numPart = parseFloat(rate.replace('%', ''))
+      const numPart = Number.parseFloat(rate.replace("%", ""))
       if (isNaN(numPart)) return 0
-      
+
       // If the number is less than 1, it's likely in decimal format (0.045% should be 4.5%)
       if (numPart < 1) {
         return numPart * 100
@@ -28,7 +28,7 @@ function formatFraudRate(rate: string | number): number {
       return numPart
     }
     // If it's a string number (like "0.045"), convert to percentage
-    const numRate = parseFloat(rate)
+    const numRate = Number.parseFloat(rate)
     if (isNaN(numRate)) return 0
     return numRate * 100
   }
@@ -150,7 +150,7 @@ export default function FraudAnalyticsOverview() {
     return fraudData.fraud_rate_over_time.map((item: FraudRateOverTime) => ({
       month: formatDateForDisplay(item.date),
       fraudRate: formatFraudRate(item.fraud_rate),
-      originalDate: item.date
+      originalDate: item.date,
     }))
   }, [fraudData])
 
@@ -209,13 +209,9 @@ export default function FraudAnalyticsOverview() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Activity className="w-9 h-9 text-purple-600 dark:text-purple-400" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Fraud Rate Over Time
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Fraud Rate Over Time</h3>
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Monitor fraud patterns and trends
-          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Monitor fraud patterns and trends</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
@@ -225,11 +221,11 @@ export default function FraudAnalyticsOverview() {
         </div>
       </div>
 
-      <div className="flex-grow flex md:flex-row flex-col gap-6">
+      <div className="flex-grow flex md:flex-row flex-col gap-6 min-h-[350px] md:min-h-[450px]">
         {/* Chart Area */}
-        <div className="flex-grow">
+        <div className="flex-grow min-h-[300px] md:min-h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+            <AreaChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
               <defs>
                 <linearGradient id="colorFraudRate" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
@@ -243,33 +239,21 @@ export default function FraudAnalyticsOverview() {
                 tickLine={false}
                 tick={{
                   fill: "#6B7280",
-                  fontSize: 12,
+                  fontSize: 10, // Smaller font for mobile
                 }}
                 className="dark:fill-gray-400"
+                interval="preserveStartEnd" // Better mobile spacing
               />
               <YAxis
-                label={
-                  <text
-                    x={0}
-                    y={0}
-                    dx={-200} // fine-tune horizontal offset
-                    dy={10} // fine-tune vertical offset
-                    transform="rotate(-90)"
-                    textAnchor="middle"
-                    fill="#9CA3AF"
-                    fontSize={12}
-                  >
-                    Fraud Rate
-                  </text>
-                }
                 axisLine={false}
                 tickLine={false}
                 tick={{
                   fill: "#6B7280",
-                  fontSize: 12,
+                  fontSize: 10, // Smaller font for mobile
                 }}
-                domain={[0, 'dataMax + 1']}
+                domain={[0, "dataMax + 1"]}
                 tickFormatter={(value) => `${value}%`}
+                width={40} // Fixed width for mobile
               />
               <Tooltip
                 contentStyle={{
@@ -277,6 +261,7 @@ export default function FraudAnalyticsOverview() {
                   border: "1px solid #E5E7EB",
                   borderRadius: "8px",
                   boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                  fontSize: "12px", // Smaller tooltip for mobile
                 }}
                 labelStyle={{ color: "#374151", fontWeight: "600" }}
                 formatter={(value: any) => [`${value}%`, "Fraud Rate"]}

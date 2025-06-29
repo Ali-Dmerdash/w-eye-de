@@ -160,7 +160,7 @@ export default function FraudInc() {
                 <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                   <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
                   <div className="flex-grow">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{pattern}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{pattern.split("_").join(" ").charAt(0).toUpperCase() + pattern.split("_").join(" ").slice(1)}</p>
                     <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{description}</p>
                   </div>
                 </div>

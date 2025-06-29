@@ -1,0 +1,96 @@
+// Financial dashboard data focused on money and revenue
+export const financialDashboardData = {
+    headerStats: [
+      {
+        id: "todays_revenue",
+        label: "Today's Revenue",
+        value: "$53,000",
+        change: "+55%",
+        changeType: "positive",
+        icon: "💼",
+      },
+      {
+        id: "total_sales",
+        label: "Total Sales",
+        value: "$173,000",
+        change: "+8%",
+        changeType: "positive",
+        icon: "🛒",
+      },
+      {
+        id: "profit_margin",
+        label: "Profit Margin",
+        value: "24.8%",
+        change: "+3.2%",
+        changeType: "positive",
+        icon: "📊",
+      },
+      {
+        id: "mrr",
+        label: "Monthly Recurring Revenue",
+        value: "$42,800",
+        change: "+12%",
+        changeType: "positive",
+        icon: "🔁",
+      },
+    ],
+    profitAnalysis: {
+      grossProfit: 89200,
+      netProfit: 42800,
+      profitMargin: 24.8,
+      status: "Above Target",
+    },
+    revenueAnalytics: {
+      monthlyGrowth: 15000,
+      totalRevenue: 173000,
+      growthRate: 28,
+      totalPayments: 1247,
+      averageOrderValue: 139,
+      monthlyData: [42000, 38000, 45000, 53000, 48000, 51000, 47000, 49000, 53000],
+    },
+    financialKPIs: [
+      {
+        id: "revenue_growth",
+        label: "Revenue Growth Rate",
+        value: "28%",
+        target: "25%",
+        status: "good",
+      },
+      {
+        id: "cash_flow",
+        label: "Operating Cash Flow",
+        value: "$156K",
+        target: "$150K",
+        status: "good",
+      },
+      {
+        id: "burn_rate",
+        label: "Monthly Burn Rate",
+        value: "$23K",
+        target: "$25K",
+        status: "good",
+      },
+      {
+        id: "customer_ltv",
+        label: "Customer Lifetime Value",
+        value: "$2,840",
+        target: "$2,500",
+        status: "good",
+      },
+      {
+        id: "cost_per_acquisition",
+        label: "Customer Acquisition Cost",
+        value: "$127",
+        target: "$150",
+        status: "good",
+      },
+      {
+        id: "gross_margin",
+        label: "Gross Margin",
+        value: "68%",
+        target: "65%",
+        status: "good",
+      },
+    ],
+  }
+  

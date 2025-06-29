@@ -11,7 +11,7 @@ import { OnboardingProvider } from "@/context/OnboardingContext"
 import ChatModal from "@/components/ui/ChatModal"
 import GlobalHelpModal from "@/components/ui/GlobalHelpModal"
 import NotificationModal from "@/components/ui/NotificationModal"
-import { Toaster } from "@/app/sphere/ui/toaster"
+import { Toaster } from 'react-hot-toast';
 
 // This component wraps all client-side providers
 export function ClientProviders({ children }: { children: React.ReactNode }) {

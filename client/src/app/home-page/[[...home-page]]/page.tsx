@@ -5,8 +5,8 @@ import Sidebar from "@/components/ui/Sidebar"
 import Header from "@/components/ui/Header"
 import DashboardCard from "./components/dashboard-card"
 import WelcomeCard from "./components/welcome-card"
-import ReferralCard from "./components/referal-card"
-import ChartCard from "./components/chart-card"
+import ProfitAnalysisCard from "./components/profit-analysis-card"
+import RevenueAnalyticsCard from "./components/revenue-analytics-card"
 import { KPIDashboard } from "@/app/sphere/kpi-dashboard"
 import { KPISettingsPanel } from "@/app/sphere/kpi-settings-panel"
 import { Button } from "@/components/ui/button"
@@ -16,6 +16,7 @@ import { createPortal } from "react-dom"
 import OnboardingOverlay from "@/components/ui/OnboardingOverlay"
 import OnboardingHelpButton from "@/components/ui/OnboardingHelpButton"
 import { useOnboarding } from "@/context/OnboardingContext"
+import { financialDashboardData } from "@/app/home-page/data"
 
 export default function Home() {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -119,62 +120,21 @@ export default function Home() {
       >
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6" data-onboarding="stats-cards">
-          <div
-            className={`transform transition-all duration-500 ease-out ${
-              isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-          >
-            <DashboardCard
-              title="Today's Money"
-              value="$53,000"
-              change="+55%"
-              changeType="positive"
-              icon={<Briefcase className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
-          </div>
-          <div
-            className={`transform transition-all duration-500 ease-out delay-100 ${
-              isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-          >
-            <DashboardCard
-              title="Today's Users"
-              value="2,300"
-              change="+5%"
-              changeType="positive"
-              icon={<Users className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
-          </div>
-          <div
-            className={`transform transition-all duration-500 ease-out delay-200 ${
-              isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-          >
-            <DashboardCard
-              title="New Clients"
-              value="+3,052"
-              change="-14%"
-              changeType="negative"
-              icon={<FileText className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
-          </div>
-          <div
-            className={`transform transition-all duration-500 ease-out delay-300 ${
-              isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-          >
-            <DashboardCard
-              title="Total Sales"
-              value="$173,000"
-              change="+8%"
-              changeType="positive"
-              icon={<ShoppingCart className="w-5 h-5 text-white" />}
-              iconBg="bg-blue-500"
-            />
-          </div>
+          {[Briefcase, Users, FileText, ShoppingCart].map((Icon, idx) => (
+            <div
+              key={financialDashboardData.headerStats[idx].id}
+              className={`transform transition-all duration-500 ease-out${idx > 0 ? ` delay-${idx * 100}` : ""} ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+            >
+              <DashboardCard
+                title={financialDashboardData.headerStats[idx].label}
+                value={financialDashboardData.headerStats[idx].value}
+                change={financialDashboardData.headerStats[idx].change}
+                changeType={financialDashboardData.headerStats[idx].changeType as "positive" | "negative"}
+                icon={<Icon className="w-5 h-5 text-white" />}
+                iconBg="bg-blue-500"
+              />
+            </div>
+          ))}
         </div>
 
         {/* Main Content */}
@@ -194,7 +154,7 @@ export default function Home() {
                   isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
                 }`}
               >
-                <ReferralCard score={9.3} />
+                <ProfitAnalysisCard />
               </div>
             </div>
             <div
@@ -203,7 +163,7 @@ export default function Home() {
               }`}
               data-onboarding="chart-card"
             >
-              <ChartCard />
+              <RevenueAnalyticsCard />
             </div>
           </div>
           <div

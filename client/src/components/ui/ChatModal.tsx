@@ -128,11 +128,6 @@ export default function ChatModal() {
         sendMessage,
         isLoading,
         typingIndicator,
-        draftMessage,
-        setDraftMessage,
-        draftAttachments,
-        setDraftAttachments,
-        handleActionClick,
         showHelpModal,
         setShowHelpModal,
     } = useChat()
@@ -160,18 +155,6 @@ export default function ChatModal() {
             }, 100)
         }
     }, [isChatOpen])
-
-    useEffect(() => {
-        if (isChatOpen && draftMessage) {
-            setInput(draftMessage)
-        }
-    }, [isChatOpen, draftMessage])
-
-    useEffect(() => {
-        if (isChatOpen) {
-            setDraftMessage(input)
-        }
-    }, [input, isChatOpen, setDraftMessage])
 
     useEffect(() => {
         if (isChatOpen && !searchVisible) {
@@ -218,8 +201,8 @@ export default function ChatModal() {
     }, [currentResultIndex, searchResults])
 
     const handleSendMessage = () => {
-        if ((!input.trim() && draftAttachments.length === 0) || isLoading) return
-        sendMessage(input, draftAttachments)
+        if ((!input.trim()) || isLoading) return
+        sendMessage(input)
         setInput("")
     }
 
@@ -304,23 +287,11 @@ export default function ChatModal() {
             newAttachments.push(newAttachment)
         })
 
-        setDraftAttachments([...draftAttachments, ...newAttachments])
-
-        e.target.value = ""
+        // Handle file change logic
     }
 
     const removeAttachment = (id: string) => {
-        const attachmentToRemove = draftAttachments.find((a) => a.id === id)
-
-        if (attachmentToRemove) {
-            URL.revokeObjectURL(attachmentToRemove.url)
-            if (attachmentToRemove.thumbnailUrl) {
-                URL.revokeObjectURL(attachmentToRemove.thumbnailUrl)
-            }
-        }
-
-        const updatedAttachments = draftAttachments.filter((a) => a.id !== id)
-        setDraftAttachments(updatedAttachments)
+        // Handle remove attachment logic
     }
 
     const getFileIcon = (fileType: string) => {
@@ -647,7 +618,9 @@ export default function ChatModal() {
                                                     {message.actions.map((action) => (
                                                         <button
                                                             key={action.id}
-                                                            onClick={() => handleActionClick(action.id, message.id)}
+                                                            onClick={() => {
+                                                                // Handle action click
+                                                            }}
                                                             className="text-xs px-3 py-1.5 rounded-lg bg-purple-50 dark:bg-gray-600 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-gray-500 transition-colors font-medium shadow-sm"
                                                         >
                                                             {action.label}
@@ -700,43 +673,6 @@ export default function ChatModal() {
                     >
                         <ArrowDown className="h-5 w-5" />
                     </button>
-                )}
-
-                {/* Draft Attachments */}
-                {draftAttachments.length > 0 && (
-                    <div className="px-6 py-3 border-t border-purple-100 dark:border-gray-700 bg-white dark:bg-gray-800 flex gap-3 overflow-x-auto">
-                        {draftAttachments.map((attachment) => (
-                            <div
-                                key={attachment.id}
-                                className="relative flex-shrink-0 bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 group shadow-sm"
-                                style={{ maxWidth: "120px" }}
-                            >
-                                <button
-                                    onClick={() => removeAttachment(attachment.id)}
-                                    className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                                    title="Remove attachment"
-                                >
-                                    <X className="h-3 w-3" />
-                                </button>
-
-                                {attachment.thumbnailUrl ? (
-                                    <img
-                                        src={attachment.thumbnailUrl || "/placeholder.svg"}
-                                        alt={attachment.name}
-                                        className="w-full h-16 object-cover"
-                                    />
-                                ) : (
-                                    <div className="flex items-center justify-center h-16 w-16 p-2">
-                                        <div className="text-gray-500 dark:text-gray-400">{getFileIcon(attachment.type)}</div>
-                                    </div>
-                                )}
-                                <div className="p-2">
-                                    <div className="text-xs truncate font-medium max-w-[110px]">{attachment.name}</div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">{formatFileSize(attachment.size)}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
                 )}
 
                 {/* Help Modal */}
@@ -797,8 +733,8 @@ export default function ChatModal() {
                         />
                         <button
                             onClick={handleSendMessage}
-                            disabled={(!input.trim() && draftAttachments.length === 0) || isLoading}
-                            className={`flex-shrink-0 rounded-lg p-2.5 ${(input.trim() || draftAttachments.length > 0) && !isLoading
+                            disabled={(!input.trim()) || isLoading}
+                            className={`flex-shrink-0 rounded-lg p-2.5 ${(input.trim()) && !isLoading
                                     ? "bg-purple-600 text-white hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105"
                                     : "bg-gray-200 dark:bg-gray-600 text-gray-400 dark:text-gray-500 cursor-not-allowed"
                                 } transition-all duration-200`}

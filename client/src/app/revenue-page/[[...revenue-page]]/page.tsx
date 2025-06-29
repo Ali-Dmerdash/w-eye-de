@@ -4,7 +4,9 @@ import dynamic from "next/dynamic"
 import Sidebar from "@/components/ui/Sidebar"
 import Header from "@/components/ui/Header"
 import { Button } from "@/components/ui/button"
-import { Download, TrendingUp } from "lucide-react"
+import { Download, TrendingUp, CheckCircle, XCircle, Sparkles } from "lucide-react"
+import { Toaster, toast } from "react-hot-toast"
+import { useNotifications } from "@/context/NotificationContext"
 
 // Import updated components that accept props
 import RevenueChart from "./components/revenueChart"
@@ -14,7 +16,6 @@ import Analysis from "./components/analysis"
 // Import Redux hook and types
 import { useGetRevenueDataQuery, useDownloadRevenueReportMutation } from "@/state/api"
 import type { RevenueTrend } from "@/state/type"
-import { useToast } from "@/app/sphere/ui/use-toast"
 
 // Keep the original Graph component import (uses static data)
 const Graph = dynamic(() => import("./components/graph"), { ssr: false })
@@ -22,11 +23,12 @@ const Graph = dynamic(() => import("./components/graph"), { ssr: false })
 export default function Page() {
     const [isCollapsed, setIsCollapsed] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
+    const { addNotification } = useNotifications();
+
 
     // Fetch data using the Redux hook
     const { data: trends, isLoading, error } = useGetRevenueDataQuery()
     const [downloadReport, { isLoading: isDownloading }] = useDownloadRevenueReportMutation()
-    const { toast } = useToast()
 
     // Extract the first trend object (assuming the API always returns at least one if successful)
     const trendData: RevenueTrend | undefined | null = trends?.[0]
@@ -64,18 +66,58 @@ export default function Page() {
     const handleDownloadReport = async () => {
         try {
             await downloadReport().unwrap()
-            toast({
-                title: "Success!",
-                description: "Revenue report downloaded successfully.",
-                variant: "default",
+            toast.custom((t) => (
+                <div
+                    className={`$${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white/80 dark:bg-[#23272e]/90 shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-purple-500/20 backdrop-blur-md border border-purple-200/40 dark:border-purple-900/40 transition-all duration-300`}
+                    style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+                >
+                    <div className="flex-1 w-0 p-4">
+                        <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5">
+                                <CheckCircle className="h-8 w-8 text-green-500 dark:text-green-400" />
+                            </div>
+                            <div className="ml-3 flex-1">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                                    Report Status:
+                                </p>
+                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    Revenue report downloaded successfully.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))
+            addNotification({
+                title: "Report Status:",
+                message: "Revenue report downloaded successfully.",
+                type: "success"
             })
         } catch (error) {
             console.error("Failed to download report:", error)
-            toast({
-                title: "Error",
-                description: "Failed to download revenue report. Please try again.",
-                variant: "destructive",
-            })
+            toast.custom((t) => (
+                <div
+                    className={`$${t.visible ? 'animate-enter' : 'animate-leave'} max-w-md w-full bg-white/80 dark:bg-[#23272e]/90 shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-purple-500/20 backdrop-blur-md border border-purple-200/40 dark:border-purple-900/40 transition-all duration-300`}
+                    style={{ boxShadow: '0 8px 32px 0 rgba(80, 0, 120, 0.15)' }}
+                >
+                    <div className="flex-1 w-0 p-4">
+                        <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5">
+                                <XCircle className="h-8 w-8 text-red-500 dark:text-red-400" />
+                            </div>
+                            <div className="ml-3 flex-1">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                                    Report Status:
+                                </p>
+                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                                    Failed to download revenue report. Please try again.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            ))
         }
     }
 
@@ -144,20 +186,33 @@ export default function Page() {
             <main className={`p-4 md:p-6 pt-8 transition-all duration-300 ${isCollapsed ? "sm:ml-16" : "sm:ml-64"}`}>
                 {/* Header Section */}
                 <div className="mb-8 flex flex-row justify-between items-center space-x-3.5 md:space-x-0">
-                    <div>
-                        <h1 className={`text-3xl font-bold text-gray-900 dark:text-white mb-2 transform transition-all duration-700 ease-out ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                            }`}>Revenue Dashboard</h1>
-                        <div className={`items-center gap-2 hidden md:flex transform transition-all duration-700 ease-out delay-100 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                            }`}>
-                            <TrendingUp className="w-5 h-5 text-green-500" />
+                    <div className="s">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div
+                                className={`w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center shadow-lg transform transition-all duration-700 ease-out ${isLoaded ? "translate-y-0 opacity-100 rotate-0" : "translate-y-4 opacity-0 rotate-12"
+                                    }`}
+                            >
+                                <TrendingUp className="w-6 h-6 text-white" />
+                            </div>
+                            <h1
+                                className={`text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent transform transition-all duration-700 ease-out ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                    }`}
+                            >
+                                Revenue Dashboard
+                            </h1>
+                        </div>
+                        <div
+                            className={`items-center gap-2 hidden md:flex transform transition-all duration-700 ease-out delay-100 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                                }`}
+                        >
+                            <Sparkles className="w-5 h-5 text-purple-500" />
                             <p className="text-gray-600 dark:text-gray-300">
-                                Monitor and analyze revenue performance with real-time insights
-                            </p>
+                            Monitor and analyze revenue performance with real-time insights                            </p>
                         </div>
                     </div>
                     <div className={` transform transition-all duration-700 ease-out delay-100 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                         }`}>
-                        <Button 
+                        <Button
                             className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
                             onClick={handleDownloadReport}
                             disabled={isDownloading}
