@@ -9,7 +9,6 @@ interface OnboardingStep {
   description: string
   target: string
   position: "top" | "bottom" | "left" | "right" | "center"
-  action?: string
 }
 
 interface OnboardingContextType {
@@ -20,148 +19,248 @@ interface OnboardingContextType {
   nextStep: () => void
   prevStep: () => void
   skipOnboarding: () => void
-  completeOnboarding: () => void
-  resetOnboardingForTesting: () => void
-  // New methods for page-specific onboarding
   startFraudOnboarding: () => void
-  currentPage: "home" | "fraud"
-  setCurrentPage: (page: "home" | "fraud") => void
+  startStatisticsOnboarding: () => void
+  startMarketOnboarding: () => void
+  startRevenueOnboarding: () => void
+  currentPage: "home" | "fraud" | "statistics" | "market" | "revenue"
+  setCurrentPage: (page: "home" | "fraud" | "statistics" | "market" | "revenue") => void
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined)
 
-// Home page onboarding steps
-const homeOnboardingSteps: OnboardingStep[] = [
+// Streamlined onboarding steps
+const homeSteps: OnboardingStep[] = [
   {
     id: "welcome",
     title: "Welcome to Your Dashboard!",
-    description:
-      "Let's take a quick tour of your dashboard to help you get started. We'll show you the key features and how to navigate around.",
+    description: "Let's take a quick tour of your dashboard features.",
     target: "body",
     position: "center",
   },
   {
     id: "sidebar",
     title: "Navigation Sidebar",
-    description:
-      "This is your main navigation hub. Access different sections like Statistics, Fraud Detection, Revenue Analysis, and more. Click the eye icon to collapse/expand it.",
+    description: "Access different sections and collapse/expand with the eye icon.",
     target: "#sidebar",
     position: "right",
   },
   {
-    id: "header-search",
+    id: "ai-assistant",
     title: "AI Assistant",
-    description:
-      "Your intelligent AI assistant is always ready to help! Click here or type to ask questions, get insights, or request help with your dashboard.",
+    description: "Your intelligent assistant for questions and insights.",
     target: '[data-onboarding="ai-assistant"]',
     position: "bottom",
   },
   {
-    id: "header-notifications",
-    title: "Notifications Center",
-    description:
-      "Stay updated with important alerts, system updates, and business insights. The orange dot indicates new notifications waiting for you.",
+    id: "notifications",
+    title: "Notifications",
+    description: "Stay updated with alerts and system updates.",
     target: '[data-onboarding="notifications"]',
     position: "bottom",
   },
   {
-    id: "header-theme",
-    title: "Theme Toggle",
-    description:
-      "Switch between light and dark modes to customize your viewing experience. Choose what's most comfortable for your eyes!",
-    target: '[data-onboarding="theme-toggle"]',
-    position: "bottom",
-  },
-  {
     id: "stats",
-    title: "Key Performance Metrics",
-    description:
-      "These cards display your most important business metrics at a glance. They update in real-time to keep you informed about your performance.",
+    title: "Key Metrics",
+    description: "Your most important business metrics at a glance.",
     target: '[data-onboarding="stats-cards"]',
     position: "bottom",
   },
   {
     id: "welcome-card",
     title: "Personal Welcome",
-    description:
-      "Your personalized welcome area. This space adapts to show relevant information and quick actions based on your role and recent activity.",
+    description: "Your personalized dashboard area.",
     target: '[data-onboarding="welcome-card"]',
     position: "bottom",
   },
   {
     id: "chart",
-    title: "Analytics & Insights",
-    description:
-      "View detailed analytics and trends with interactive charts. This helps you understand your data patterns and make informed decisions.",
+    title: "Analytics",
+    description: "Interactive charts and data insights.",
     target: '[data-onboarding="chart-card"]',
     position: "top",
   },
   {
     id: "kpi",
-    title: "3D KPI Visualization",
-    description:
-      "Monitor your Key Performance Indicators with this interactive 3D visualization. It provides a unique perspective on your business health.",
+    title: "3D KPI Dashboard",
+    description: "Interactive 3D visualization of your KPIs.",
     target: '[data-onboarding="kpi-dashboard"]',
     position: "left",
   },
-  {
-    id: "settings",
-    title: "Dashboard Controls",
-    description:
-      "Access advanced settings, fullscreen mode, and customization options. Take control of your dashboard experience and make it work for you!",
-    target: '[data-onboarding="kpi-controls"]',
-    position: "bottom",
-  },
 ]
 
-// Fraud page onboarding steps
-const fraudOnboardingSteps: OnboardingStep[] = [
+const fraudSteps: OnboardingStep[] = [
   {
     id: "fraud-welcome",
-    title: "Welcome to Fraud Detection!",
-    description:
-      "This is your comprehensive fraud detection dashboard. Let's explore the powerful tools available to monitor, analyze, and prevent fraudulent activities.",
+    title: "Fraud Detection Dashboard",
+    description: "Monitor and analyze fraudulent activities.",
     target: "body",
     position: "center",
   },
-//   {
-//     id: "fraud-header",
-//     title: "Fraud Dashboard Header",
-//     description:
-//       "Your fraud detection command center. The download button lets you export detailed fraud reports for compliance and analysis purposes.",
-//     target: '[data-onboarding="fraud-header"]',
-//     position: "bottom",
-//   },
   {
     id: "transaction-analysis",
-    title: "Transaction Analysis Chart",
-    description:
-      "Monitor transaction patterns with real-time charts showing fraudulent vs legitimate transactions. The circular metrics show detection rates, false positives, and overall accuracy.",
+    title: "Transaction Analysis",
+    description: "Real-time fraud vs legitimate transaction monitoring.",
     target: '[data-onboarding="transaction-analysis"]',
     position: "bottom",
   },
   {
     id: "fraud-metrics",
-    title: "Fraud Detection Metrics",
-    description:
-      "View your current fraud incidence rate and identify the most common fraudulent patterns. This helps you understand emerging threats and adjust your security measures.",
+    title: "Fraud Metrics",
+    description: "Current fraud rates and pattern identification.",
     target: '[data-onboarding="fraud-metrics"]',
     position: "left",
   },
   {
     id: "transaction-table",
-    title: "Transaction Data Table",
-    description:
-      "Detailed view of all transactions with fraud risk scores. Click on any transaction to see complete details, download data, or send to AI chat for analysis. Customize columns to focus on what matters most.",
+    title: "Transaction Data",
+    description: "Detailed transaction view with fraud risk scores.",
     target: '[data-onboarding="transaction-table"]',
     position: "top",
   },
   {
     id: "ai-analysis",
-    title: "AI Analysis Report",
-    description:
-      "Get intelligent insights from our AI system. View fraud causes, recommendations, and generate comprehensive reports to help you make informed decisions about your security strategy.",
+    title: "AI Analysis",
+    description: "Intelligent fraud insights and recommendations.",
     target: '[data-onboarding="ai-analysis"]',
+    position: "left",
+  },
+]
+
+const statisticsSteps: OnboardingStep[] = [
+  {
+    id: "statistics-welcome",
+    title: "Analytics Dashboard Overview",
+    description: "Welcome to your comprehensive analytics dashboard with detailed business insights.",
+    target: "body",
+    position: "center",
+  },
+  {
+    id: "performance-overview",
+    title: "Performance Summary",
+    description: "Your key business metrics and performance indicators at the top of the dashboard.",
+    target: '[data-onboarding="performance-overview"]',
+    position: "bottom",
+  },
+  {
+    id: "revenue-analytics",
+    title: "Revenue Analytics Row",
+    description: "Revenue and expenses analysis with area charts, line charts, and monthly breakdowns.",
+    target: '[data-onboarding="row1-analytics"]',
+    position: "bottom",
+  },
+  {
+    id: "operational-insights",
+    title: "Operational Insights Row",
+    description: "Operational vs non-operational expenses, campaign targets, and product price analysis.",
+    target: '[data-onboarding="row2-analytics"]',
+    position: "bottom",
+  },
+  {
+    id: "detailed-reports",
+    title: "Detailed Reports Row",
+    description: "Recent transactions, monthly comparisons, expense breakdowns, and comprehensive reporting.",
+    target: '[data-onboarding="row3-analytics"]',
+    position: "top",
+  },
+]
+
+const marketSteps: OnboardingStep[] = [
+  {
+    id: "market-welcome",
+    title: "Market Analysis Dashboard",
+    description: "Welcome to your comprehensive market intelligence and competitive analysis platform.",
+    target: "body",
+    position: "center",
+  },
+  {
+    id: "download-report",
+    title: "Export & Reports",
+    description: "Download comprehensive market analysis reports and export data for presentations.",
+    target: '[data-onboarding="download-report"]',
+    position: "bottom",
+  },
+  {
+    id: "pricing-analysis",
+    title: "Pricing Comparison",
+    description: "Analyze competitor pricing strategies and position your products competitively in the market.",
+    target: '[data-onboarding="pricing-comparison"]',
+    position: "right",
+  },
+  {
+    id: "swot-analysis",
+    title: "SWOT Analysis Matrix",
+    description: "Comprehensive Strengths, Weaknesses, Opportunities, and Threats analysis for strategic planning.",
+    target: '[data-onboarding="swot-analysis"]',
+    position: "bottom",
+  },
+  {
+    id: "competitive-positioning",
+    title: "Competitive Positioning",
+    description: "Visualize your market position relative to competitors and identify strategic opportunities.",
+    target: '[data-onboarding="competitive-positioning"]',
+    position: "left",
+  },
+  {
+    id: "market-map",
+    title: "Market Landscape",
+    description: "Interactive market map showing industry trends, market segments, and growth opportunities.",
+    target: '[data-onboarding="market-map"]',
+    position: "top",
+  },
+  {
+    id: "ai-insights",
+    title: "AI-Powered Analysis",
+    description: "Advanced AI insights and recommendations based on market data and competitive intelligence.",
+    target: '[data-onboarding="ai-analysis"]',
+    position: "top",
+  },
+]
+
+const revenueSteps: OnboardingStep[] = [
+  {
+    id: "revenue-welcome",
+    title: "Revenue Dashboard Overview",
+    description: "Welcome to your comprehensive revenue analytics dashboard with real-time insights and forecasting.",
+    target: "body",
+    position: "center",
+  },
+  {
+    id: "revenue-header",
+    title: "Dashboard Header & Controls",
+    description:
+      "Access revenue reports, download data, and monitor key performance indicators from the header section.",
+    target: '[data-onboarding="revenue-header"]',
+    position: "bottom",
+  },
+  {
+    id: "revenue-forecast-chart",
+    title: "Revenue Forecast Confidence",
+    description:
+      "Circular progress chart showing revenue forecast accuracy with confidence levels (High, Medium, Low).",
+    target: '[data-onboarding="revenue-forecast-chart"]',
+    position: "right",
+  },
+  {
+    id: "monthly-forecast-graph",
+    title: "Monthly Revenue Forecast",
+    description: "Interactive area chart displaying monthly revenue projections with quarterly filtering options.",
+    target: '[data-onboarding="monthly-forecast-graph"]',
+    position: "left",
+  },
+  {
+    id: "key-factors-analysis",
+    title: "Revenue Key Factors",
+    description: "Analyze critical factors impacting revenue performance with positive/negative impact indicators.",
+    target: '[data-onboarding="key-factors-analysis"]',
+    position: "right",
+  },
+  {
+    id: "ai-revenue-analysis",
+    title: "AI Revenue Insights",
+    description:
+      "Advanced AI-powered analysis providing actionable insights and strategic recommendations for revenue growth.",
+    target: '[data-onboarding="ai-revenue-analysis"]',
     position: "left",
   },
 ]
@@ -169,31 +268,23 @@ const fraudOnboardingSteps: OnboardingStep[] = [
 export function OnboardingProvider({ children }: { children: React.ReactNode }) {
   const [isOnboardingActive, setIsOnboardingActive] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false)
-  const [currentPage, setCurrentPage] = useState<"home" | "fraud">("home")
-  const [hasCompletedFraudOnboarding, setHasCompletedFraudOnboarding] = useState(false)
+  const [currentPage, setCurrentPage] = useState<"home" | "fraud" | "statistics" | "market" | "revenue">("home")
 
-  // Get current steps based on page
-  const steps = currentPage === "home" ? homeOnboardingSteps : fraudOnboardingSteps
+  const steps =
+    currentPage === "home"
+      ? homeSteps
+      : currentPage === "fraud"
+        ? fraudSteps
+        : currentPage === "statistics"
+          ? statisticsSteps
+          : currentPage === "market"
+            ? marketSteps
+            : revenueSteps
 
   useEffect(() => {
-    // Check if user has completed onboarding for current page
-    const homeCompleted = localStorage.getItem("dashboard-onboarding-completed")
-    const fraudCompleted = localStorage.getItem("fraud-onboarding-completed")
-
-    setHasCompletedOnboarding(!!homeCompleted)
-    setHasCompletedFraudOnboarding(!!fraudCompleted)
-
-    // Auto-start onboarding based on current page
-    if (currentPage === "home" && !homeCompleted) {
-      const timer = setTimeout(() => {
-        setIsOnboardingActive(true)
-      }, 2000)
-      return () => clearTimeout(timer)
-    } else if (currentPage === "fraud" && !fraudCompleted) {
-      const timer = setTimeout(() => {
-        setIsOnboardingActive(true)
-      }, 2000)
+    const completed = localStorage.getItem(`${currentPage}-onboarding-completed`)
+    if (!completed) {
+      const timer = setTimeout(() => setIsOnboardingActive(true), 2000)
       return () => clearTimeout(timer)
     }
   }, [currentPage])
@@ -209,11 +300,29 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
     setIsOnboardingActive(true)
   }
 
+  const startStatisticsOnboarding = () => {
+    setCurrentPage("statistics")
+    setCurrentStep(0)
+    setIsOnboardingActive(true)
+  }
+
+  const startMarketOnboarding = () => {
+    setCurrentPage("market")
+    setCurrentStep(0)
+    setIsOnboardingActive(true)
+  }
+
+  const startRevenueOnboarding = () => {
+    setCurrentPage("revenue")
+    setCurrentStep(0)
+    setIsOnboardingActive(true)
+  }
+
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1)
     } else {
-      completeOnboarding()
+      skipOnboarding()
     }
   }
 
@@ -225,35 +334,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
 
   const skipOnboarding = () => {
     setIsOnboardingActive(false)
-    const storageKey = currentPage === "home" ? "dashboard-onboarding-completed" : "fraud-onboarding-completed"
-    localStorage.setItem(storageKey, "true")
-
-    if (currentPage === "home") {
-      setHasCompletedOnboarding(true)
-    } else {
-      setHasCompletedFraudOnboarding(true)
-    }
-  }
-
-  const completeOnboarding = () => {
-    setIsOnboardingActive(false)
-    const storageKey = currentPage === "home" ? "dashboard-onboarding-completed" : "fraud-onboarding-completed"
-    localStorage.setItem(storageKey, "true")
-
-    if (currentPage === "home") {
-      setHasCompletedOnboarding(true)
-    } else {
-      setHasCompletedFraudOnboarding(true)
-    }
-  }
-
-  const resetOnboardingForTesting = () => {
-    localStorage.removeItem("dashboard-onboarding-completed")
-    localStorage.removeItem("fraud-onboarding-completed")
-    setHasCompletedOnboarding(false)
-    setHasCompletedFraudOnboarding(false)
-    setIsOnboardingActive(false)
-    setCurrentStep(0)
+    localStorage.setItem(`${currentPage}-onboarding-completed`, "true")
   }
 
   return (
@@ -266,9 +347,10 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
         nextStep,
         prevStep,
         skipOnboarding,
-        completeOnboarding,
-        resetOnboardingForTesting,
         startFraudOnboarding,
+        startStatisticsOnboarding,
+        startMarketOnboarding,
+        startRevenueOnboarding,
         currentPage,
         setCurrentPage,
       }}
@@ -280,7 +362,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
 
 export function useOnboarding() {
   const context = useContext(OnboardingContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useOnboarding must be used within an OnboardingProvider")
   }
   return context
