@@ -130,5 +130,5 @@ export interface RevenueTrend {
 
 export interface RawRevenueApiResponse {
   success: boolean;
-  trends: RevenueTrend[];
+  trends: RevenueTrend[]; // Changed back to RevenueTrend[] to match array response
 }

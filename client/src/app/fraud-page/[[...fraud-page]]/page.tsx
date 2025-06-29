@@ -10,6 +10,8 @@ import { Download } from "lucide-react"
 import OnboardingOverlay from "@/components/ui/OnboardingOverlay"
 import OnboardingHelpButton from "@/components/ui/OnboardingHelpButton"
 import { useOnboarding } from "@/context/OnboardingContext"
+import { useDownloadFraudReportMutation } from "@/state/api"
+import { useToast } from "@/app/sphere/ui/use-toast"
 
 const Graph = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/graph"), { ssr: false })
 const ReportAmeen = dynamic(() => import("@/app/fraud-page/[[...fraud-page]]/components/reportAmeen"), { ssr: false })
@@ -18,6 +20,8 @@ export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const { setCurrentPage } = useOnboarding()
+  const [downloadReport, { isLoading: isDownloading }] = useDownloadFraudReportMutation()
+  const { toast } = useToast()
 
   // Set current page for onboarding
   useEffect(() => {
@@ -52,6 +56,25 @@ export default function Page() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Handle download report
+  const handleDownloadReport = async () => {
+    try {
+      await downloadReport().unwrap()
+      toast({
+        title: "Success!",
+        description: "Fraud detection report downloaded successfully.",
+        variant: "default",
+      })
+    } catch (error) {
+      console.error("Failed to download report:", error)
+      toast({
+        title: "Error",
+        description: "Failed to download fraud detection report. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
+
   return (
     <div className="min-h-screen transition-colors duration-300 dark:bg-[#15191c] bg-[#fafafa]">
       <Header />
@@ -84,9 +107,15 @@ export default function Page() {
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+            <Button 
+              className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
+              onClick={handleDownloadReport}
+              disabled={isDownloading}
+            >
               <Download className="w-4 h-4" />
-              <span className="hidden md:flex">Download Report</span>
+              <span className="hidden md:flex">
+                {isDownloading ? "Downloading..." : "Download Report"}
+              </span>
             </Button>
           </div>
         </div>

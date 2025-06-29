@@ -8,5 +8,6 @@ revenueRouter.get("/results", revenueController.getRevenueResults);
 revenueRouter.get("/LLMRun", revenueController.runLLM);
 
 revenueRouter.get("/pdf", revenueController.downloadLatestRevenuePDF);
+revenueRouter.get("/download-report", revenueController.downloadRevenueReport);
 
 module.exports = revenueRouter;

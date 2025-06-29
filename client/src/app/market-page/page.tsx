@@ -15,11 +15,18 @@ import OnboardingHelpButton from "@/components/ui/OnboardingHelpButton"
 import { OnboardingProvider, useOnboarding } from "@/context/OnboardingContext"
 import { Button } from "@/components/ui/button"
 import { Download, TrendingUp, Sparkles } from "lucide-react"
+import { useDownloadMarketReportMutation, useDownloadMarketReportPdfMutation, useGetMarketDataQuery } from "@/state/api"
+import { useToast } from "@/app/sphere/ui/use-toast"
 
 function MarketAnalysisContent() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const { setCurrentPage } = useOnboarding()
+  const [downloadReport, { isLoading: isDownloading }] = useDownloadMarketReportMutation()
+  const [downloadPdf, { isLoading: isDownloadingPdf }] = useDownloadMarketReportPdfMutation()
+  const { toast } = useToast()
+  const { data: marketData, isLoading, error } = useGetMarketDataQuery()
+  const latestMarket = marketData?.[0]
 
   // Set current page for onboarding
   useEffect(() => {
@@ -50,6 +57,52 @@ function MarketAnalysisContent() {
     }, 300)
     return () => clearTimeout(timer)
   }, [])
+
+  // Handle download report (JSON)
+  const handleDownloadReport = async () => {
+    try {
+      await downloadReport().unwrap()
+      toast({
+        title: "Success!",
+        description: "Market analysis report (JSON) downloaded successfully.",
+        variant: "default",
+      })
+    } catch (error) {
+      console.error("Failed to download report:", error)
+      toast({
+        title: "Error",
+        description: "Failed to download market analysis report. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  // Handle download PDF
+  const handleDownloadPdf = async () => {
+    try {
+      await downloadPdf().unwrap()
+      toast({
+        title: "Success!",
+        description: "Market analysis PDF downloaded successfully.",
+        variant: "default",
+      })
+    } catch (error) {
+      console.error("Failed to download PDF:", error)
+      toast({
+        title: "Error",
+        description: "Failed to download market analysis PDF. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading market data...</div>
+  }
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-500">Error loading market data</div>
+  }
 
   return (
     <div className="min-h-screen dark:bg-[#15191C] bg-[#fafafa] transition-all duration-500">
@@ -88,14 +141,20 @@ function MarketAnalysisContent() {
             </div>
           </div>
           <div
-            className={`transform transition-all duration-700 ease-out delay-200 ${
+            className={`flex gap-2 transform transition-all duration-700 ease-out delay-200 ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
             data-onboarding="download-report"
           >
-            <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm border border-purple-500/20">
+            <Button 
+              className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm border border-purple-500/20"
+              onClick={handleDownloadPdf}
+              disabled={isDownloadingPdf}
+            >
               <Download className="w-4 h-4" />
-              <span className="hidden md:flex">Download Report</span>
+              <span className="hidden md:flex">
+                {isDownloadingPdf ? "Downloading..." : "Download Report"}
+              </span>
             </Button>
           </div>
         </div>

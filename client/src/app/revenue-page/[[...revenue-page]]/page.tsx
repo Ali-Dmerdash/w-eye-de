@@ -12,8 +12,9 @@ import KeyFactors from "./components/keyFactors"
 import Analysis from "./components/analysis"
 
 // Import Redux hook and types
-import { useGetRevenueDataQuery } from "@/state/api"
+import { useGetRevenueDataQuery, useDownloadRevenueReportMutation } from "@/state/api"
 import type { RevenueTrend } from "@/state/type"
+import { useToast } from "@/app/sphere/ui/use-toast"
 
 // Keep the original Graph component import (uses static data)
 const Graph = dynamic(() => import("./components/graph"), { ssr: false })
@@ -24,6 +25,8 @@ export default function Page() {
 
     // Fetch data using the Redux hook
     const { data: trends, isLoading, error } = useGetRevenueDataQuery()
+    const [downloadReport, { isLoading: isDownloading }] = useDownloadRevenueReportMutation()
+    const { toast } = useToast()
 
     // Extract the first trend object (assuming the API always returns at least one if successful)
     const trendData: RevenueTrend | undefined | null = trends?.[0]
@@ -56,6 +59,25 @@ export default function Page() {
         }, 500)
         return () => clearTimeout(timer)
     }, [])
+
+    // Handle download report
+    const handleDownloadReport = async () => {
+        try {
+            await downloadReport().unwrap()
+            toast({
+                title: "Success!",
+                description: "Revenue report downloaded successfully.",
+                variant: "default",
+            })
+        } catch (error) {
+            console.error("Failed to download report:", error)
+            toast({
+                title: "Error",
+                description: "Failed to download revenue report. Please try again.",
+                variant: "destructive",
+            })
+        }
+    }
 
     // Handle loading state for the whole section
     if (isLoading) {
@@ -135,9 +157,15 @@ export default function Page() {
                     </div>
                     <div className={` transform transition-all duration-700 ease-out delay-100 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                         }`}>
-                        <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                        <Button 
+                            className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
+                            onClick={handleDownloadReport}
+                            disabled={isDownloading}
+                        >
                             <Download className="w-4 h-4" />
-                            <span className="hidden md:flex">Download Report</span>
+                            <span className="hidden md:flex">
+                                {isDownloading ? "Downloading..." : "Download Report"}
+                            </span>
                         </Button>
                     </div>
                 </div>

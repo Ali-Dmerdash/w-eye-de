@@ -6,9 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="d14348fc-2c3b-48dd-92ba-fcae0597a0d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/ClientProviders.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/ClientProviders.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/FraudInc.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/FraudInc.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/components/graph.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/fraud-page/[[...fraud-page]]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/components/competitivePositioning.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/market-page/components/competitivePositioning.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/components/pricingComparison.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/market-page/components/pricingComparison.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/components/strengths.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/market-page/components/strengths.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/market-page/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/market-page/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/revenue-page/[[...revenue-page]]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/sphere/ui/toaster.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/sphere/ui/toaster.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/state/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/state/api.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/state/type.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/state/type.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/fraudController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/fraudController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/marketController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/marketController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/revenueController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/revenueController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/fraudRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/fraudRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/marketRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/marketRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/revenueRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/revenueRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/services/fraudService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/fraudService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/marketService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/marketService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/revenueService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/revenueService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +130,10 @@
       <workItem from="1748849707822" duration="607000" />
       <workItem from="1748851018983" duration="1380000" />
       <workItem from="1748852415726" duration="10054000" />
-      <workItem from="1750784648218" duration="5225000" />
+      <workItem from="1750784648218" duration="5893000" />
+      <workItem from="1751054765126" duration="3516000" />
+      <workItem from="1751103679047" duration="4412000" />
+      <workItem from="1751201248255" duration="9001000" />
     </task>
     <servers />
   </component>

@@ -24,7 +24,35 @@ exports.getFraudHistory = async () => {
   }
 };
 
-const FraudInput = require("../models/FraudInput");
+// New function to generate fraud detection report
+exports.generateFraudReport = async () => {
+  try {
+    // Get the latest fraud data first
+    const fraudHistory = await FraudDetection.find().sort({
+      createdAt: -1,
+    });
+
+    // Generate report data
+    const reportData = {
+      generatedAt: new Date().toISOString(),
+      totalRecords: fraudHistory.length,
+      summary: {
+        totalFraudCases: fraudHistory.filter(item => item.isFraudulent).length,
+        totalLegitimateCases: fraudHistory.filter(item => !item.isFraudulent).length,
+        fraudRate: fraudHistory.length > 0 ? 
+          ((fraudHistory.filter(item => item.isFraudulent).length / fraudHistory.length) * 100).toFixed(2) + '%' : '0%'
+      },
+      recentCases: fraudHistory.slice(0, 10), // Last 10 cases
+      analysis: fraudHistory[0]?.analysis || null
+    };
+
+    return reportData;
+  } catch (err) {
+    throw new Error("Error generating fraud report: " + err.message);
+  }
+};
+
+const FraudInput = require("../models/fraudInput");
 const axios = require("axios");
 
 exports.runLLM = async () => {

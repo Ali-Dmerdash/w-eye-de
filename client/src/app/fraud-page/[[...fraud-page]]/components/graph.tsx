@@ -11,9 +11,29 @@ function formatDateForDisplay(dateString: string): string {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 }
 
-// Helper function to convert fraud rate to percentage
-function formatFraudRate(rate: number): number {
-  return (rate * 100) // Convert 0.02 to 2
+// Helper function to format fraud rate for display
+function formatFraudRate(rate: string | number): number {
+  if (typeof rate === 'string') {
+    // If it's already a string with %
+    if (rate.includes('%')) {
+      // Extract the number part and check if it's in decimal format
+      const numPart = parseFloat(rate.replace('%', ''))
+      if (isNaN(numPart)) return 0
+      
+      // If the number is less than 1, it's likely in decimal format (0.045% should be 4.5%)
+      if (numPart < 1) {
+        return numPart * 100
+      }
+      // Otherwise, return as is (already properly formatted)
+      return numPart
+    }
+    // If it's a string number (like "0.045"), convert to percentage
+    const numRate = parseFloat(rate)
+    if (isNaN(numRate)) return 0
+    return numRate * 100
+  }
+  // If it's a number (like 0.045), convert to percentage
+  return rate * 100
 }
 
 // Helper function to get a safe error message string
@@ -23,7 +43,19 @@ function getErrorMessage(error: unknown): string {
   }
   if (typeof error === "object" && error !== null) {
     if ("status" in error) {
-      return `Error: ${error.status}`
+      let details = ""
+      if (
+        "data" in error &&
+        typeof error.data === "object" &&
+        error.data !== null &&
+        "message" in error.data &&
+        typeof error.data.message === "string"
+      ) {
+        details = error.data.message
+      } else if ("error" in error && typeof error.error === "string") {
+        details = error.error
+      }
+      return `Error ${error.status}${details ? ": " + details : ""}`
     }
     if ("message" in error && typeof error.message === "string") {
       return error.message
@@ -98,7 +130,7 @@ const CircularProgress = ({
 export default function FraudAnalyticsOverview() {
   const [circleSize, setCircleSize] = React.useState(100)
   const { data: fraudDataArray, isLoading, error } = useGetFraudDataQuery()
-  const fraudDataState: FraudModelResponse | undefined = fraudDataArray?.[0]
+  const fraudData: FraudModelResponse | undefined = fraudDataArray?.[0]
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -113,14 +145,14 @@ export default function FraudAnalyticsOverview() {
 
   // Transform fraud rate over time data for the chart
   const chartData = React.useMemo(() => {
-    if (!fraudDataState?.fraud_rate_over_time) return []
+    if (!fraudData?.fraud_rate_over_time) return []
 
-    return fraudDataState.fraud_rate_over_time.map((item: FraudRateOverTime) => ({
+    return fraudData.fraud_rate_over_time.map((item: FraudRateOverTime) => ({
       month: formatDateForDisplay(item.date),
       fraudRate: formatFraudRate(item.fraud_rate),
       originalDate: item.date
     }))
-  }, [fraudDataState])
+  }, [fraudData])
 
   // --- Loading State ---
   if (isLoading) {
@@ -159,7 +191,7 @@ export default function FraudAnalyticsOverview() {
   }
 
   // --- No Data State ---
-  if (!fraudDataState || !chartData.length) {
+  if (!fraudData || !chartData.length) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 h-full flex items-center justify-center">
         <div className="text-center">
@@ -176,29 +208,21 @@ export default function FraudAnalyticsOverview() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-              <Activity className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Fraud Rate Over Time</h2>
+            <Activity className="w-9 h-9 text-purple-600 dark:text-purple-400" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Fraud Rate Over Time
+            </h3>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Monitor fraud patterns and trends
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+            <span className="text-xs text-gray-600 dark:text-gray-400">Fraud Rate</span>
           </div>
         </div>
-        {(() => {
-          const now = new Date();
-          const year = now.getFullYear();
-          const month = now.getMonth(); // 0-based
-          let quarter = 1;
-          if (month >= 0 && month <= 2) quarter = 1;
-          else if (month >= 3 && month <= 5) quarter = 2;
-          else if (month >= 6 && month <= 8) quarter = 3;
-          else if (month >= 9 && month <= 11) quarter = 4;
-          return (
-            <div className="bg-purple-50 dark:bg-purple-900/20 px-3 py-1 rounded-full">
-              <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
-                {`Q${quarter} ${year}`}
-              </span>
-            </div>
-          );
-        })()}
       </div>
 
       <div className="flex-grow flex md:flex-row flex-col gap-6">
@@ -247,20 +271,16 @@ export default function FraudAnalyticsOverview() {
                 domain={[0, 'dataMax + 1']}
                 tickFormatter={(value) => `${value}%`}
               />
-
-
               <Tooltip
                 contentStyle={{
                   backgroundColor: "white",
                   border: "1px solid #E5E7EB",
-                  borderRadius: "12px",
-                  color: "#374151",
-                  fontSize: "12px",
-                  padding: "8px 12px",
-                  boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                 }}
-                formatter={(value: any, name: string) => [`${value}%`, 'Fraud Rate']}
-                labelFormatter={(label) => `Period: ${label}`}
+                labelStyle={{ color: "#374151", fontWeight: "600" }}
+                formatter={(value: any) => [`${value}%`, "Fraud Rate"]}
+                labelFormatter={(label) => `Date: ${label}`}
               />
               <Area
                 type="monotone"
@@ -268,7 +288,7 @@ export default function FraudAnalyticsOverview() {
                 stroke="#8B5CF6"
                 strokeWidth={2}
                 fill="url(#colorFraudRate)"
-                name="Fraud Rate"
+                fillOpacity={0.3}
               />
             </AreaChart>
           </ResponsiveContainer>
