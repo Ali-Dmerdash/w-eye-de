@@ -1,4 +1,5 @@
 const revenueService = require("../services/revenueService");
+const Revenue = require("../models/Revenue"); // Assuming you have a Revenue model similar to Fraud and Market
 
 exports.predictRevenue = async (req, res) => {
   try {
@@ -11,8 +12,11 @@ exports.predictRevenue = async (req, res) => {
 
 exports.getRevenueResults = async (req, res) => {
   try {
-    const trends = await revenueService.getRevenueResults();
-    res.status(200).json({ success: true, trends });
+    // Find the latest document based on a timestamp field.
+    // IMPORTANT: Replace 'createdAt' with the actual name of your timestamp field
+    // in the Revenue_LLM_Output collection (or whatever collection your Revenue model points to).
+    const latestResult = await Revenue.findOne().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, trends: latestResult }); // Keeping 'trends' key for consistency with original response structure
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }

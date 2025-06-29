@@ -24,7 +24,7 @@ exports.getFraudHistory = async () => {
   }
 };
 
-const FraudInput = require("../models/fraudInput");
+const FraudInput = require("../models/FraudInput");
 const axios = require("axios");
 
 exports.runLLM = async () => {
@@ -45,7 +45,7 @@ exports.runLLM = async () => {
       throw new Error(`Missing required files: ${missingFiles.join(", ")}`);
     }
 
-    const llmResponse = await axios.post("http://localhost:8001/run/fraud", {});
+    const llmResponse = await axios.get("http://localhost:8001/run/fraud", {});
     return llmResponse.data;
   } catch (err) {
     throw new Error("Error running Fraud LLM: " + err.message);

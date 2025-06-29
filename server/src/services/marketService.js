@@ -24,12 +24,23 @@ exports.getMarketResults = async () => {
   }
 };
 
-const MarketInput = require("../models/marketInput");
+const MarketInput = require("../models/MarketInput");
 const axios = require("axios");
 
 exports.runLLM = async () => {
   try {
-    const requiredFiles = ["annual_report_2024.txt", "customer_feedback_summary_q1_2025.txt","balance_sheet_2024.txt","cash_flow_statement_2024.txt","income_statement_2024.txt","marketing_report_q1_2025.txt","operational_report_q1_2025.txt","sales_report_q1_2025.txt","internal_pricing_document.txt","product_roadmap_h2_2025.txt"]; // Placeholder for required files
+    const requiredFiles = [
+      "annual_report_2024.txt",
+      "customer_feedback_summary_q1_2025.txt",
+      "balance_sheet_2024.txt",
+      "cash_flow_statement_2024.txt",
+      "income_statement_2024.txt",
+      "marketing_report_q1_2025.txt",
+      "operational_report_q1_2025.txt",
+      "sales_report_q1_2025.txt",
+      "internal_pricing_document.txt",
+      "product_roadmap_h2_2025.txt",
+    ]; // Placeholder for required files
     const uploadedFiles = await MarketInput.find({}).select(
       "originalFileName -_id"
     );
@@ -47,8 +58,8 @@ exports.runLLM = async () => {
     }
 
     // Call the LLM at localhost:8001
-    const llmResponse = await axios.post(
-      "http://localhost:8003//run/market",
+    const llmResponse = await axios.get(
+      "http://localhost:8003/run/market",
       {}
     ); // Assuming a POST request to /run-llm
     return llmResponse.data;

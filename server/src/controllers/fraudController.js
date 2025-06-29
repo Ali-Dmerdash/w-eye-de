@@ -13,8 +13,11 @@ exports.detectFraud = async (req, res) => {
 
 exports.getAllFraudHistory = async (req, res, next) => {
   try {
-    const results = await Fraud.find({});
-    res.status(200).json(results);
+    // Find the latest document based on the 'detectedAt' field
+    // Assuming 'detectedAt' is the field that stores the timestamp of the fraud detection.
+    // If your timestamp field has a different name, please replace 'detectedAt' with the correct field name.
+    const latestResult = await Fraud.findOne().sort({ detectedAt: -1 });
+    res.status(200).json(latestResult);
   } catch (error) {
     next(error);
   }
