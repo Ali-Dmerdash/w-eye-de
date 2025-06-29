@@ -1,4 +1,5 @@
-const Market = require("../models/Market");
+const Market = require("../models/Market"); // Assuming similar model structure
+const { MarketReport } = require("../models/Report");
 const marketService = require("../services/marketService");
 
 exports.compareMarket = async (req, res) => {
@@ -29,5 +30,32 @@ exports.runLLM = async (req, res) => {
     res.status(200).json({ success: true, message: response });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+exports.downloadLatestMarketPDF = async (req, res) => {
+  try {
+    // Find the latest report based on created_at date
+    const report = await MarketReport.findOne().sort({ created_at: -1 });
+
+    if (!report) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No market reports found" });
+    }
+
+    // Set headers for PDF download
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${report.filename}"`
+    );
+    res.setHeader("Content-Length", report.pdf.length);
+
+    // Send the PDF buffer
+    res.send(report.pdf);
+  } catch (error) {
+    console.error("Error downloading latest market PDF:", error);
+    res.status(500).json({ success: false, message: "Error downloading PDF" });
   }
 };

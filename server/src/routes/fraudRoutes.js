@@ -7,5 +7,6 @@ const fraudRouter = express.Router();
 fraudRouter.post("/detect", fraudController.detectFraud);
 fraudRouter.get("/results", fraudController.getAllFraudHistory);
 fraudRouter.get("/LLMRun", fraudController.runLLM);
+fraudRouter.get("/pdf", fraudController.downloadLatestFraudPDF);
 
 module.exports = fraudRouter;
