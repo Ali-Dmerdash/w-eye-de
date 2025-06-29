@@ -11,6 +11,7 @@ const revenueRoutes = require("./src/routes/revenueRoutes");
 const marketRoutes = require("./src/routes/marketRoutes");
 const statsRoutes = require("./src/routes/statsRoutes");
 const dataRoutes = require("./src/routes/dataRoutes");
+const preferenceRoutes = require("./src/routes/preferenceRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -32,6 +33,7 @@ app.use("/api/revenue", revenueRoutes);
 app.use("/api/market", marketRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/data", dataRoutes);
+app.use("/api/preference", preferenceRoutes);
 
 // New chatbot proxy route
 app.post("/api/chat", async (req, res) => {
