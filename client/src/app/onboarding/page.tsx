@@ -131,6 +131,20 @@ export default function OnboardingPage() {
 
         setIsLoading(true)
         try {
+            // 1. Send userDescription to the API endpoint
+            try {
+                await fetch("http://localhost:3001/api/preference", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ userDescription }),
+                })
+            } catch (apiError) {
+                console.error("Error posting userDescription to API:", apiError)
+            }
+
+            // 2. Update Clerk metadata
             await user?.update({
                 unsafeMetadata: {
                     ...user.unsafeMetadata,
@@ -323,6 +337,17 @@ export default function OnboardingPage() {
                     <Image src={logo || "/placeholder.svg"} alt="logo" className="w-32 opacity-90 relative z-10 drop-shadow-2xl" />
                 </div>
             </div>
+
+            {/* Skip button for file upload step */}
+            {step === "files" && (
+                <button
+                    onClick={handleCompleteOnboarding}
+                    className="absolute top-8 right-8 z-30 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg border border-white/10  transition-all duration-200"
+                    title="Skip file upload"
+                >
+                    <X className="w-6 h-6" />
+                </button>
+            )}
 
             {/* Agent selection modal, always rendered above all content */}
             {showAgentModal && (

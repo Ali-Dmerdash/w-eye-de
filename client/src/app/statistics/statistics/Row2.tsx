@@ -70,7 +70,7 @@ const Row2: React.FC<Props> = ({ section }) => {
         <BoxHeader
           icon={<Activity size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Operational vs Non-Operational Expenses"
-          sideText="+4%"
+          sideText="Monthly"
         />
         <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
@@ -115,7 +115,7 @@ const Row2: React.FC<Props> = ({ section }) => {
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#7c3aed",
+                  backgroundColor: "#1F2937",
                   border: "none",
                   borderRadius: "12px",
                   color: "#fff",
@@ -123,7 +123,7 @@ const Row2: React.FC<Props> = ({ section }) => {
                   padding: "8px 12px",
                   boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
-                formatter={(value) => [`$${value}`, ""]}
+                // formatter={(value) => [`$${value}`, ""]}
               />
               <Legend
                 height={20}
@@ -166,7 +166,7 @@ const Row2: React.FC<Props> = ({ section }) => {
         <BoxHeader 
           icon={<PieChartIcon size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Campaigns and Targets" 
-          sideText="+4%" 
+          sideText="Yearly" 
         />
         <div className="h-[calc(100%-100px)] p-4">
           <div className="flex justify-between items-center mb-4 px-2">
@@ -209,7 +209,7 @@ const Row2: React.FC<Props> = ({ section }) => {
                     padding: "8px 12px",
                     boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                   }}
-                  formatter={(value) => [`$${value}`, ""]}
+                  // formatter={(value) => [`$${value}`, ""]}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -225,7 +225,7 @@ const Row2: React.FC<Props> = ({ section }) => {
         <BoxHeader 
           icon={<TrendingUp size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Product Prices vs Expenses" 
-          sideText="+4%" 
+          sideText="Quarterly" 
         />
         <div className="h-[calc(100%-80px)] p-2 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">

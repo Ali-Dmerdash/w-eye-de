@@ -97,7 +97,7 @@ const Row3: React.FC<Props> = ({ section }) => {
           icon={<BarChart3 size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Monthly Revenue & Expenses"
           subtitle="Revenue and expenses per month"
-          sideText="+4%"
+          sideText="Monthly"
         />
         <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
@@ -170,7 +170,7 @@ const Row3: React.FC<Props> = ({ section }) => {
                   padding: "8px 12px",
                   boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
-                formatter={(value) => [`$${value}`, ""]}
+                // formatter={(value) => [`$${value}`, ""]}
               />
               <Legend 
                 iconType="circle"
@@ -265,7 +265,7 @@ const Row3: React.FC<Props> = ({ section }) => {
         <BoxHeader
           icon={<TrendingUp size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Performance Overview"
-          sideText="Q4 2024"
+          sideText={`Q${Math.floor((new Date().getMonth() / 3) + 1)} ${new Date().getFullYear()}`}
         />
         
         <div className="h-[calc(100%-60px)] w-full overflow-hidden p-3">
@@ -284,7 +284,7 @@ const Row3: React.FC<Props> = ({ section }) => {
             
             <div className="mb-1">
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-gray-500 dark:text-gray-400">Q1 Goal Progress</span>
+                <span className="text-gray-500 dark:text-gray-400">{`Q${Math.floor((new Date().getMonth() / 3) + 1)}`} Goal Progress</span>
                 <span className="text-gray-900 dark:text-white font-medium">40%</span>
               </div>
               <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full w-full overflow-hidden">

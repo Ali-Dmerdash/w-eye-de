@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import BoxHeader from "../components/BoxHeader";
 import DashboardBox from "../components/DashboardBox";
 import { kpis } from "../data";
-import { BarChart3, LineChart as LineChartIcon, AreaChart as AreaChartIcon, PieChart as PieChartIcon } from "lucide-react";
+import { BarChart3, LineChart as LineChartIcon, AreaChart as AreaChartIcon, PieChart as PieChartIcon, TrendingUp, PieChart, BarChart2 } from "lucide-react";
 import {
   ResponsiveContainer,
   CartesianGrid,
@@ -70,7 +70,7 @@ const Row1: React.FC<Props> = ({ section }) => {
           icon={<AreaChartIcon size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Revenue and Expenses"
           subtitle="top line represents revenue, bottom line represents expenses"
-          sideText="+4%"
+          sideText="Monthly"
         />
         <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
@@ -133,7 +133,7 @@ const Row1: React.FC<Props> = ({ section }) => {
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#7c3aed",
+                  backgroundColor: "#1F2937",
                   border: "none",
                   borderRadius: "12px",
                   color: "#fff",
@@ -141,7 +141,7 @@ const Row1: React.FC<Props> = ({ section }) => {
                   padding: "8px 12px",
                   boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
-                formatter={(value) => [`$${value}`, ""]}
+                // formatter={(value) => [`$${value}`, ""]}
               />
               <Area
                 type="monotone"
@@ -175,7 +175,7 @@ const Row1: React.FC<Props> = ({ section }) => {
           icon={<LineChartIcon size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Profit and Revenue"
           subtitle="top line represents revenue, bottom line represents expenses"
-          sideText="+4%"
+          sideText="Monthly"
         />
         <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
@@ -219,7 +219,7 @@ const Row1: React.FC<Props> = ({ section }) => {
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#7c3aed",
+                  backgroundColor: "#1F2937",
                   border: "none",
                   borderRadius: "12px",
                   color: "#fff",
@@ -271,7 +271,7 @@ const Row1: React.FC<Props> = ({ section }) => {
           icon={<BarChart3 size={18} className="text-purple-600 dark:text-purple-400" />}
           title="Revenue Month by Month"
           subtitle="graph representing the revenue month by month"
-          sideText="+4%"
+          sideText="Monthly"
         />
         <div className="h-[calc(100%-100px)] p-4 overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
@@ -321,7 +321,7 @@ const Row1: React.FC<Props> = ({ section }) => {
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#7c3aed",
+                  backgroundColor: "#1F2937",
                   border: "none",
                   borderRadius: "12px",
                   color: "#fff",
@@ -329,7 +329,7 @@ const Row1: React.FC<Props> = ({ section }) => {
                   padding: "8px 12px",
                   boxShadow: "0 10px 25px rgba(124, 58, 237, 0.3)",
                 }}
-                formatter={(value) => [`$${value}`, ""]}
+                // formatter={(value) => [`$${value}`, ""]}
               />
               <Bar 
                 dataKey="revenue" 
