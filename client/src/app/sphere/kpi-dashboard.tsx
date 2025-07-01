@@ -193,7 +193,7 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
       {/* Tooltip */}
       {hovered && (
         <Html 
-          distanceFactor={8} 
+          distanceFactor={24} 
           position={[position[0], position[1] + 1.5, position[2] + 1]} 
           center
         >

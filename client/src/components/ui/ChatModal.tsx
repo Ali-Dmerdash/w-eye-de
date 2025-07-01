@@ -22,7 +22,7 @@ import { useChat, type Message, type FileAttachment } from "@/context/ChatContex
 import { useNotifications } from "@/context/NotificationContext"
 
 export const HelpModal = ({ onClose }: { onClose: () => void }) => {
-    const { setShowHelpModal, setDraftMessage } = useChat()
+    const { setShowHelpModal, openChat } = useChat()
     const helpKeywords = [
         { keyword: "fraud", description: "Information about fraud detection and prevention" },
         { keyword: "revenue", description: "Revenue analysis and forecasts" },
@@ -88,15 +88,8 @@ export const HelpModal = ({ onClose }: { onClose: () => void }) => {
                                 key={index}
                                 className="border border-purple-100 dark:border-gray-700 rounded-xl p-3 bg-white dark:bg-gray-800/50 cursor-pointer hover:bg-purple-50 dark:hover:bg-gray-700/50 transition-colors shadow-sm hover:shadow-md"
                                 onClick={() => {
-                                    setDraftMessage(item.keyword)
-                                    onClose()
-                                    setTimeout(() => {
-                                        const chatInput = document.querySelector('textarea[placeholder*="help"]') as HTMLTextAreaElement
-                                        if (chatInput) {
-                                            chatInput.value = item.keyword
-                                            chatInput.focus()
-                                        }
-                                    }, 100)
+                                    openChat(item.keyword);
+                                    onClose();
                                 }}
                             >
                                 <div className="font-medium text-purple-600 dark:text-purple-400 mb-1">{item.keyword}</div>
@@ -382,8 +375,8 @@ export default function ChatModal() {
                             <button
                                 onClick={toggleSearch}
                                 className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 ${searchVisible
-                                        ? "bg-gray-100 dark:bg-gray-700 text-purple-600 dark:text-purple-400"
-                                        : "text-gray-500 dark:text-gray-400"
+                                    ? "bg-gray-100 dark:bg-gray-700 text-purple-600 dark:text-purple-400"
+                                    : "text-gray-500 dark:text-gray-400"
                                     }`}
                                 title="Search messages"
                             >
@@ -631,8 +624,8 @@ export default function ChatModal() {
 
                                             <div
                                                 className={`text-xs mt-1.5 flex items-center gap-1 ${message.sender === "user"
-                                                        ? "text-purple-200 dark:text-purple-300"
-                                                        : "text-gray-500 dark:text-gray-400"
+                                                    ? "text-purple-200 dark:text-purple-300"
+                                                    : "text-gray-500 dark:text-gray-400"
                                                     }`}
                                             >
                                                 <Clock className="w-3 h-3" />
@@ -735,8 +728,8 @@ export default function ChatModal() {
                             onClick={handleSendMessage}
                             disabled={(!input.trim()) || isLoading}
                             className={`flex-shrink-0 rounded-lg p-2.5 ${(input.trim()) && !isLoading
-                                    ? "bg-purple-600 text-white hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105"
-                                    : "bg-gray-200 dark:bg-gray-600 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                                ? "bg-purple-600 text-white hover:bg-purple-700 shadow-md hover:shadow-lg transform hover:scale-105"
+                                : "bg-gray-200 dark:bg-gray-600 text-gray-400 dark:text-gray-500 cursor-not-allowed"
                                 } transition-all duration-200`}
                         >
                             <Send className="h-5 w-5" />

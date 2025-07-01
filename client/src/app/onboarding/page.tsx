@@ -271,7 +271,7 @@ export default function OnboardingPage() {
             setStep("complete")
             setTimeout(() => {
                 window.location.href = "/home-page"
-            }, 80000)
+            }, 4000)
         } finally {
             setIsLoading(false)
             setIsUploading(false)

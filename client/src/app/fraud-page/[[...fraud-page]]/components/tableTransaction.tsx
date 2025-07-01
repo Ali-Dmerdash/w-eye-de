@@ -88,7 +88,7 @@ const TransactionModal = ({
   onClose: () => void
 }) => {
   const modalRef = useRef<HTMLDivElement>(null)
-  const { openChat, setDraftAttachments } = useChat()
+  const { openChat } = useChat()
 
   // Helper function to convert transaction to CSV
   const downloadTransactionAsCSV = () => {

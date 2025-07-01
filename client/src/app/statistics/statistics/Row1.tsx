@@ -17,12 +17,27 @@ import {
   Tooltip,
   Area,
 } from "recharts";
+import { useUser } from "@clerk/nextjs"
+import { AlertTriangle } from "lucide-react"
 
 type Props = {
   section: "a" | "b" | "c";
 };
 
 const Row1: React.FC<Props> = ({ section }) => {
+  const { user, isLoaded } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
+  }
+
   const data = kpis;
 
   const revenue = useMemo(() => {

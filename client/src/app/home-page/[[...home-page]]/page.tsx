@@ -149,6 +149,7 @@ export default function Home() {
               >
                 <WelcomeCard />
               </div>
+              
               <div
                 className={`transform transition-all duration-500 ease-out delay-500 ${
                   isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
@@ -157,6 +158,7 @@ export default function Home() {
                 <ProfitAnalysisCard />
               </div>
             </div>
+            
             <div
               className={`transform transition-all duration-500 ease-out delay-600 ${
                 isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"

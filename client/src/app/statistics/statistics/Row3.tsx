@@ -5,7 +5,7 @@ import FlexBetween from "../components/FlexBetween";
 import { kpis } from "../data";
 import { transactions } from "../transactions";
 import { products } from "../products";
-import { BarChart3, CircleDollarSign, ListOrdered, PieChartIcon, TrendingUp, ArrowUpCircle, Coins, Users, ShoppingBag, BarChart, PieChart, ChevronUp } from "lucide-react";
+import { BarChart3, CircleDollarSign, ListOrdered, PieChartIcon, TrendingUp, ArrowUpCircle, Coins, Users, ShoppingBag, BarChart, PieChart, ChevronUp, AlertTriangle } from "lucide-react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -21,6 +21,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { useUser } from "@clerk/nextjs"
 
 type Props = {
   section: "g" | "h" | "i" | "j";
@@ -37,6 +38,8 @@ const pieData = [
 const Row3: React.FC<Props> = ({ section }) => {
   const data = kpis;
   const transactionData = transactions;
+  const { user, isLoaded } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
 
   const monthlyData = useMemo(() => {
     return (
@@ -54,6 +57,17 @@ const Row3: React.FC<Props> = ({ section }) => {
   const filteredTransactions = useMemo(() => {
     return transactionData?.slice(0, 8);
   }, [transactionData]);
+
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
+  }
 
   if (section === "g") {
     return (

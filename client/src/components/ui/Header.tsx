@@ -1,6 +1,6 @@
 "use client"
-import React, { useRef, useEffect, useMemo } from "react"
-import { Bell, MessageSquare } from "lucide-react"
+import React, { useRef, useEffect, useMemo, useState } from "react"
+import { Bell, MessageSquare, Sparkles } from "lucide-react"
 import Image from "next/image"
 import eye from "@/assets/eye.png"
 import eyeLight from "@/assets/eyeLight.png"
@@ -25,6 +25,7 @@ export default function Header() {
   const { notifications, getNewNotificationsCount, markAllAsRead, markAsRead } = useNotifications()
   const newNotificationsCount = getNewNotificationsCount()
   const router = useRouter()
+  const [showPulse, setShowPulse] = useState(true)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -36,6 +37,11 @@ export default function Header() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowPulse(false), 40000)
+    return () => clearTimeout(timer)
   }, [])
 
   const toggleNotifications = () => {
@@ -56,10 +62,6 @@ export default function Header() {
     setSelectedNotification(null)
   }
 
-  const handleClick = () => {
-    setIsEditing(true)
-    setTimeout(() => inputRef.current?.focus(), 100)
-  }
 
   const handleBlur = () => {
     if (!inputRef.current?.value) {
@@ -245,45 +247,20 @@ export default function Header() {
             alt="Logo"
           />
         </div>
-        <div className="flex items-center ">
+        <div className="flex items-center  ">
           <div
-            className="hidden md:flex items-center px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-96 w-48"
-            onClick={handleClick}
+            className={`hidden md:flex items-center cursor-pointer px-4 py-2 bg-[#E4E5F1] dark:bg-[#1B2131] rounded-xl lg:w-[448px] w-48 ${showPulse ? " animate-pulse-attention" : ""} hover:scale-110 transition-all duration-300`}
+            onClick={() => openChat()}
             data-onboarding="ai-assistant"
             title="AI Assistant"
           >
-            <svg
-              className="w-5 h-5 mr-2 text-[#15191c] dark:text-gray-200 cursor-pointer hover:scale-110 transition-all duration-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={(e) => {
-                e.stopPropagation()
-                openChat()
-              }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-              />
-            </svg>
-            {isEditing ? (
-              <input
-                ref={inputRef}
-                type="text"
-                className="text-sm font-medium text-[#15191c] dark:text-gray-200 bg-transparent border-none outline-none w-full"
-                placeholder="Type something..."
-                onBlur={handleBlur}
-                onKeyDown={handleKeyDown}
-              />
-            ) : (
-              <span className="text-sm font-medium text-[#15191c] dark:text-gray-200 opacity-80 cursor-text">
-                AI Assistant
-              </span>
-            )}
+            <Sparkles className="me-3 w-5 h-5 text-[#15191c] dark:text-gray-200 cursor-pointer" onClick={() => openChat()} />
+
+            <span
+              className="text-sm font-medium text-[#15191c] dark:text-gray-200 opacity-80 cursor-pointer">
+              AI Assistant
+            </span>
+
           </div>
         </div>
         <div className="flex items-center md:space-x-4 space-x-2 ms-1">
@@ -295,8 +272,8 @@ export default function Header() {
             title="AI Assistant"
 
           >
-            <MessageSquare className="w-5 h-5 text-[#15191c] dark:text-gray-200" />
-            
+            <Sparkles className="w-5 h-5 text-[#15191c] dark:text-gray-200" />
+
           </div>
 
           {toggleButton}

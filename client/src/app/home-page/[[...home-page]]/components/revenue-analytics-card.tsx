@@ -1,12 +1,17 @@
 "use client"
 import { useEffect, useState } from "react"
-import { DollarSign, TrendingUp, CreditCard, Banknote, LineChart } from "lucide-react"
+import { DollarSign, TrendingUp, CreditCard, Banknote, LineChart, AlertTriangle } from "lucide-react"
+import { useUser } from "@clerk/nextjs"
 
 export default function RevenueAnalyticsCard() {
+  const { user, isLoaded } = useUser();
   // Monthly revenue data that correlates with the header stats
   const monthlyRevenue = [42000, 38000, 45000, 53000, 48000, 51000, 47000, 49000, 53000] // Last value matches "Today's Revenue"
   const maxValue = Math.max(...monthlyRevenue)
   const [mounted, setMounted] = useState(false)
+
+  // Check filesUploaded in Clerk metadata
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,6 +19,17 @@ export default function RevenueAnalyticsCard() {
     }, 100)
     return () => clearTimeout(timer)
   }, [])
+
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 hover:shadow-xl transition-all duration-300">
