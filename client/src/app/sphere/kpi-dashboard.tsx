@@ -6,6 +6,8 @@ import { OrbitControls, Html, Environment } from "@react-three/drei"
 import * as THREE from "three"
 import type { KPIData } from "./page"
 import { useTheme } from "@/context/ThemeContext"
+import { AlertTriangle } from "lucide-react"
+import { useUser } from "@clerk/nextjs"
 
 interface KPIDashboardProps {
   kpis: KPIData[]
@@ -192,9 +194,9 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
 
       {/* Tooltip */}
       {hovered && (
-        <Html 
-          distanceFactor={24} 
-          position={[position[0], position[1] + 1.5, position[2] + 1]} 
+        <Html
+          distanceFactor={24}
+          position={[position[0], position[1] + 1.5, position[2] + 1]}
           center
         >
           <div
@@ -203,8 +205,7 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-semibold text-sm">{kpi.name}</h4>
               <span
-                className={`text-xs px-2 py-1 rounded-full capitalize ${
-                  kpi.status === "good"
+                className={`text-xs px-2 py-1 rounded-full capitalize ${kpi.status === "good"
                     ? theme === "dark"
                       ? "bg-green-500/20 text-green-300"
                       : "bg-green-500/20 text-green-700"
@@ -215,7 +216,7 @@ function KPISphere({ kpi, position, onHover, distance, styleMode = "wireframe" }
                       : theme === "dark"
                         ? "bg-red-500/20 text-red-300"
                         : "bg-red-500/20 text-red-700"
-                }`}
+                  }`}
               >
                 {kpi.status}
               </span>
@@ -483,6 +484,20 @@ export function KPIDashboard({
 }: KPIDashboardProps) {
   const { theme } = useTheme()
 
+
+  const { user, isLoaded } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className=" h-full rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full relative bg-transparent">
       <Canvas
@@ -505,7 +520,7 @@ export function KPIDashboard({
         />
       </Canvas>
 
-      
+
     </div>
   )
 }

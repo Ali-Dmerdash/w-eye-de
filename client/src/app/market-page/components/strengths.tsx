@@ -1,9 +1,10 @@
 "use client"
 import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketModelResponse, SwotAnalysis } from "@/state/type"
-import { TrendingUp, AlertCircle } from "lucide-react"
+import { TrendingUp, AlertCircle, AlertTriangle } from "lucide-react"
 import React from "react"
 import Modal from "@/components/ui/Modal"
+import { useUser } from "@clerk/nextjs"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -39,6 +40,8 @@ function getErrorMessage(error: unknown): string {
 
 export default function Strengths() {
   const { data: marketDataArray, isLoading, error: queryError } = useGetMarketDataQuery()
+  const { user, isLoaded } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
 
   const swotAnalysisData: SwotAnalysis | undefined | null = marketDataArray?.[0]?.swot_analysis
   const strengths = swotAnalysisData?.strengths || []
@@ -82,6 +85,17 @@ export default function Strengths() {
         </div>
       </div>
     )
+  }
+
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className="bg-white h-full dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
   }
 
   return (

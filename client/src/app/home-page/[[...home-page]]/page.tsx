@@ -1,5 +1,5 @@
 "use client"
-import { Briefcase, Users, FileText, ShoppingCart, Settings, RotateCcw, Maximize2, X } from "lucide-react"
+import { Briefcase, Users, FileText, ShoppingCart, Settings, RotateCcw, Maximize2, X, AlertTriangle } from "lucide-react"
 import { useEffect, useState } from "react"
 import Sidebar from "@/components/ui/Sidebar"
 import Header from "@/components/ui/Header"
@@ -17,11 +17,15 @@ import OnboardingOverlay from "@/components/ui/OnboardingOverlay"
 import OnboardingHelpButton from "@/components/ui/OnboardingHelpButton"
 import { useOnboarding } from "@/context/OnboardingContext"
 import { financialDashboardData } from "@/app/home-page/data"
+import { useUser } from "@clerk/nextjs"
 
 export default function Home() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const { theme } = useTheme()
+  const { user } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
+
 
   // KPI sphere state
   const [kpis, setKPIs] = useState(
@@ -142,94 +146,90 @@ export default function Home() {
           <div className="col-span-4 lg:col-span-2 space-y-6">
             <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
               <div
-                className={`transform transition-all duration-500 ease-out delay-400 ${
-                  isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                }`}
+                className={`transform transition-all duration-500 ease-out delay-400 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                  }`}
                 data-onboarding="welcome-card"
               >
                 <WelcomeCard />
               </div>
-              
+
               <div
-                className={`transform transition-all duration-500 ease-out delay-500 ${
-                  isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                }`}
+                className={`transform transition-all duration-500 ease-out delay-500 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                  }`}
               >
                 <ProfitAnalysisCard />
               </div>
             </div>
-            
+
             <div
-              className={`transform transition-all duration-500 ease-out delay-600 ${
-                isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-              }`}
+              className={`transform transition-all duration-500 ease-out delay-600 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                }`}
               data-onboarding="chart-card"
             >
               <RevenueAnalyticsCard />
             </div>
           </div>
           <div
-            className={`hidden lg:block lg:col-span-2 h-full transform transition-all duration-500 ease-out delay-700 relative ${
-              isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
+            className={`hidden lg:block lg:col-span-2 h-full transform transition-all duration-500 ease-out delay-700 relative ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+              }`}
             data-onboarding="kpi-dashboard"
           >
-            <div className="absolute right-0 z-10 flex gap-2 items-center">
-              <div
-                className={`${theme === "dark" ? "bg-gray-900/95" : "bg-white/95"} backdrop-blur-sm rounded-lg p-4 ${theme === "dark" ? "text-white" : "text-black"} border ${theme === "dark" ? "border-gray-700" : "border-gray-200"} shadow-md`}
-              >
-                <h3 className="text-sm font-medium mb-2">Overall Status</h3>
+            {filesUploaded ?
+              <div className="absolute right-0 z-10 flex gap-2 items-center">
                 <div
-                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-3 ${
-                    overallStatus() === "good"
-                      ? theme === "dark"
-                        ? "bg-green-500/20 text-green-300"
-                        : "bg-green-500/20 text-green-700"
-                      : overallStatus() === "warning"
-                        ? theme === "dark"
-                          ? "bg-yellow-500/20 text-yellow-300"
-                          : "bg-yellow-500/20 text-yellow-700"
-                        : theme === "dark"
-                          ? "bg-red-500/20 text-red-300"
-                          : "bg-red-500/20 text-red-700"
-                  }`}
+                  className={`${theme === "dark" ? "bg-gray-900/95" : "bg-white/95"} backdrop-blur-sm rounded-lg p-4 ${theme === "dark" ? "text-white" : "text-black"} border ${theme === "dark" ? "border-gray-700" : "border-gray-200"} shadow-md`}
                 >
-                  {overallStatus() === "good"
-                    ? "● Excellent"
-                    : overallStatus() === "warning"
-                      ? "● Needs Attention"
-                      : "● Critical"}
+                  <h3 className="text-sm font-medium mb-2">Overall Status</h3>
+                  <div
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium mb-3 ${overallStatus() === "good"
+                        ? theme === "dark"
+                          ? "bg-green-500/20 text-green-300"
+                          : "bg-green-500/20 text-green-700"
+                        : overallStatus() === "warning"
+                          ? theme === "dark"
+                            ? "bg-yellow-500/20 text-yellow-300"
+                            : "bg-yellow-500/20 text-yellow-700"
+                          : theme === "dark"
+                            ? "bg-red-500/20 text-red-300"
+                            : "bg-red-500/20 text-red-700"
+                      }`}
+                  >
+                    {overallStatus() === "good"
+                      ? "● Excellent"
+                      : overallStatus() === "warning"
+                        ? "● Needs Attention"
+                        : "● Critical"}
+                  </div>
+                  <div className="text-xs space-y-1">
+                    <div className="flex justify-between">
+                      <span className={theme === "dark" ? "text-gray-300" : "text-gray-600"}>Total KPIs:</span>
+                      <span className="font-medium">{stats.total}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className={theme === "dark" ? "text-green-700" : "text-green-600"}>Good:</span>
+                      <span className="font-medium">{stats.good}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className={theme === "dark" ? "text-yellow-300" : "text-yellow-600"}>Warning:</span>
+                      <span className="font-medium">{stats.warning}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className={theme === "dark" ? "text-red-300" : "text-red-600"}>Critical:</span>
+                      <span className="font-medium">{stats.critical}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs space-y-1">
-                  <div className="flex justify-between">
-                    <span className={theme === "dark" ? "text-gray-300" : "text-gray-600"}>Total KPIs:</span>
-                    <span className="font-medium">{stats.total}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className={theme === "dark" ? "text-green-700" : "text-green-600"}>Good:</span>
-                    <span className="font-medium">{stats.good}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className={theme === "dark" ? "text-yellow-300" : "text-yellow-600"}>Warning:</span>
-                    <span className="font-medium">{stats.warning}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className={theme === "dark" ? "text-red-300" : "text-red-600"}>Critical:</span>
-                    <span className="font-medium">{stats.critical}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              </div> : ''}
+
             <div className="absolute left-0 z-10 flex gap-2" data-onboarding="kpi-controls">
               <Button
                 onClick={() => setFullscreen(true)}
                 variant="outline"
                 size="sm"
-                className={`${
-                  theme === "dark"
+                className={`${theme === "dark"
                     ? "bg-gray-900/95 border-gray-700 text-white hover:bg-gray-800 hover:border-blue-500/50 hover:text-blue-300"
                     : "bg-white/95 border-gray-200 text-black hover:bg-gray-50 hover:border-blue-500/50 hover:text-blue-600"
-                } 
+                  } 
                   backdrop-blur-sm shadow-md transition-all duration-200`}
               >
                 <Maximize2 className="w-4 h-4 mr-2" />
@@ -239,12 +239,12 @@ export default function Home() {
                 onClick={() => setShowSettings(!showSettings)}
                 variant="outline"
                 size="sm"
-                className={`${
-                  theme === "dark"
+                className={`${theme === "dark"
                     ? "bg-gray-900/95 border-gray-700 text-white hover:bg-gray-800 hover:border-blue-500/50 hover:text-blue-300"
                     : "bg-white/95 border-gray-200 text-black hover:bg-gray-50 hover:border-blue-500/50 hover:text-blue-600"
-                } 
+                  } 
                   backdrop-blur-sm shadow-md transition-all duration-200`}
+                disabled={!filesUploaded}
               >
                 <Settings className="w-4 h-4 mr-2" />
                 Settings
@@ -253,12 +253,12 @@ export default function Home() {
                 onClick={resetRotation}
                 variant="outline"
                 size="sm"
-                className={`${
-                  theme === "dark"
+                className={`${theme === "dark"
                     ? "bg-gray-900/95 border-gray-700 text-white hover:bg-gray-800 hover:border-blue-500/50 hover:text-blue-300"
                     : "bg-white/95 border-gray-200 text-black hover:bg-gray-50 hover:border-blue-500/50 hover:text-blue-600"
-                } 
+                  } 
                   backdrop-blur-sm shadow-md transition-all duration-200`}
+                disabled={!filesUploaded}
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Reset View
@@ -293,11 +293,10 @@ export default function Home() {
           <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center transition-all duration-500 animate-fade-in">
             <button
               onClick={() => setFullscreen(false)}
-              className={`absolute top-4 right-4 p-2 rounded-lg ${
-                theme === "dark"
+              className={`absolute top-4 right-4 p-2 rounded-lg ${theme === "dark"
                   ? "bg-gray-900/95 border-gray-700 hover:bg-gray-800 hover:border-blue-500/50 hover:text-blue-300"
                   : "bg-white/95 border-gray-200 hover:bg-gray-50 hover:border-blue-500/50 hover:text-blue-600"
-              } 
+                } 
               backdrop-blur-sm shadow-md border transition-all duration-200 z-10`}
               title="Exit Fullscreen"
             >

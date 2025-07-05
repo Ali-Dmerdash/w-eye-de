@@ -60,7 +60,7 @@ export default function OnboardingHelpButton() {
   return (
     <Button
       onClick={handleStartTour}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-xl rounded-full px-4 py-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl backdrop-blur-sm border border-purple-500/20"
+      className="md:fixed hidden md:flex md:items-center bottom-6 right-6 z-50  gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-xl rounded-full px-4 py-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl backdrop-blur-sm border border-purple-500/20"
       title={`Start ${getTitle()} tour`}
     >
       {getIcon()}

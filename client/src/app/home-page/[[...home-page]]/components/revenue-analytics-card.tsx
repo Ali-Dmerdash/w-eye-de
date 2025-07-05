@@ -6,9 +6,28 @@ import { useUser } from "@clerk/nextjs"
 export default function RevenueAnalyticsCard() {
   const { user, isLoaded } = useUser();
   // Monthly revenue data that correlates with the header stats
-  const monthlyRevenue = [42000, 38000, 45000, 53000, 48000, 51000, 47000, 49000, 53000] // Last value matches "Today's Revenue"
+  const monthlyRevenue = [31000, 20000, 45000, 12000, 48000, 47000, 25000] // Last value matches "Today's Revenue"
   const maxValue = Math.max(...monthlyRevenue)
   const [mounted, setMounted] = useState(false)
+
+  // --- Dynamic Y-axis label calculation ---
+  // Find a 'nice' rounded max for the axis (e.g., 10K, 20K, 50K, 60K, etc.)
+  function getNiceMax(value: number) {
+    if (value <= 0) return 10000;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(value)));
+    const rounded = Math.ceil(value / magnitude) * magnitude;
+    // If the rounded value is too close to the actual max, bump it up a step
+    if (rounded - value < magnitude * 0.2) {
+      return rounded + magnitude;
+    }
+    return rounded;
+  }
+  const yMax = getNiceMax(maxValue);
+  const ySteps = 5; // Number of intervals (6 labels)
+  const yLabels = Array.from({ length: ySteps + 1 }, (_, i) =>
+    `$${((yMax / ySteps) * (ySteps - i) / 1000).toFixed(0)}K`
+  );
+  // --- End dynamic Y-axis ---
 
   // Check filesUploaded in Clerk metadata
   const filesUploaded = user?.unsafeMetadata?.filesUploaded;
@@ -22,7 +41,7 @@ export default function RevenueAnalyticsCard() {
 
   if (isLoaded && filesUploaded === false) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+      <div className="bg-white h-full dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
         <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
         <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
           No data to display — file upload was bypassed.
@@ -47,15 +66,12 @@ export default function RevenueAnalyticsCard() {
       </div>
 
       <div className="h-48 flex relative mb-6 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-700">
-        <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 pr-2 p-3">
-          <span>$60K</span>
-          <span>$48K</span>
-          <span>$36K</span>
-          <span>$24K</span>
-          <span>$12K</span>
-          <span>$0</span>
+        <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 pr-2 p-3 pb-6">
+          {yLabels.map((label, idx) => (
+            <span key={idx}>{label}</span>
+          ))}
         </div>
-        <div className="flex-1 flex items-end justify-between pl-12 pr-3 pb-3 pt-3 gap-1" style={{ height: "180px" }}>
+        <div className="flex-1 flex items-end justify-between pl-12 pr-3 pb-0 pt-3 gap-1" style={{ height: "185px" }}>
           {monthlyRevenue.map((value, index) => {
             const heightPercentage = Math.max((value / maxValue) * 100, 5) // Minimum 5% height
             const heightInPixels = (heightPercentage / 100) * 160 // 160px is the available chart height
@@ -76,7 +92,7 @@ export default function RevenueAnalyticsCard() {
                   title={`$${(value / 1000).toFixed(0)}K`}
                 />
                 <span className="text-xs text-gray-400 mt-1 text-center">
-                  {index === 8 ? "Today" : `M${index + 1}`}
+                  {index === 6 ? "Today" : `M${index + 1}`}
                 </span>
               </div>
             )

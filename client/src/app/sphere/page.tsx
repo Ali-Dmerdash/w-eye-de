@@ -288,6 +288,7 @@ export const initialKPIs: KPIData[] = [
 
 // Add function to calculate status automatically
 export const calculateKPIStatus = (kpi: KPIData): "good" | "warning" | "critical" => {
+  
   if (!kpi.benchmark) return "good"
 
   const { numericValue } = kpi
@@ -368,6 +369,8 @@ export default function Home() {
     window.addEventListener("keydown", handleKey)
     return () => window.removeEventListener("keydown", handleKey)
   }, [fullscreen])
+
+  
 
   return (
     <div className="min-h-screen bg-transparent">

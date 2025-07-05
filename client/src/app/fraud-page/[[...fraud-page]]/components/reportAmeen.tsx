@@ -3,7 +3,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useGetFraudDataQuery } from "@/state/api"
 import type { Analysis } from "@/state/type"
-import { FileText, Brain, AlertCircle, CheckCircle } from "lucide-react"
+import { FileText, Brain, AlertCircle, CheckCircle, AlertTriangle } from "lucide-react"
+import { useUser } from "@clerk/nextjs"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -41,6 +42,8 @@ const ReportAmeen = () => {
   const [expanded, setExpanded] = useState(false)
   const { data: fraudDataArray, isLoading, error } = useGetFraudDataQuery()
   const analysisData: Analysis | undefined | null = fraudDataArray?.[0]?.analysis
+  const { user, isLoaded } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
 
   // --- Loading State ---
   if (isLoading)
@@ -92,6 +95,18 @@ const ReportAmeen = () => {
           </div>
         </div>
     )
+  }
+
+  // --- Clerk User Check ---
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className="bg-white h-full dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
   }
 
   // --- Success State ---

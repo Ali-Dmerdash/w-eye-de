@@ -5,6 +5,8 @@ import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketModelResponse, PricingComparison as PCType, CompetitivePositioning as CPType } from "@/state/type"
 import { Globe, Building2, X, ExternalLink, BarChart3, Maximize2, MapPin } from "lucide-react"
 import mapImage from "@/assets/map.jpg"
+import { useUser } from "@clerk/nextjs"
+import { AlertTriangle } from "lucide-react"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -60,6 +62,8 @@ export default function MarketMap() {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const { user, isLoaded } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
 
   const marketData: MarketModelResponse | undefined = marketDataArray?.[0]
   const pricingData: PCType | undefined | null = marketData?.pricing_comparison
@@ -84,6 +88,17 @@ export default function MarketMap() {
 
   const selectedData = selectedLocation ? locations.find((loc) => loc.name === selectedLocation)?.data : null
   const selectedLocationData = selectedLocation ? competitorPositions[selectedLocation] : null
+
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className="bg-white h-full dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
+  }
 
   // Loading State
   if (isLoading) {

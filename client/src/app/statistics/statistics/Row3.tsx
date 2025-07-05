@@ -60,7 +60,7 @@ const Row3: React.FC<Props> = ({ section }) => {
 
   if (isLoaded && filesUploaded === false) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+      <div className="bg-white h-full dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
         <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
         <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
           No data to display — file upload was bypassed.

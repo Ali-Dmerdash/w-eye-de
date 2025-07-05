@@ -213,9 +213,20 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const sendMessage = (text: string, attachments: FileAttachment[] = []) => {
     if (!text.trim() && attachments.length === 0) return;
 
+    // Format chat history as [{user:...}, {assistant:...}, ...]
+    const formattedHistory = messages
+      .filter(m => m.sender === "user" || m.sender === "assistant")
+      .map(m => ({ [m.sender]: m.text }));
+
+    const textWithHistory =
+      text +
+      "+ remember to answer depending on the chat history that i'm providing to you : " +
+      JSON.stringify(formattedHistory);
+
+    // Store only the original user input in the chat UI
     const newUserMessage: Message = {
       id: Date.now().toString(),
-      text,
+      text, // Only the user's input, not the appended history
       sender: "user",
       timestamp: new Date(),
       attachments: attachments.length > 0 ? attachments : undefined,
@@ -223,7 +234,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     setMessages((prev) => [...prev, newUserMessage]);
 
-    generateAIResponse(text);
+    // Send the input + history to the backend only
+    generateAIResponse(textWithHistory);
+    console.log(textWithHistory)
   };
 
   const handleActionClick = (actionId: string, messageId: string) => {

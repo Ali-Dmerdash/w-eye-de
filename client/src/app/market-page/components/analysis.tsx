@@ -1,9 +1,10 @@
 "use client"
 import { useGetMarketDataQuery } from "@/state/api"
 import type { MarketAnalysis } from "@/state/type"
-import { BarChart3, TrendingUp, PieChart, AlertCircle } from "lucide-react"
+import { BarChart3, TrendingUp, PieChart, AlertCircle, AlertTriangle } from "lucide-react"
 import React from "react"
 import Modal from "@/components/ui/Modal"
+import { useUser } from "@clerk/nextjs"
 
 // Helper function to get a safe error message string
 function getErrorMessage(error: unknown): string {
@@ -39,6 +40,18 @@ function getErrorMessage(error: unknown): string {
 
 export default function Analysis() {
   const { data: marketDataArray, isLoading, error: queryError } = useGetMarketDataQuery()
+  const { user, isLoaded } = useUser();
+  const filesUploaded = user?.unsafeMetadata?.filesUploaded;
+  if (isLoaded && filesUploaded === false) {
+    return (
+      <div className="bg-white h-full dark:bg-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700 p-6 flex flex-col items-center justify-center min-h-[200px]">
+        <AlertTriangle className="w-8 h-8 text-yellow-500 mb-2" />
+        <span className="text-gray-500 dark:text-gray-400 text-center font-medium">
+          No data to display — file upload was bypassed.
+        </span>
+      </div>
+    );
+  }
 
   const marketAnalysisData: MarketAnalysis | undefined | null = marketDataArray?.[0]?.market_analysis
 

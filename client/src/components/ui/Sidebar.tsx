@@ -56,7 +56,7 @@ export default function Sidebar() {
     { icon: DollarSign, label: "Revenue agent", href: "/revenue-page" },
     { icon: Globe, label: "Global market agent", href: "/market-page" },
     { icon: Upload, label: "Data upload", href: "/upload" }
-    ];
+      ];
 
   const handleSignOut = () => {
     // Show loading overlay
